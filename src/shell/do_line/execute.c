@@ -21,9 +21,10 @@ static void do_exec(struct shell *self)
 {
     char *path;
 
-    if (my_asprintf(&path, "%s/%s", "/bin", self->arguments[0]) < 0)
+    if (my_asprintf(&path, "%s/%s", "/usr/bin", self->arguments[0]) < 0)
         return;
     execve(path, self->arguments, environ);
+    execve(path + 4, self->arguments, environ);
     my_dputs(self->arguments[0], STDERR_FILENO);
     error(": not found");
     exit(1);
