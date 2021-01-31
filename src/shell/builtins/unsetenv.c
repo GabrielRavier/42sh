@@ -8,12 +8,19 @@
 #include "functions.h"
 #include "../../error.h"
 #include "my/stdlib.h"
+#include <stdio.h>
 
-void shell_builtin_unsetenv(struct shell *self)
+int shell_builtin_unsetenv(struct shell *self)
 {
-    if (self->arguments[1])
+    if (self->arguments[1]) {
         for (char *const *arg_it = &self->arguments[1]; *arg_it; ++arg_it)
-            my_unsetenv(*arg_it);
-    else
+            if (my_unsetenv(*arg_it) < 0) {
+                perror("unsetenv");
+                return (1);
+            }
+    } else {
         error("unsetenv: Too few arguments.");
+        return (1);
+    }
+    return (0);
 }

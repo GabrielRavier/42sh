@@ -42,6 +42,8 @@ void shell_do_line_execute(struct shell *self)
     }
     if (child_pid != 0) {
         waitpid(child_pid, &child_status, 0);
+        if (WIFEXITED(child_status))
+            self->last_command_exit_status = WEXITSTATUS(child_status);
         return;
     }
     do_child(self);

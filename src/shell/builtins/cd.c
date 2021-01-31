@@ -11,9 +11,12 @@
 #include <unistd.h>
 #include <stddef.h>
 
-void shell_builtin_cd(struct shell *self)
+int shell_builtin_cd(struct shell *self)
 {
     if ((self->arguments[1] != NULL || my_getenv("HOME") != NULL) &&
-        (chdir(self->arguments[1] ?: my_getenv("HOME")) != 0))
+        (chdir(self->arguments[1] ?: my_getenv("HOME")) != 0)) {
         perror("cd");
+        return (1);
+    }
+    return (0);
 }

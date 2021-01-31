@@ -17,7 +17,7 @@
 
 static const struct builtin_func {
     const char *name;
-    void (*func)(struct shell *self);
+    int (*func)(struct shell *self);
 } BUILTINS[] = {
     {"env", shell_builtin_env},
     {"setenv", shell_builtin_setenv},
@@ -30,7 +30,7 @@ bool shell_do_builtins(struct shell *self)
 {
     for (size_t i = 0; i < MY_ARRAY_SIZE(BUILTINS); ++i)
         if (my_strcmp(self->arguments[0], BUILTINS[i].name) == 0) {
-            BUILTINS[i].func(self);
+            self->last_command_exit_status = BUILTINS[i].func(self);
             return (true);
         }
     return (false);

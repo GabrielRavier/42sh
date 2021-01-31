@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 
-void shell_builtin_exit(struct shell *self)
+int shell_builtin_exit(struct shell *self)
 {
     exit(0);
 }

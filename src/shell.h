@@ -25,6 +25,6 @@ struct shell {
     char **arguments_ptr;
     char **end_arguments_ptr;
     bool has_errored;
-    int last_child_exit_status;
+    int last_command_exit_status;
     bool is_interactive;
 };
