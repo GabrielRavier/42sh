@@ -7,10 +7,13 @@
 
 #include "functions.h"
 #include "../../error.h"
+#include "my/stdio.h"
 #include "my/stdlib.h"
 #include "my/string.h"
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
+#include <errno.h>
 #include <stddef.h>
 
 int shell_builtin_cd(struct shell *self)
@@ -20,12 +23,14 @@ int shell_builtin_cd(struct shell *self)
         (my_strcmp(self->arguments[1], "-") == 0) ? (my_getenv("owd") ?: "") :
         self->arguments[1];
 
-    if (destination_from_arg)
+    if (destination_from_arg) {
         if (chdir(destination_from_arg) != 0) {
-            perror(destination_from_arg);
+            my_dprintf(STDERR_FILENO, "%s: %s.\n", destination_from_arg,
+                strerror(errno));
+            free(current_working_directory);
             return (1);
         }
-    if ((self->arguments[1] != NULL || my_getenv("HOME") != NULL) &&
+    } else if ((self->arguments[1] != NULL || my_getenv("HOME") != NULL) &&
         (chdir(self->arguments[1] ?: my_getenv("HOME")) != 0)) {
         error("cd: Can't change to home directory.");
         free(current_working_directory);
