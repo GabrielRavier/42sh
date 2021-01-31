@@ -7,37 +7,22 @@
 
 #include "execute.h"
 #include "../../error.h"
-#include "my/string.h"
 #include "my/stdio.h"
+#include "my/string.h"
+#include "my/stdlib.h"
+#include "my/unistd.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/types.h>
 
-extern char **environ;
-
-static void do_exec(struct shell *self)
-{
-    char *path;
-
-    if (my_asprintf(&path, "%s/%s", "/usr/bin", self->arguments[0]) < 0)
-        return;
-    execve(path, self->arguments, environ);
-    execve(path + 4, self->arguments, environ);
-    my_dputs(self->arguments[0], STDERR_FILENO);
-    error(": not found");
-    exit(1);
-}
-
 static bool do_builtins(struct shell *self)
 {
     if (my_strcmp(self->arguments[0], "cd") == 0) {
-        if (self->arguments[1]) {
-            if (chdir(self->arguments[1]) != 0)
-                perror("cd");
-        } else
-            error("cd: Argument count");
+        if ((self->arguments[1] || my_getenv("HOME")) &&
+            (chdir(self->arguments[1] ?: my_getenv("HOME")) != 0))
+            perror("cd");
         return (true);
     }
     if (my_strcmp(self->arguments[0], "exit") == 0)
@@ -63,5 +48,8 @@ void shell_do_line_execute(struct shell *self)
     }
     signal(SIGINT, SIG_DFL);
     signal(SIGQUIT, SIG_DFL);
-    do_exec(self);
+    my_execvp(self->arguments[0], self->arguments);
+    my_dputs(self->arguments[0], STDERR_FILENO);
+    error(": Command not found.");
+    exit(1);
 }
