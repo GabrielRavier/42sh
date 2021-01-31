@@ -12,6 +12,7 @@
 #include "my/unistd.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include <sys/wait.h>
 #include <signal.h>
 #include <sys/types.h>
@@ -28,10 +29,21 @@ static void do_child(struct shell *self)
     exit(1);
 }
 
+static void do_parent(struct shell *self, pid_t child_pid)
+{
+    int child_status;
+
+    waitpid(child_pid, &child_status, 0);
+    self->last_command_exit_status = WIFEXITED(child_status) ?
+        WEXITSTATUS(child_status) : 139;
+    if (WIFSIGNALED(child_status))
+        my_dprintf(STDERR_FILENO, "%s%s\n", strsignal(WTERMSIG(child_status)),
+            WCOREDUMP(child_status) ? " (core dumped)" : "");
+}
+
 void shell_do_line_execute(struct shell *self)
 {
     pid_t child_pid;
-    int child_status;
 
     if (shell_do_builtins(self))
         return;
@@ -41,9 +53,7 @@ void shell_do_line_execute(struct shell *self)
         return;
     }
     if (child_pid != 0) {
-        waitpid(child_pid, &child_status, 0);
-        if (WIFEXITED(child_status))
-            self->last_command_exit_status = WEXITSTATUS(child_status);
+        do_parent(self, child_pid);
         return;
     }
     do_child(self);
