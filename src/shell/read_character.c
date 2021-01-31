@@ -10,11 +10,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int read_character(void)
+int shell_read_character(struct shell *self)
 {
     char result;
 
     if (read(STDIN_FILENO, &result, sizeof(result)) != sizeof(result))
-        exit(0);
+        exit(self->last_child_exit_status);
     return (result);
 }

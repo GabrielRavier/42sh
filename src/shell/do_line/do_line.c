@@ -7,7 +7,7 @@
 
 #include "../do_line.h"
 #include "word.h"
-#include "execute.h"
+#include "../execute.h"
 #include "my/my_string.h"
 
 void shell_do_line(struct shell *self)

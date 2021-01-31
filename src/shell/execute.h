@@ -7,6 +7,6 @@
 
 #pragma once
 
-#include "../../shell.h"
+#include "../shell.h"
 
 void shell_do_line_execute(struct shell *self);

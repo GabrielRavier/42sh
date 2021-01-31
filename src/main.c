@@ -31,5 +31,5 @@ int main(void)
         self.peek_character = shell_get_character(&self);
         shell_do_line(&self);
     }
-    return (WEXITSTATUS(self.last_child_status));
+    return (self.last_child_exit_status);
 }

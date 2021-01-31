@@ -7,5 +7,7 @@
 
 #pragma once
 
+#include "../shell.h"
+
 // Reads a character from stdin. Exits if it fails.
-int read_character(void);
+int shell_read_character(struct shell *self);

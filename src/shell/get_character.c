@@ -6,7 +6,7 @@
 */
 
 #include "get_character.h"
-#include "../read_character.h"
+#include "read_character.h"
 #include "../error.h"
 
 static char do_args_error(struct shell *self)
@@ -49,9 +49,9 @@ char shell_get_character(struct shell *self)
         return (do_args_error(self));
     if (self->line_ptr > self->end_line_ptr)
         return (do_line_error(self));
-    result = read_character();
+    result = shell_read_character(self);
     if (result == '\\') { 
-        result = read_character();
+        result = shell_read_character(self);
         if (result == '\n')
             return (' ');
     }
