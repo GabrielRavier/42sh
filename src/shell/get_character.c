@@ -50,7 +50,7 @@ char shell_get_character(struct shell *self)
     if (self->line_ptr > self->end_line_ptr)
         return (do_line_error(self));
     result = shell_read_character(self);
-    if (result == '\\') { 
+    if (result == '\\') {
         result = shell_read_character(self);
         if (result == '\n')
             return (' ');
