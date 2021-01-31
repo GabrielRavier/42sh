@@ -18,7 +18,7 @@ static bool check_args(struct shell *self)
         error("setenv: Too many arguments.");
         return (false);
     }
-    if (!my_isalpha(self->arguments[1][0])) {
+    if (!my_isalpha(self->arguments[1][0]) && self->arguments[1][0] != '_') {
         error("setenv: Variable name must begin with a letter.");
         return (false);
     }
