@@ -63,10 +63,21 @@ static bool do_builtins(struct shell *self)
     return (do_builtins_env(self));
 }
 
+static void do_child(struct shell *self)
+{
+    if (self->is_interactive) {
+        signal(SIGINT, SIG_DFL);
+        signal(SIGQUIT, SIG_DFL);
+    }
+    my_execvp(self->arguments[0], self->arguments);
+    my_dputs(self->arguments[0], STDERR_FILENO);
+    error(": Command not found.");
+    exit(1);
+}
+
 void shell_do_line_execute(struct shell *self)
 {
     pid_t child_pid;
-    int child_status;
 
     if (do_builtins(self))
         return;
@@ -76,13 +87,8 @@ void shell_do_line_execute(struct shell *self)
         return;
     }
     if (child_pid != 0) {
-        waitpid(child_pid, &child_status, 0);
+        waitpid(child_pid, &self->last_child_status, 0);
         return;
     }
-    signal(SIGINT, SIG_DFL);
-    signal(SIGQUIT, SIG_DFL);
-    my_execvp(self->arguments[0], self->arguments);
-    my_dputs(self->arguments[0], STDERR_FILENO);
-    error(": Command not found.");
-    exit(1);
+    do_child(self);
 }

@@ -7,8 +7,11 @@
 
 #include "init.h"
 #include "my/my_string.h"
+#include "my/string.h"
+#include <unistd.h>
 
 void shell_init(struct shell *self)
 {
-    *self = (struct shell){0};
+    my_memset(self, 0, sizeof(*self));
+    self->is_interactive = isatty(STDIN_FILENO);
 }
