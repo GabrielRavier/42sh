@@ -16,7 +16,7 @@
 #include <errno.h>
 #include <stddef.h>
 
-static bool do_it(struct shell *self, const char *destination_from_arg)
+static bool do_it(const char *destination_from_arg)
 {
     if (destination_from_arg) {
         if (chdir(destination_from_arg) != 0) {
@@ -40,7 +40,7 @@ int shell_builtin_cd(struct shell *self)
         (my_strcmp(self->arguments[1], "-") == 0) ? (my_getenv("owd") ?: "") :
         self->arguments[1];
 
-    if (!do_it(self, destination_from_arg)) {
+    if (!do_it(destination_from_arg)) {
         free(current_working_directory);
         return (1);
     }
