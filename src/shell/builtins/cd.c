@@ -21,8 +21,10 @@ int shell_builtin_cd(struct shell *self)
         self->arguments[1];
 
     if (destination_from_arg)
-        if (chdir(destination_from_arg) != 0)
+        if (chdir(destination_from_arg) != 0) {
             perror(destination_from_arg);
+            return (1);
+        }
     if ((self->arguments[1] != NULL || my_getenv("HOME") != NULL) &&
         (chdir(self->arguments[1] ?: my_getenv("HOME")) != 0)) {
         error("cd: Can't change to home directory.");
