@@ -29,15 +29,25 @@ static void do_child(struct shell *self)
     exit(1);
 }
 
+static char *get_signal_str(int signal)
+{
+    if (signal == SIGFPE)
+        return "Floating exception";
+    if (signal == SIGABRT)
+        return "Abort";
+    return strsignal(signal);
+}
+
 static void do_parent(struct shell *self, pid_t child_pid)
 {
     int child_status;
 
     waitpid(child_pid, &child_status, 0);
     self->last_command_exit_status = WIFEXITED(child_status) ?
-        WEXITSTATUS(child_status) : 139;
+        WEXITSTATUS(child_status) : 0;
     if (WIFSIGNALED(child_status))
-        my_dprintf(STDERR_FILENO, "%s%s\n", strsignal(WTERMSIG(child_status)),
+        my_dprintf(STDERR_FILENO, "%s%s\n",
+            get_signal_str(WTERMSIG(child_status)),
             WCOREDUMP(child_status) ? " (core dumped)" : "");
 }
 
