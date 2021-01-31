@@ -35,8 +35,8 @@ static bool do_builtins_env(struct shell *self)
     if (my_strcmp(self->arguments[0], "setenv") == 0) {
         if (self->arguments[1] == NULL)
             do_env();
-        else
-            my_setenv(self->arguments[1], self->arguments[2] ?: "", 1);
+        else if (my_setenv(self->arguments[1], self->arguments[2] ?: "", 1) < 0)
+            perror("setenv");
         return (true);
     }
     if (my_strcmp(self->arguments[0], "unsetenv") == 0) {
