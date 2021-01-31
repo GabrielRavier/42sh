@@ -24,8 +24,8 @@ static bool do_it(struct shell *self, const char *destination_from_arg)
                 strerror(errno));
             return (false);
         }
-    } else if ((self->arguments[1] != NULL || my_getenv("HOME") != NULL) &&
-        (chdir(self->arguments[1] ?: my_getenv("HOME")) != 0)) {
+    } else if (my_getenv("HOME") != NULL &&
+        chdir(my_getenv("HOME")) != 0) {
         error("cd: Can't change to home directory.");
         return (false);
     }
@@ -35,7 +35,7 @@ static bool do_it(struct shell *self, const char *destination_from_arg)
 int shell_builtin_cd(struct shell *self)
 {
     char *current_working_directory = getcwd(NULL, 0);
-    const char *destination_from_arg = self->arguments[1] == NULL ? NULL :
+    const char *destination_from_arg = (self->arguments[1] == NULL || (my_strcmp(self->arguments[1], "~") == 0)) ? NULL :
         (my_strcmp(self->arguments[1], "-") == 0) ? (my_getenv("owd") ?: "") :
         self->arguments[1];
 
