@@ -35,7 +35,8 @@ static bool do_it(struct shell *self, const char *destination_from_arg)
 int shell_builtin_cd(struct shell *self)
 {
     char *current_working_directory = getcwd(NULL, 0);
-    const char *destination_from_arg = (self->arguments[1] == NULL || (my_strcmp(self->arguments[1], "~") == 0)) ? NULL :
+    const char *destination_from_arg = (self->arguments[1] == NULL ||
+        (my_strcmp(self->arguments[1], "~") == 0)) ? NULL :
         (my_strcmp(self->arguments[1], "-") == 0) ? (my_getenv("owd") ?: "") :
         self->arguments[1];
 
