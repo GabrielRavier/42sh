@@ -12,6 +12,8 @@
 #include "my/stdio.h"
 #include <signal.h>
 #include <unistd.h>
+#include <sys/wait.h>
+#include <sys/types.h>
 #include <stdbool.h>
 
 int main(void)
@@ -29,5 +31,5 @@ int main(void)
         self.peek_character = shell_get_character(&self);
         shell_do_line(&self);
     }
-    return (self.last_child_status);
+    return (WEXITSTATUS(self.last_child_status));
 }
