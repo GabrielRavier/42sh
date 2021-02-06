@@ -41,13 +41,13 @@ int shell_builtin_cd(struct shell *self)
         self->arguments[1];
 
     if (!do_it(destination_from_arg)) {
-        free(current_working_directory);
+        my_free(current_working_directory);
         return (1);
     }
     my_setenv("owd", current_working_directory, 1);
-    free(current_working_directory);
+    my_free(current_working_directory);
     current_working_directory = getcwd(NULL, 0);
     my_setenv("PWD", current_working_directory, 1);
-    free(current_working_directory);
+    my_free(current_working_directory);
     return (0);
 }
