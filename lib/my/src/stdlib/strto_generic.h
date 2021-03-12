@@ -36,8 +36,8 @@ static TYPE finish(const char *num_ptr, char **end_num_ptr, int base,
         *end_num_ptr = (char *)num_ptr;
     if (has_overflowed)
         errno = ERANGE;
-    return (has_overflowed ? (is_negative ? TYPE_MIN : TYPE_MAX) :
-        (is_negative ? -result : result));
+    return (has_overflowed ? (TYPE_UNSIGNED)(is_negative ? TYPE_MIN :
+        TYPE_MAX) : (is_negative ? -result : result));
 }
 
 static TYPE INTERNAL_FUNC_NAME(const char *num_ptr, char **end_num_ptr,

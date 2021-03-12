@@ -25,7 +25,7 @@ int my_open(const char *pathname, int flags, ...)
     return (open(pathname, flags, mode));
 }
 #else
-int my_open(const char *pathname, int flags, ...)
+int my_open(MY_ATTR_UNUSED const char *pathname, MY_ATTR_UNUSED int flags, ...)
 {
     errno = ENOSYS;
     return (-1);

@@ -50,7 +50,8 @@ static void finish_quick(struct qsort_state *state, size_t num_elements,
 
     if (distance)
         swap_elements(state->base, state->pb - distance, distance);
-    distance = MY_MIN(state->pd - state->pc, p_end - state->pd - element_size);
+    distance = MY_MIN(state->pd - state->pc, (ptrdiff_t)(p_end - state->pd -
+        element_size));
     if (distance)
         swap_elements(state->pb, p_end - distance, distance);
     distance = state->pb - state->pa;

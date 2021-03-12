@@ -16,7 +16,7 @@ int my_close(int fd)
     return (close(fd));
 }
 #else
-int my_close(int fd)
+int my_close(MY_ATTR_UNUSED int fd)
 {
     errno = ENOSYS;
     return (-1);
