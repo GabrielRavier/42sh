@@ -51,7 +51,7 @@ Test(my_memset, netbsd_return)
 Test(my_memset, netsbd_basic)
 {
     const size_t page_size = sysconf(_SC_PAGE_SIZE);
-    
+
     char *our_buffer = malloc(page_size), *libc_buffer = malloc(page_size);
     cr_assert(our_buffer != NULL && libc_buffer != NULL);
 

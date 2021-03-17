@@ -183,7 +183,7 @@ static void bionic_do_memcpy_same_test(uint8_t *buffer, size_t len)
 Test(my_memcpy, bionic_source_destination_same)
 {
     static const size_t BUFFER_SIZE = 4096;
- 
+
     g_bionic_memcpy_same_buffer = malloc(BUFFER_SIZE);
     for (size_t i = 0; i < BUFFER_SIZE; ++i)
         g_bionic_memcpy_same_buffer[i] = i;

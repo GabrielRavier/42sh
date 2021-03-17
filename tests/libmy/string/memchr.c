@@ -294,7 +294,7 @@ static void bionic_do_buffer_test(uint8_t *buffer, size_t length)
     if (length >= 1) {
         int value = length % 128;
         int search_value = value + 1;
-        
+
         my_memset(buffer, value, length);
         do_one_test(buffer, search_value, length);
 
