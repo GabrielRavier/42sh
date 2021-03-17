@@ -36,3 +36,4 @@ chmod
 getc
 putw
 fwrite
+Remove parentheses around return everywhere
