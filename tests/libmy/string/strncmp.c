@@ -291,7 +291,7 @@ Test(my_strncmp, glibc)
         if (len1 + j >= 0x200)
             len1 = 0x1FF - j - (random() & 7);
         size_t len2 = (pos >= len1) ? len1 : (len1 + (len1 == 511 - j ? 0 : random() % (511 - j - len1)));
-        j = MY_MIN(MY_MAX(pos, len2) + align1 + 0x40, 0x200);
+        j = MY_MIN(MY_MAX(pos, len2) + align1 + 0x40, (size_t)0x200);
         for (size_t k = 0; k < j; ++k) {
             p1[k] = random() & 0xFF;
             if (k < len1 + align1 && p1[k] == '\0')

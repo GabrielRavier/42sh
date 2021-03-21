@@ -34,7 +34,7 @@ static void cloudlibc_random_pair(size_t max, size_t *a, size_t *b)
 {
     size_t total = random() % (max + 1);
     *a = random() % (total + 1);
-    *b = (*a == 0) ? random() : total / *a;
+    *b = (*a == 0) ? (size_t)random() : total / *a;
 }
 
 static void cloudlibc_do_random_test(my_file_t *fp)
@@ -53,7 +53,7 @@ static void cloudlibc_do_random_test(my_file_t *fp)
             cr_assert_eq(my_fflush(fp), 0);
             break;
         case 2:
-            if (offset < sizeof(contents)) {
+            if (offset < (off_t)sizeof(contents)) {
                 unsigned int c = random();
                 cr_assert_eq(my_fputc(c, fp), (unsigned char)c);
                 contents[offset++] = c;
@@ -62,7 +62,7 @@ static void cloudlibc_do_random_test(my_file_t *fp)
             }
             break;
         case 3:
-            if (offset < sizeof(contents)) {
+            if (offset < (off_t)sizeof(contents)) {
                 unsigned int c = random();
                 cr_assert_eq(my_putc(c, fp), (unsigned char)c);
                 contents[offset++] = c;

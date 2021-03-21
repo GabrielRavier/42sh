@@ -21,7 +21,7 @@ static void glibc_test_string_init(void)
 {
     glibc_page_size = 2 * getpagesize();
 #ifdef GLIBC_MIN_PAGE_SIZE
-    glibc_page_size = MY_MAX(glibc_page_size, (GLIBC_MIN_PAGE_SIZE));
+    glibc_page_size = MY_MAX(glibc_page_size, (size_t)(GLIBC_MIN_PAGE_SIZE));
 #endif
     glibc_buf1 = (char *)mmap(0, 2 * glibc_page_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
     cr_assert_neq(glibc_buf1, MAP_FAILED);

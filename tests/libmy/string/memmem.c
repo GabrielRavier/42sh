@@ -63,7 +63,7 @@ Test(my_memmem, gnulib)
     /* Declare failure if test takes too long, by using default abort
        caused by SIGALRM. Timeout might be too little, possible revise this in the future */
     signal(SIGALRM, SIG_DFL);
-    alarm(10);
+    alarm(15);
 
     do_one_test("foo", 3, "", 0);
     do_one_test("foo", 3, "o", 1);
