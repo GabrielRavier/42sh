@@ -35,5 +35,15 @@ chown
 chmod
 getc
 putw
+
+(from publib)
+xmalloc
+xrealloc
+xfree
+xstrdup
+xmemdup
+memdup
+getaline
+
 fwrite
 Remove parentheses around return everywhere
