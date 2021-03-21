@@ -10,5 +10,5 @@
 
 int my_putchar(int character)
 {
-    return (my_putc(character, my_stdout));
+    return my_putc(character, my_stdout);
 }

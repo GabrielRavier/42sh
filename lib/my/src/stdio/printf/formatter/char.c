@@ -22,5 +22,5 @@ struct my_string *my_asprintf_format_char(struct my_string *destination,
         my_string_append(destination, buffer,
             my_asprintf_utf32_char_to_utf8(buffer,
                 (wchar_t)va_arg(*arguments, wint_t)));
-    return (NULL);
+    return NULL;
 }

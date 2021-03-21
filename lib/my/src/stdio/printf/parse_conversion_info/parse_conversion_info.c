@@ -47,7 +47,7 @@ bool my_parse_printf_field_width(
             my_isdigit(**to_parse) ? my_asprintf_parse_int(to_parse) : 0;
         return conversion_info->field_width >= 0;
     }
-    return (true);
+    return true;
 }
 
 // We put the check for a negative precision from va_arg below the else to
@@ -69,7 +69,7 @@ bool my_parse_printf_precision(
             conversion_info->precision = -1;
     } else
         conversion_info->precision = -1;
-    return (true);
+    return true;
 }
 
 static bool parse_single_length_modifier(
@@ -84,9 +84,9 @@ static bool parse_single_length_modifier(
             length_modifier_string_length) == 0) {
         conversion_info->length_modifier = length_modifier_value;
         *to_parse += length_modifier_string_length;
-        return (true);
+        return true;
     }
-    return (false);
+    return false;
 }
 
 // We place hh before h and ll before l because otherwise the

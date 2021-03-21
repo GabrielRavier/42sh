@@ -9,5 +9,5 @@
 
 int my_toupper(int c)
 {
-    return (my_islower(c) ? (c - ('a' - 'A')) : c);
+    return my_islower(c) ? (c - ('a' - 'A')) : c;
 }

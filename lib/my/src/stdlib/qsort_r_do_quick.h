@@ -70,13 +70,13 @@ static bool do_below_iter(struct qsort_state *state, size_t element_size,
     int r = cmp->func(state->pb, state->base, cmp->argument);
 
     if (r > 0)
-        return (false);
+        return false;
     if (r == 0) {
         swap_elements(state->pa, state->pb, element_size);
         state->pa += element_size;
     }
     state->pb += element_size;
-    return (true);
+    return true;
 }
 
 static bool do_above_iter(struct qsort_state *state, size_t element_size,
@@ -85,13 +85,13 @@ static bool do_above_iter(struct qsort_state *state, size_t element_size,
     int r = cmp->func(state->pc, state->base, cmp->argument);
 
     if (r < 0)
-        return (false);
+        return false;
     if (r == 0) {
         swap_elements(state->pc, state->pd, element_size);
         state->pd -= element_size;
     }
     state->pc -= element_size;
-    return (true);
+    return true;
 }
 
 static void do_quick(struct qsort_state *state, size_t num_elements,

@@ -9,5 +9,5 @@
 
 int my_tolower(int c)
 {
-    return (my_isupper(c) ? (c - 'A' + 'a') : c);
+    return my_isupper(c) ? (c - 'A' + 'a') : c;
 }

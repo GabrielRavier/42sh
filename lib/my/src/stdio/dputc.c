@@ -15,6 +15,6 @@ int my_dputc(int character, int fd)
 
     if (my_write(fd, &character_as_char, sizeof(character_as_char)) !=
         sizeof(character_as_char))
-        return (EOF);
-    return ((int)character_as_char);
+        return EOF;
+    return (int)character_as_char;
 }

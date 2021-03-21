@@ -15,5 +15,5 @@ void *my_calloc(size_t num_members, size_t size)
 
     if (result != NULL)
         my_memset(result, 0, malloc_size);
-    return (result);
+    return result;
 }

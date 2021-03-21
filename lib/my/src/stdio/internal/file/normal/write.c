@@ -16,6 +16,6 @@ ssize_t my_internal_file_normal_write(void *internal_data,
 {
     my_file_t *fp = (my_file_t *)internal_data;
 
-    return (my_write(my_fileno(fp), buffer, count));
+    return my_write(my_fileno(fp), buffer, count);
 }
 #endif

@@ -13,5 +13,5 @@ static const int PRINTABLE_RANDE_END = 0x7E;
 // Assumes ASCII, i.e. this is the range of printable characters in ASCII
 int my_isprint(int c)
 {
-    return ((c >= PRINTABLE_RANGE_START) && (c <= PRINTABLE_RANDE_END));
+    return (c >= PRINTABLE_RANGE_START) && (c <= PRINTABLE_RANDE_END);
 }

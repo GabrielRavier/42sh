@@ -22,16 +22,16 @@ int my_internal_file_determine_buffering(my_file_t *fp, size_t *buffer_size,
     if (my_fileno(fp) < 0 || my_fstat(my_fileno(fp), &stat_buffer) < 0) {
         *could_be_tty = (fp == my_stdout && errno == ENOSYS);
         *buffer_size = BUFSIZ;
-        return (MY_FILE_FLAG_NO_FSEEK_OPT);
+        return MY_FILE_FLAG_NO_FSEEK_OPT;
     }
     *could_be_tty = S_ISCHR(stat_buffer.st_mode);
     if (stat_buffer.st_blksize <= 0) {
         *buffer_size = BUFSIZ;
-        return (MY_FILE_FLAG_NO_FSEEK_OPT);
+        return MY_FILE_FLAG_NO_FSEEK_OPT;
     }
     *buffer_size = stat_buffer.st_blksize;
-    return (S_ISREG(stat_buffer.st_mode) && fp->seek ==
+    return S_ISREG(stat_buffer.st_mode) && fp->seek ==
         &my_internal_file_normal_seek ? MY_FILE_FLAG_FSEEK_OPT :
-        MY_FILE_FLAG_NO_FSEEK_OPT);
+        MY_FILE_FLAG_NO_FSEEK_OPT;
 }
 #endif

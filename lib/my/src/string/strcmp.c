@@ -13,7 +13,7 @@ int my_strcmp(const char *string1, const char *string2)
 
     do {
         if (string1[i] != string2[i])
-            return (string1[i] - string2[i]);
+            return string1[i] - string2[i];
     } while (string1[i++]);
-    return (0);
+    return 0;
 }

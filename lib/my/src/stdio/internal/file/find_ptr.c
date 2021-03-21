@@ -33,14 +33,14 @@ static struct my_internal_file_bucket *make_more_files(void)
     struct my_internal_file_bucket *result = my_calloc(1, sizeof(*result));
 
     if (result == NULL)
-        return (NULL);
+        return NULL;
     result->files = my_calloc(1, sizeof(*result->files) * FILES_PER_ALLOC);
     if (result->files == NULL) {
         my_free(result);
-        return (NULL);
+        return NULL;
     }
     result->num_files = FILES_PER_ALLOC;
-    return (result);
+    return result;
 }
 
 // This marks a file as used and initializes it to default values, i.e. we have
@@ -55,7 +55,7 @@ static my_file_t *make_found_file(my_file_t *fp)
     fp->buffer.size = 0;
     fp->line_buffer_size = 0;
     fp->fd = -1;
-    return (fp);
+    return fp;
 }
 
 my_file_t *my_internal_file_find_ptr(void)
@@ -64,11 +64,11 @@ my_file_t *my_internal_file_find_ptr(void)
         &g_my_file_internal_first_bucket;; bucket_it = bucket_it->next) {
         for (size_t files_it = 0; files_it < bucket_it->num_files; ++files_it)
             if (bucket_it->files[files_it].flags == 0)
-                return (make_found_file(&bucket_it->files[files_it]));
+                return make_found_file(&bucket_it->files[files_it]);
         if (bucket_it->next == NULL) {
             bucket_it->next = make_more_files();
             if (bucket_it->next == NULL)
-                return (NULL);
+                return NULL;
         }
     }
 }

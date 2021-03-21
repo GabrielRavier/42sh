@@ -66,5 +66,5 @@ struct my_string *my_asprintf_format_cstring(struct my_string *destination,
     } else
         do_wchar_string(destination, format_info,
             va_arg(*arguments, const wchar_t *));
-    return (NULL);
+    return NULL;
 }

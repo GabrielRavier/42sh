@@ -38,7 +38,7 @@ static int do_found_option(struct getopt_state *state)
         *state->ptr_optposition = 1;
         ++optind;
     }
-    return (state->argument_character);
+    return state->argument_character;
 }
 
 static int do_illegal_option(struct getopt_state *state)
@@ -49,7 +49,7 @@ static int do_illegal_option(struct getopt_state *state)
         ++optind;
         *state->ptr_optposition = 1;
     }
-    return ('?');
+    return '?';
 }
 
 static int do_option(struct getopt_state *state)
@@ -59,7 +59,7 @@ static int do_option(struct getopt_state *state)
         state->optstring_argument_position = my_strchr(state->optstring,
             state->argument_character);
         if (state->optstring_argument_position != NULL)
-            return (do_found_option(state));
+            return do_found_option(state);
     }
     return do_illegal_option(state);
 }
@@ -83,11 +83,11 @@ int my_getopt(int argc, char **argv, const char *optstring)
     if (*state.ptr_optposition == 1) {
         if (optind >= state.argc || state.argv[optind][0] != '-' ||
             state.argv[optind][1] == '\0')
-            return (-1);
+            return -1;
         if (my_strcmp(state.argv[optind], "--") == 0) {
             ++optind;
-            return (-1);
+            return -1;
         }
     }
-    return (do_option(&state));
+    return do_option(&state);
 }

@@ -13,12 +13,12 @@
 
 int my_isatty(int fd)
 {
-    return (isatty(fd));
+    return isatty(fd);
 }
 #else
 int my_isatty(int fd MY_ATTR_UNUSED)
 {
     errno = ENOSYS;
-    return (0);
+    return 0;
 }
 #endif

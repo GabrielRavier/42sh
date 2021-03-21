@@ -15,5 +15,5 @@ void *my_memcpy(void *destination, const void *source, size_t size)
 
     while (size--)
         *char_destination++ = *char_source++;
-    return (destination);
+    return destination;
 }

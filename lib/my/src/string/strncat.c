@@ -24,5 +24,5 @@ char *my_strncat(char *destination, const char *source, size_t n)
             break;
         }
     }
-    return (result);
+    return result;
 }

@@ -15,7 +15,7 @@ char *my_strdup(const char *string)
     void *const duplicate_string = my_malloc(string_length);
 
     if (!duplicate_string)
-        return (NULL);
+        return NULL;
     my_memcpy(duplicate_string, string, string_length);
-    return ((char *)duplicate_string);
+    return (char *)duplicate_string;
 }

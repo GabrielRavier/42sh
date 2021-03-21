@@ -14,7 +14,7 @@ bool my_internal_file_setup_write(my_file_t *fp)
     if (!(fp->flags & MY_FILE_FLAG_WRITE)) {
         if (!(fp->flags & MY_FILE_FLAG_READ_WRITE)) {
             fp->flags |= MY_FILE_FLAG_ERROR;
-            return (false);
+            return false;
         }
         if (fp->flags & MY_FILE_FLAG_READ) {
             fp->flags &= ~MY_FILE_FLAG_READ;
@@ -30,6 +30,6 @@ bool my_internal_file_setup_write(my_file_t *fp)
     } else
         fp->write_space_left = (fp->flags & MY_FILE_FLAG_NOT_BUFFERED) ? 0 :
             fp->buffer.size;
-    return (true);
+    return true;
 }
 #endif

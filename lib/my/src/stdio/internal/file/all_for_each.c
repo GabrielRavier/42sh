@@ -20,6 +20,6 @@ int my_internal_file_all_for_each(int (*func)(my_file_t *fp))
         for (size_t i = 0; i < bucket_it->num_files; ++i)
             if (bucket_it->files[i].flags != 0)
                 result |= func(&bucket_it->files[i]);
-    return (result);
+    return result;
 }
 #endif

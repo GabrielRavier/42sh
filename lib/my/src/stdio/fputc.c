@@ -9,5 +9,5 @@
 
 int my_fputc(int c, my_file_t *fp)
 {
-    return (my_putc(c, fp));
+    return my_putc(c, fp);
 }

@@ -11,5 +11,5 @@ extern char **environ;
 
 int my_execv(const char *pathname, char *const argv[])
 {
-    return (my_execve(pathname, argv, environ));
+    return my_execve(pathname, argv, environ);
 }

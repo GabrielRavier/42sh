@@ -14,7 +14,7 @@
 
 my_file_t *my_fopen(const char *filename, const char *mode)
 {
-    return (fopen(filename, mode));
+    return fopen(filename, mode);
 }
 #else
 static void setup_functions(my_file_t *fp)
@@ -34,19 +34,19 @@ my_file_t *my_fopen(const char *filename, const char *mode)
     my_file_t *fp;
 
     if (file_flags == 0)
-        return (NULL);
+        return NULL;
     fp = my_internal_file_find_ptr();
     if (fp == NULL)
-        return (NULL);
+        return NULL;
     fp->fd = my_open(filename, open_flags, 0666);
     if (my_fileno(fp) < 0) {
         fp->flags = 0;
-        return (NULL);
+        return NULL;
     }
     fp->flags = file_flags;
     setup_functions(fp);
     if (open_flags & O_APPEND)
         my_internal_file_do_seek(fp->internal_data, 0, SEEK_END);
-    return (fp);
+    return fp;
 }
 #endif

@@ -9,5 +9,5 @@
 
 int my_isalpha(int c)
 {
-    return (my_isupper(c) || my_islower(c));
+    return my_isupper(c) || my_islower(c);
 }

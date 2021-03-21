@@ -12,12 +12,12 @@
 
 int my_fstat(int fd, struct stat *buf)
 {
-    return (fstat(fd, buf));
+    return fstat(fd, buf);
 }
 #else
 int my_fstat(MY_ATTR_UNUSED int fd, MY_ATTR_UNUSED struct stat *buf)
 {
     errno = ENOSYS;
-    return (-1);
+    return -1;
 }
 #endif

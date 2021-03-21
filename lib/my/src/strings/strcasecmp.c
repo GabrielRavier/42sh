@@ -15,6 +15,6 @@ int my_strcasecmp(const char *s1, const char *s2)
         if (my_tolower(s1[i]) != my_tolower(s2[i]))
             return my_tolower(s1[i]) - my_tolower(s2[i]);
         if (s1[i] == '\0')
-            return (0);
+            return 0;
     }
 }

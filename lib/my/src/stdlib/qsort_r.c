@@ -11,11 +11,11 @@
 static char *med3(char *a, char *b, char *c,
     const struct my_qsort_r_internal_comparison_function_and_argument *cmp)
 {
-    return (cmp->func(a, b, cmp->argument) < 0 ?
+    return cmp->func(a, b, cmp->argument) < 0 ?
         (cmp->func(b, c, cmp->argument) < 0 ? b :
         cmp->func(a, c, cmp->argument) < 0 ? c : a) :
         cmp->func(b, c, cmp->argument) > 0 ? b :
-        cmp->func(a, c, cmp->argument) < 0 ? c : a);
+        cmp->func(a, c, cmp->argument) < 0 ? c : a;
 }
 
 // Get pseudo-median from 3 elements, or from 9 if the array is big enough
@@ -35,7 +35,7 @@ static char *get_median(char *base, size_t num_elements, size_t element_size,
         result3 = med3(result3 - distance * 2, result3 - distance, result3,
             cmp);
     }
-    return (med3(result, result2, result3, cmp));
+    return med3(result, result2, result3, cmp);
 }
 
 // Insertion sort is used on arrays with <7 elements. Otherwise, just a straight

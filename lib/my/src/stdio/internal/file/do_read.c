@@ -29,6 +29,6 @@ ssize_t my_internal_file_do_read(my_file_t *fp, unsigned char *buffer,
         do_offset(fp, read_result);
     else if (read_result < 0)
         fp->flags &= ~MY_FILE_FLAG_IS_OFFSET_CORRECT;
-    return (read_result);
+    return read_result;
 }
 #endif

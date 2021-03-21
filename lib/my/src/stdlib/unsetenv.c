@@ -19,7 +19,7 @@ int my_unsetenv(const char *name)
 
     if (*name == '\0' || my_strchr(name, '=') != NULL) {
         errno = EINVAL;
-        return (-1);
+        return -1;
     }
     while (my_getenv_offset(name, &offset) != NULL)
         for (environ_it = &environ[offset];; ++environ_it) {
@@ -27,5 +27,5 @@ int my_unsetenv(const char *name)
             if (*environ_it == NULL)
                 break;
         }
-    return (0);
+    return 0;
 }

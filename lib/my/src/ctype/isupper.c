@@ -9,5 +9,5 @@
 
 int my_isupper(int c)
 {
-    return ((c >= 'A') && (c <= 'Z'));
+    return (c >= 'A') && (c <= 'Z');
 }

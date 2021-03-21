@@ -12,7 +12,7 @@
 size_t my_fwrite(const void *MY_RESTRICT buffer, size_t size, size_t count,
     my_file_t *fp)
 {
-    return (fwrite(buffer, size, count, fp));
+    return fwrite(buffer, size, count, fp);
 }
 #else
 size_t my_fwrite(const void *MY_RESTRICT buffer_param, size_t size,
@@ -28,6 +28,6 @@ size_t my_fwrite(const void *MY_RESTRICT buffer_param, size_t size,
             if (my_ferror(fp))
                 break;
         }
-    return (result);
+    return result;
 }
 #endif

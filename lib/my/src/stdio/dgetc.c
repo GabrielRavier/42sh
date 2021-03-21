@@ -12,6 +12,6 @@ int my_dgetc(int fd)
 {
     unsigned char result;
     if (my_read(fd, &result, sizeof(result)) < (ssize_t)sizeof(result))
-        return (EOF);
-    return (result);
+        return EOF;
+    return result;
 }

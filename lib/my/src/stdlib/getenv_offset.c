@@ -18,13 +18,13 @@ char *my_getenv_offset(const char *name, size_t *offset)
     char *const *environ_it = environ;
 
     if (environ == NULL || name_len == 0)
-        return (NULL);
+        return NULL;
     for (; *environ_it != NULL; ++environ_it) {
         if (my_strncmp(*environ_it, name, name_len) == 0 &&
             (*environ_it)[name_len] == '=') {
             *offset = environ_it - environ;
-            return (&(*environ_it)[name_len + 1]);
+            return &(*environ_it)[name_len + 1];
         }
     }
-    return (NULL);
+    return NULL;
 }

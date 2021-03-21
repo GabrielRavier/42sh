@@ -12,11 +12,11 @@
 
 int my_ferror(my_file_t *fp)
 {
-    return (ferror(fp));
+    return ferror(fp);
 }
 #else
 int my_ferror(my_file_t *fp)
 {
-    return ((bool)(fp->flags & MY_FILE_FLAG_ERROR));
+    return (bool)(fp->flags & MY_FILE_FLAG_ERROR);
 }
 #endif

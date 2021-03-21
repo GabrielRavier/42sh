@@ -13,18 +13,18 @@
 
 int my_fflush(my_file_t *fp)
 {
-    return (fflush(fp));
+    return fflush(fp);
 }
 #else
 int my_fflush(my_file_t *fp)
 {
     if (fp == NULL)
-        return (my_internal_file_all_for_each(
-            my_internal_file_flush_skip_non_write));
+        return my_internal_file_all_for_each(
+            my_internal_file_flush_skip_non_write);
     if (!(fp->flags & (MY_FILE_FLAG_WRITE | MY_FILE_FLAG_READ_WRITE))) {
         errno = EBADF;
-        return (EOF);
+        return EOF;
     }
-    return (my_internal_file_flush_skip_non_write(fp));
+    return my_internal_file_flush_skip_non_write(fp);
 }
 #endif

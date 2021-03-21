@@ -16,7 +16,7 @@ int my_internal_file_flush_skip_non_write(my_file_t *fp)
     ssize_t bytes_to_write = fp->buffer_ptr - fp->buffer.base;
 
     if (!(fp->flags & MY_FILE_FLAG_WRITE) || fp->buffer.base == NULL)
-        return (0);
+        return 0;
     fp->buffer_ptr = fp->buffer.base;
     fp->write_space_left = (fp->flags & (MY_FILE_FLAG_NOT_BUFFERED |
         MY_FILE_FLAG_LINE_BUFFERED)) ? 0 : fp->buffer.size;
@@ -25,11 +25,11 @@ int my_internal_file_flush_skip_non_write(my_file_t *fp)
             bytes_to_write);
         if (bytes_written <= 0) {
             fp->flags |= MY_FILE_FLAG_ERROR;
-            return (EOF);
+            return EOF;
         }
         bytes_to_write -= bytes_written;
         base_it += bytes_written;
     }
-    return (0);
+    return 0;
 }
 #endif

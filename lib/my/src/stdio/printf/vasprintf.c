@@ -40,13 +40,13 @@ MY_ATTR_WARN_UNUSED_RESULT static bool parse_format(
     my_parse_printf_flags(conversion_info, conversion_specification);
     if (!my_parse_printf_field_width(conversion_info, conversion_specification,
         arguments))
-        return (false);
+        return false;
     if (!my_parse_printf_precision(conversion_info, conversion_specification,
         arguments))
-        return (false);
+        return false;
     my_parse_printf_length_modifier(conversion_info, conversion_specification);
     conversion_info->conversion_specifier = *((*conversion_specification)++);
-    return (true);
+    return true;
 }
 
 // Returns the next character after the conversion specifier.
@@ -59,7 +59,7 @@ MY_ATTR_WARN_UNUSED_RESULT static const char *do_conversion_specification(
     formatter_func_t formatter_function;
 
     if (!parse_format(&conversion_info, &conversion_specification, arguments))
-        return (NULL);
+        return NULL;
     formatter_function = formatter_functions[
         (unsigned char)conversion_info.conversion_specifier];
     if (formatter_function != NULL)
@@ -68,10 +68,10 @@ MY_ATTR_WARN_UNUSED_RESULT static const char *do_conversion_specification(
             formatter_function(destination, arguments, &conversion_info),
             &conversion_info, formatter_function}));
     else
-        return (my_asprintf_handle_invalid(destination, &conversion_info,
+        return my_asprintf_handle_invalid(destination, &conversion_info,
             has_encountered_invalid) ? (conversion_specification -
-            (conversion_info.conversion_specifier == '\0')) : NULL);
-    return (conversion_specification);
+            (conversion_info.conversion_specifier == '\0')) : NULL;
+    return conversion_specification;
 }
 
 // has_encountered_invalid is related to extremely weird behaviour from glibc.
@@ -90,13 +90,13 @@ static bool do_my_string_printf(struct my_string *destination,
             if (current_char == '%')
                 break;
             if (current_char == '\0')
-                return (true);
+                return true;
             my_string_append_char(destination, current_char);
         }
         format = do_conversion_specification(destination, format, arguments,
             &has_encountered_invalid);
         if (!format)
-            return (false);
+            return false;
     }
 }
 
@@ -114,10 +114,10 @@ int my_vasprintf(char **result_string_ptr, const char *format,
     if (!do_my_string_printf(result, format, &local_arguments_copy)) {
         my_string_free(result);
         va_end(local_arguments_copy);
-        return (-1);
+        return -1;
     }
     resulting_length = result->length;
     *result_string_ptr = my_string_move_buffer(result);
     va_end(local_arguments_copy);
-    return ((int)resulting_length);
+    return (int)resulting_length;
 }

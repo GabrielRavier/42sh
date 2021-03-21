@@ -41,9 +41,9 @@ static bool is_about_to_overflow(long current_result,
     const long long_min_without_last_digit = LONG_MIN / (long)base;
     const long long_min_last_digit = -(LONG_MIN % (long)base);
 
-    return (current_result < long_min_without_last_digit ||
+    return current_result < long_min_without_last_digit ||
         (current_result == long_min_without_last_digit &&
-            current_digit > long_min_last_digit));
+            current_digit > long_min_last_digit);
 }
 
 // Handles the case where we were actually asked to get a positive number (and
@@ -55,7 +55,7 @@ static long handle_positive_negative_for_do_parse(long result, bool is_negative)
             return LONG_MAX;
         result = -result;
     }
-    return (result);
+    return result;
 }
 
 // We do the parse by using negative numbers and then negating in the end when
@@ -86,7 +86,7 @@ static long do_parse(const char *num_ptr, bool is_negative, const char *base,
         result *= (long)base_width;
         result -= current_digit;
     }
-    return (handle_positive_negative_for_do_parse(result, is_negative));
+    return handle_positive_negative_for_do_parse(result, is_negative);
 }
 
 long my_strtol_base_str(const char *num_ptr, char **end_num_ptr,
@@ -99,7 +99,7 @@ long my_strtol_base_str(const char *num_ptr, char **end_num_ptr,
     if (*num_ptr == '\0' || (my_strchr(base, *num_ptr) == NULL)) {
         if (end_num_ptr != NULL)
             *end_num_ptr = (char *)orig_ptr;
-        return (0);
+        return 0;
     }
-    return (do_parse(num_ptr, is_negative, base, end_num_ptr));
+    return do_parse(num_ptr, is_negative, base, end_num_ptr);
 }

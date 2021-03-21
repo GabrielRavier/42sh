@@ -46,4 +46,3 @@ memdup
 getaline
 
 fwrite
-Remove parentheses around return everywhere

@@ -44,10 +44,10 @@ static void do_precision(struct my_string *destination, size_t pos_before,
 
 static int base_from_specifier(char conversion_specifier)
 {
-    return (conversion_specifier == 'b' ? 2 :
+    return conversion_specifier == 'b' ? 2 :
         (conversion_specifier == 'o' ? 8 :
         ((conversion_specifier == 'x' ||
-            conversion_specifier == 'X') ? 16 : 10)));
+            conversion_specifier == 'X') ? 16 : 10));
 }
 
 static struct my_string *do_preprinting_stuff(
@@ -65,7 +65,7 @@ static struct my_string *do_preprinting_stuff(
         if (base == 16)
             my_string_append_char(prefix, format_info->conversion_specifier);
     }
-    return (prefix);
+    return prefix;
 }
 
 struct my_string *my_asprintf_format_unsigned_integer(
@@ -82,5 +82,5 @@ struct my_string *my_asprintf_format_unsigned_integer(
         my_asprintf_append_number_base(destination, argument, base,
             format_info->conversion_specifier == 'X');
     do_precision(destination, pos_before, format_info, prefix);
-    return (prefix);
+    return prefix;
 }

@@ -16,9 +16,9 @@ int my_sigaddset(sigset_t *set, int signum)
 {
     if (signum <= 0 || signum >= NSIG) {
         errno = EINVAL;
-        return (-1);
+        return -1;
     }
     set->__val[(signum - 1) / ULONG_WIDTH] |=
         (1ULL << ((signum - 1) % ULONG_WIDTH));
-    return (0);
+    return 0;
 }

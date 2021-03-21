@@ -26,10 +26,10 @@ char *my_strstr(const char *haystack, const char *needle)
             do {
                 haystack_current_character = *haystack++;
                 if (haystack_current_character == '\0')
-                    return (NULL);
+                    return NULL;
             } while (haystack_current_character != needle_first_character);
         } while (my_strncmp(haystack, needle, needle_length) != 0);
         --haystack;
     }
-    return ((char *)(haystack));
+    return (char *)(haystack);
 }

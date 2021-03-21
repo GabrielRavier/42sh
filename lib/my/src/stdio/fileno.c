@@ -12,7 +12,7 @@
 
 int my_fileno(my_file_t *fp)
 {
-    return (fileno(fp));
+    return fileno(fp);
 }
 #else
 int my_fileno(my_file_t *fp)
@@ -21,6 +21,6 @@ int my_fileno(my_file_t *fp)
 
     if (result == -1)
         errno = EBADF;
-    return (result);
+    return result;
 }
 #endif

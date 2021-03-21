@@ -14,7 +14,7 @@
 
 int my_fclose(my_file_t *fp)
 {
-    return (fclose(fp));
+    return fclose(fp);
 }
 #else
 // First checks whether fp is open, then closes the file and frees it
@@ -25,7 +25,7 @@ int my_fclose(my_file_t *fp)
 
     if (fp->flags == 0) {
         errno = EBADF;
-        return (EOF);
+        return EOF;
     }
     result = (fp->flags & MY_FILE_FLAG_WRITE) ?
         my_internal_file_flush_skip_non_write(fp) : 0;
@@ -36,6 +36,6 @@ int my_fclose(my_file_t *fp)
     fp->write_space_left = 0;
     fp->fd = -1;
     fp->flags = 0;
-    return (result);
+    return result;
 }
 #endif

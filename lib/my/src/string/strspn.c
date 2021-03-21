@@ -27,5 +27,5 @@ size_t my_strspn(const char *str, const char *accept)
             break;
         ++result;
     }
-    return (result);
+    return result;
 }

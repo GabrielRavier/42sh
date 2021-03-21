@@ -86,7 +86,7 @@ struct my_string *my_string_resize(struct my_string *self, size_t count);
 /// my_string_resize(self, 0)
 static inline struct my_string *my_string_clear(struct my_string *self)
 {
-    return (my_string_resize(self, 0));
+    return my_string_resize(self, 0);
 }
 
 /// Destructs the passed string and the associated data. If you instead want to

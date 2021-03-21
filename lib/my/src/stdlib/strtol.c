@@ -10,5 +10,5 @@
 
 long my_strtol(const char *num_ptr, char **end_num_ptr, int base)
 {
-    return (my_strtol_internal(num_ptr, end_num_ptr, base));
+    return my_strtol_internal(num_ptr, end_num_ptr, base);
 }

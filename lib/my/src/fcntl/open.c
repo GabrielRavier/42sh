@@ -22,12 +22,12 @@ int my_open(const char *pathname, int flags, ...)
         mode = va_arg(arg, mode_t);
         va_end(arg);
     }
-    return (open(pathname, flags, mode));
+    return open(pathname, flags, mode);
 }
 #else
 int my_open(MY_ATTR_UNUSED const char *pathname, MY_ATTR_UNUSED int flags, ...)
 {
     errno = ENOSYS;
-    return (-1);
+    return -1;
 }
 #endif

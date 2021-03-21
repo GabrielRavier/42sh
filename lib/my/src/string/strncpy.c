@@ -18,8 +18,8 @@ char *my_strncpy(char *destination, const char *source, size_t n)
         if (current_character == '\0') {
             while (++i < n)
                 *destination++ = '\0';
-            return (result);
+            return result;
         }
     }
-    return (result);
+    return result;
 }

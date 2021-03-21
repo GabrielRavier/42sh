@@ -25,17 +25,17 @@ int my_internal_file_write_to_buffer(my_file_t *fp, int c)
     fp->write_space_left = fp->line_buffer_size;
     if (!my_internal_file_can_write(fp)) {
         errno = EBADF;
-        return (EOF);
+        return EOF;
     }
     if (bytes_in_buffer >= fp->buffer.size) {
         if (my_fflush(fp) != 0)
-            return (EOF);
+            return EOF;
         bytes_in_buffer = 0;
     }
     --fp->write_space_left;
     *fp->buffer_ptr++ = c_uchar;
-    return (((++bytes_in_buffer == fp->buffer.size || (fp->flags &
+    return ((++bytes_in_buffer == fp->buffer.size || (fp->flags &
         MY_FILE_FLAG_LINE_BUFFERED && c_uchar == '\n')) &&
-        (my_fflush(fp) != 0)) ? EOF : c_uchar);
+        (my_fflush(fp) != 0)) ? EOF : c_uchar;
 }
 #endif

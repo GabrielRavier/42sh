@@ -13,5 +13,5 @@ size_t my_strlen(char const *str)
 
     while (*str++ != '\0')
         ++result;
-    return (result);
+    return result;
 }
