@@ -52,3 +52,14 @@
 /// Returns a value, clamped to be between low and high
 #define MY_CLAMP(value, low, high) (__extension__ \
     MY_MIN((typeof(value))MY_MAX(value, low), high))
+
+/// Returns the greatest element in the range [first, last)
+#define MY_MAX_ELEMENT(first_param, last) \
+    (__extension__({ \
+        __auto_type first = (first_param); \
+        __auto_type largest = first; \
+        for (; first != (last); ++first) \
+            if (*largest < *first)) \
+                largest = first; \
+        largest; \
+    }))
