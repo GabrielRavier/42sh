@@ -82,7 +82,7 @@ string
 
 Add tests from Escape for atoi, atoll, memmove, strcpy, strncpy, strtok, strcat,
 strncat, strcmp, strncmp, strcasecmp, strncasecmp, strchr, strrchr, strstr,
-memmem, strcasestr, strspn, strcspn, strpbrk, strlen, strnlen, tolower, toupper,
+strcasestr, strspn, strcspn, strpbrk, strlen, strnlen, tolower, toupper,
 isalnum, strtold, ecvt
 
 Add tests from linux for strchr

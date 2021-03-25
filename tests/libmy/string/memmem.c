@@ -221,3 +221,24 @@ Test(my_memmem, gnulib)
         free(haystack);
     }
 }
+
+Test(my_memmem, escape)
+{
+    const char *str1 = "abc def ghi";
+    cr_assert_eq(my_memmem(str1, 11, "abc", 3), str1);
+    cr_assert_eq(my_memmem(str1, 11, "def", 3), str1 + 4);
+    cr_assert_eq(my_memmem(str1, 11, "ghi", 3), str1 + 8);
+    cr_assert_eq(my_memmem(str1, 11, "a", 1), str1);
+    cr_assert_eq(my_memmem(str1, 11, "abc def ghi", 11), str1);
+    cr_assert_eq(my_memmem(str1, 11, "abc ghi", 7), NULL);
+    cr_assert_eq(my_memmem(str1, 11, "", 0), str1);
+    cr_assert_eq(my_memmem(str1, 11, "def ghi", 7), str1 + 4);
+    cr_assert_eq(my_memmem(str1, 11, "g", 1), str1 + 8);
+
+    const char *str2 = "";
+    cr_assert_eq(my_memmem(str2, 0, "abc", 3), NULL);
+    cr_assert_eq(my_memmem(str2, 0, "", 0), str2);
+
+    const char *str3 = "aaac";
+    cr_assert_eq(my_memmem(str3, 4, "aac", 3), str3 + 1);
+}
