@@ -59,7 +59,7 @@
         __auto_type first = (first_param); \
         __auto_type largest = first; \
         for (; first != (last); ++first) \
-            if (*largest < *first)) \
+            if (*largest < *first) \
                 largest = first; \
         largest; \
     }))
