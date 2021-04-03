@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** libym
+** libmy
 ** File description:
 ** Defines calloc
 */
