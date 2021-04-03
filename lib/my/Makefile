@@ -43,9 +43,12 @@ endif
 ifndef HAS_LIBC_FSTAT
 $(error You must define HAS_LIBC_FSTAT)
 endif
+ifndef HAS_LIBC__EXIT
+$(error You must defined HAS_LIBC__EXIT)
+endif
 
 # Feature flags
-override CFLAGS += -DLIBMY_USE_LIBC_FILE=$(USE_LIBC_FILE) -DLIBMY_HAS_LIBC_ALLOC=$(HAS_LIBC_ALLOC) -DLIBMY_HAS_LIBC_READ=$(HAS_LIBC_READ) -DLIBMY_HAS_LIBC_WRITE=$(HAS_LIBC_WRITE) -DLIBMY_HAS_LIBC_EXECVE=$(HAS_LIBC_EXECVE) -DLIBMY_HAS_LIBC_ISATTY=$(HAS_LIBC_ISATTY) -DLIBMY_HAS_LIBC_OPEN=$(HAS_LIBC_OPEN) -DLIBMY_HAS_LIBC_CLOSE=$(HAS_LIBC_CLOSE) -DLIBMY_HAS_LIBC_LSEEK=$(HAS_LIBC_LSEEK) -DLIBMY_HAS_LIBC_FSTAT=$(HAS_LIBC_FSTAT)
+override CFLAGS += -DLIBMY_USE_LIBC_FILE=$(USE_LIBC_FILE) -DLIBMY_HAS_LIBC_ALLOC=$(HAS_LIBC_ALLOC) -DLIBMY_HAS_LIBC_READ=$(HAS_LIBC_READ) -DLIBMY_HAS_LIBC_WRITE=$(HAS_LIBC_WRITE) -DLIBMY_HAS_LIBC_EXECVE=$(HAS_LIBC_EXECVE) -DLIBMY_HAS_LIBC_ISATTY=$(HAS_LIBC_ISATTY) -DLIBMY_HAS_LIBC_OPEN=$(HAS_LIBC_OPEN) -DLIBMY_HAS_LIBC_CLOSE=$(HAS_LIBC_CLOSE) -DLIBMY_HAS_LIBC_LSEEK=$(HAS_LIBC_LSEEK) -DLIBMY_HAS_LIBC_FSTAT=$(HAS_LIBC_FSTAT) -DLIBMY_HAS_LIBC__EXIT=$(HAS_LIBC__EXIT)
 
 .PHONY: all clean fclean
 
@@ -85,7 +88,7 @@ SOURCE_FILES += stdio/putchar stdio/dputc stdio/dgetc stdio/dputs stdio/puts std
 SOURCE_FILES += stdio/printf/printf stdio/printf/vprintf stdio/printf/dprintf stdio/printf/vdprintf stdio/printf/asprintf stdio/printf/vasprintf stdio/printf/formatter/append_number_base stdio/printf/formatter/utf32_char_to_utf8 stdio/printf/formatter/char stdio/printf/formatter/cstring stdio/printf/formatter/signed_integer stdio/printf/formatter/unsigned_integer stdio/printf/formatter/percent_sign stdio/printf/formatter/n stdio/printf/formatter/pointer stdio/printf/parse_conversion_info/parse_conversion_info stdio/printf/parse_conversion_info/parse_int stdio/printf/handle_invalid stdio/printf/padding
 
 # Stuff related to stdlib.h
-SOURCE_FILES += stdlib/qsort stdlib/qsort_r stdlib/realloc_size stdlib/strtol_base_str stdlib/strtol_base_str_part2 stdlib/strtol stdlib/strtoll stdlib/strtoul stdlib/strtoull stdlib/abs stdlib/abort stdlib/getenv_offset stdlib/getenv stdlib/setenv stdlib/unsetenv stdlib/free stdlib/malloc stdlib/calloc
+SOURCE_FILES += stdlib/qsort stdlib/qsort_r stdlib/realloc_size stdlib/strtol_base_str stdlib/strtol_base_str_part2 stdlib/strtol stdlib/strtoll stdlib/strtoul stdlib/strtoull stdlib/abs stdlib/abort stdlib/getenv_offset stdlib/getenv stdlib/setenv stdlib/unsetenv stdlib/free stdlib/malloc stdlib/calloc stdlib/_exit stdlib/xmalloc stdlib/xcalloc
 
 # Stuff related to string.h
 SOURCE_FILES += string/strlen string/strcpy string/strncpy string/strstr string/strcmp string/strcat string/strncat string/strchr string/strspn string/strcspn string/strnlen string/strdup string/strndup

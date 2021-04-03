@@ -94,9 +94,17 @@ int my_unsetenv(const char *name) MY_ATTR_NOTHROW MY_ATTR_NONNULL((1));
 void *my_malloc(size_t size) MY_ATTR_NOTHROW MY_ATTR_MALLOC
     MY_ATTR_ALLOC_SIZE((1)) MY_ATTR_WARN_UNUSED_RESULT;
 
+// Version of my_malloc that either succeeds or doesn't return
+void *my_xmalloc(size_t size) MY_ATTR_NOTHROW MY_ATTR_MALLOC
+    MY_ATTR_ALLOC_SIZE((1)) MY_ATTR_WARN_UNUSED_RESULT;
+
 // Tries to allocate the asked-for amount of members of the specified size and
 // initialize them to 0
 void *my_calloc(size_t num_members, size_t size) MY_ATTR_NOTHROW MY_ATTR_MALLOC
+    MY_ATTR_ALLOC_SIZE((1, 2)) MY_ATTR_WARN_UNUSED_RESULT;
+
+// Version of my_calloc that either succeeds or doesn't return
+void *my_xcalloc(size_t num_members, size_t size) MY_ATTR_NOTHROW MY_ATTR_MALLOC
     MY_ATTR_ALLOC_SIZE((1, 2)) MY_ATTR_WARN_UNUSED_RESULT;
 
 // Free a block allocated by my_malloc
@@ -106,5 +114,8 @@ static inline void my_free_ptr(void *ptr)
 {
     my_free(*(void **)ptr);
 }
+
+// Terminates program execution with the given status
+_Noreturn void my__exit(int status) MY_ATTR_NOTHROW;
 
 #define MY_CLEANUP_FREE __attribute__((cleanup(my_free_ptr)))
