@@ -27,6 +27,10 @@ struct my_string *my_string_new(void) MY_ATTR_WARN_UNUSED_RESULT;
 struct my_string *my_string_new_from_string(const char *string, size_t length)
     MY_ATTR_WARN_UNUSED_RESULT MY_ATTR_ACCESS((read_only, 1, 2));
 
+/// Creates a new my_string from the file given (by reading that entire file)
+struct my_string *my_string_new_from_filename(const char *filename)
+    MY_ATTR_WARN_UNUSED_RESULT MY_ATTR_ACCESS((read_only, 1));
+
 /// Copies source into self
 struct my_string *my_string_assign(struct my_string *self,
     const struct my_string *source);

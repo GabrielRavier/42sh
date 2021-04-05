@@ -108,7 +108,7 @@ SOURCE_FILES += strings/strcasecmp strings/bcopy
 SOURCE_FILES += sys/stat/fstat
 
 # Stuff related to my_string
-SOURCE_FILES += my_string/new_from_string my_string/new my_string/assign my_string/guarantee_can_expand my_string/append my_string/append_vprintf my_string/insert my_string/erase my_string/resize my_string/free
+SOURCE_FILES += my_string/new_from_string my_string/new_from_filename my_string/new my_string/assign my_string/guarantee_can_expand my_string/append my_string/append_vprintf my_string/insert my_string/erase my_string/resize my_string/free
 
 # Stuff related to unistd.h
 SOURCE_FILES += unistd/execv unistd/execve unistd/execvp unistd/read unistd/write unistd/isatty unistd/close unistd/lseek
