@@ -107,6 +107,15 @@ void *my_calloc(size_t num_members, size_t size) MY_ATTR_NOTHROW MY_ATTR_MALLOC
 void *my_xcalloc(size_t num_members, size_t size) MY_ATTR_NOTHROW MY_ATTR_MALLOC
     MY_ATTR_ALLOC_SIZE((1, 2)) MY_ATTR_WARN_UNUSED_RESULT;
 
+// Tries to allocate the asked-for amount of members of the specified size and
+// initialize them to 0
+void *my_realloc(void *ptr, size_t size) MY_ATTR_NOTHROW MY_ATTR_ALLOC_SIZE((2))
+    MY_ATTR_WARN_UNUSED_RESULT;
+
+// Version of my_realloc that either succeeds or doesn't return
+void *my_xrealloc(void *ptr, size_t size) MY_ATTR_NOTHROW
+    MY_ATTR_ALLOC_SIZE((2)) MY_ATTR_WARN_UNUSED_RESULT;
+
 // Free a block allocated by my_malloc
 void my_free(void *ptr) MY_ATTR_NOTHROW;
 
