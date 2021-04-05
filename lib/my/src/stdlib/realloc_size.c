@@ -8,6 +8,14 @@
 #include "my/stdlib.h"
 #include "my/string.h"
 
+#if LIBMY_HAS_LIBC_REALLOC
+
+void *my_realloc_size(void *ptr, size_t new_length, size_t original_length)
+{
+    (void)original_length;
+    return my_realloc(ptr, new_length);
+}
+#else
 static void *handle_other_cases(void *ptr, size_t new_length,
     size_t original_length)
 {
@@ -33,3 +41,4 @@ void *my_realloc_size(void *ptr, size_t new_length, size_t original_length)
         return my_malloc(new_length);
     return handle_other_cases(ptr, new_length, original_length);
 }
+#endif
