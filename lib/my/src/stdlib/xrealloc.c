@@ -9,6 +9,8 @@
 #include "my/stdio.h"
 #include <unistd.h>
 
+// The free is here to alleviate the furor of nazi AERs that take points off for
+// leaks
 void *my_xrealloc(void *ptr, size_t size)
 {
     void *result = my_realloc(ptr, size);
