@@ -16,7 +16,7 @@ void *my_realloc(void *ptr, size_t size)
     return realloc(ptr, size);
 }
 #else
-void *my_realloc(void *ptr, size_t size)
+void *my_realloc(MY_ATTR_UNUSED void *ptr, MY_ATTR_UNUSED size_t size)
 {
     errno = ENOSYS;
     return NULL;
