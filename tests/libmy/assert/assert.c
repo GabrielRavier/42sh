@@ -55,6 +55,6 @@ Test(MY_ASSERT, freebsd_true)
 
     int sta;
     wait(&sta);
-    if (WIFSIGNALED(sta) == 0 || WTERMSIG(sta) != SIGILL)
+    if (WIFSIGNALED(sta) != 0 || WEXITSTATUS(sta) != 84)
         cr_assert(false && "MY_ASSERT should have fired");
 }
