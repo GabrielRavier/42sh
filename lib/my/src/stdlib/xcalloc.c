@@ -16,4 +16,3 @@ void *my_xcalloc(size_t num_members, size_t size)
     my_memset(result, 0, malloc_size);
     return result;
 }
-

@@ -33,4 +33,3 @@ struct my_string *my_string_new_from_filename(const char *filename)
     my_close(fd);
     return (result);
 }
-
