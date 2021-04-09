@@ -1,0 +1,8 @@
+# Ignore files produced by libmy
+/include/my/
+/include/my.h
+/lib/libmy.a
+
+# Ignore files produced by us
+/mysh
+/obj/
