@@ -12,9 +12,6 @@ override CFLAGS += -MMD -MP -MF $@.d
 # We need to be able to include the libmy include files
 override CFLAGS += -Iinclude
 
-# Optimize libmy
-override CFLAGS += -O3 -flto
-
 # Check for feature flags
 ifndef USE_LIBC_FILE
 $(error You must define USE_LIBC_FILE)
