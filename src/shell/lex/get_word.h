@@ -2,11 +2,11 @@
 ** EPITECH PROJECT, 2021
 ** mysh
 ** File description:
-** Declares word
+** Declares get_word
 */
 
 #pragma once
 
 #include "../../shell.h"
 
-void shell_do_line_word(struct shell *self);
+shell_char_t *shell_lex_get_word(struct shell *self);

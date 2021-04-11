@@ -2,11 +2,11 @@
 ** EPITECH PROJECT, 2021
 ** mysh
 ** File description:
-** Declares get_character
+** Declares process
 */
 
 #pragma once
 
 #include "../shell.h"
 
-char shell_get_character(struct shell *self);
+void shell_process(struct shell *self);

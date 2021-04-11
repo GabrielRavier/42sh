@@ -10,11 +10,24 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int shell_read_character(struct shell *self)
+shell_char_t shell_read_character(struct shell *self, bool want_eof)
 {
-    char result;
+    char read_result;
+    shell_char_t peek_read_result;
 
-    if (read(STDIN_FILENO, &result, sizeof(result)) != sizeof(result))
-        exit(self->last_command_exit_status);
-    return (result);
+    if (self->peek_read != 0) {
+        peek_read_result = self->peek_read;
+        self->peek_read = 0;
+        return peek_read_result;
+    }
+    do
+        if (read(self->input_fd, &read_result, sizeof(read_result)) !=
+            sizeof(read_result)) {
+            if (want_eof)
+                return SHELL_CHAR_ERROR;
+            else
+                exit(self->last_command_exit_status);
+        }
+    while (read_result == 0);
+    return read_result;
 }

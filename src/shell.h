@@ -7,24 +7,20 @@
 
 #pragma once
 
+#include "lexical_word_list.h"
+#include "shell_char.h"
+#include <stdint.h>
 #include <stdbool.h>
 
-enum {
-    LINE_STATE_ARGUMENTS_SIZE = 500,
-    LINE_STATE_LINE_SIZE = 10000
+struct shell_lex_state {
+    shell_char_t peek_character;
 };
 
-struct my_string;
-
 struct shell {
-    char peek_character;
-    char line[LINE_STATE_LINE_SIZE];
-    char *arguments[LINE_STATE_ARGUMENTS_SIZE];
-    char *line_ptr;
-    char *end_line_ptr;
-    char **arguments_ptr;
-    char **end_arguments_ptr;
-    bool has_errored;
+    int input_fd;
     int last_command_exit_status;
     bool is_interactive;
+    shell_char_t peek_read;
+    struct lexical_word_list current_lexical_word;
+    struct shell_lex_state lex;
 };

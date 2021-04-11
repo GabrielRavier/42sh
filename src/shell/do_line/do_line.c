@@ -6,27 +6,24 @@
 */
 
 #include "../do_line.h"
-#include "word.h"
-#include "../execute.h"
+#include "../lex.h"
 #include "my/my_string.h"
 
 void shell_do_line(struct shell *self)
 {
-    char *current_ptr;
+    //struct shell_parse_tree *parse_tree;
 
-    self->line_ptr = self->line;
-    self->end_line_ptr = self->line + LINE_STATE_LINE_SIZE - 1;
-    self->arguments_ptr = self->arguments;
-    self->end_arguments_ptr = self->arguments + LINE_STATE_ARGUMENTS_SIZE - 1;
-    self->has_errored = false;
-    do {
-        current_ptr = self->line_ptr;
-        shell_do_line_word(self);
-    } while (*current_ptr != '\n');
-    if (!self->has_errored) {
-        if (self->arguments_ptr != self->arguments)
-            self->arguments_ptr[-1] = NULL;
-        if (self->arguments[0])
-            shell_do_line_execute(self);
+    lexical_word_list_free(&self->current_lexical_word);
+    shell_lex(self, &self->current_lexical_word);
+    __auto_type p1 = self->current_lexical_word.next;
+    __auto_type p2 = &self->current_lexical_word;
+    while (p1 != p2) {
+        __auto_type word_it = p1->word;
+        while (*word_it)
+            putchar(*word_it++);
+        putchar('\n');
+        p1 = p1->next;
     }
+    /*parse_tree = shell_parse_words(self->current_lexical_word.next,
+      &self->current_lexical_word);*/
 }

@@ -12,6 +12,8 @@
 
 void shell_init(struct shell *self)
 {
+    self->input_fd = STDIN_FILENO;
     my_memset(self, 0, sizeof(*self));
-    self->is_interactive = isatty(STDIN_FILENO);
+    self->is_interactive = isatty(self->input_fd);
+    lexical_word_list_init(&self->current_lexical_word);
 }

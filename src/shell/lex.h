@@ -2,11 +2,11 @@
 ** EPITECH PROJECT, 2021
 ** mysh
 ** File description:
-** Declares init
+** Declares lex
 */
 
 #pragma once
 
 #include "../shell.h"
 
-void shell_init(struct shell *self);
+void shell_lex(struct shell *self, struct lexical_word_list *result);

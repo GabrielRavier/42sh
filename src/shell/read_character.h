@@ -10,4 +10,4 @@
 #include "../shell.h"
 
 // Reads a character from stdin. Exits if it fails.
-int shell_read_character(struct shell *self);
+shell_char_t shell_read_character(struct shell *self, bool want_eof);

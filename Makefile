@@ -27,7 +27,8 @@ BINARY_NAME := mysh
 all: $(BINARY_NAME)
 
 # Sources for this project
-SOURCE_FILES := main error shell/read_character shell/init shell/get_character shell/do_line/do_line shell/do_line/word shell/execute shell/builtins shell/builtins/env shell/builtins/setenv shell/builtins/unsetenv shell/builtins/cd shell/builtins/exit
+SOURCE_FILES := main error shell/read_character shell/init shell/do_line/do_line shell/process shell/lex/lex shell/lex/get_word lexical_word_list/free lexical_word_list/init
+# shell/execute shell/builtins shell/builtins/env shell/builtins/setenv shell/builtins/unsetenv shell/builtins/cd shell/builtins/exit
 
 OBJECT_FILES := $(addprefix obj/, $(addsuffix .o, $(SOURCE_FILES)))
 
@@ -37,6 +38,8 @@ $(BINARY_NAME): libmy $(OBJECT_FILES)
 obj/%.o: src/%.c libmy
 	mkdir --parents obj/shell/do_line
 	mkdir --parents obj/shell/builtins
+	mkdir --parents obj/shell/lex
+	mkdir --parents obj/lexical_word_list
 	$(CC) -c $< -o $@ $(CFLAGS)
 
 # Just build the entire libmy when we need these headers
