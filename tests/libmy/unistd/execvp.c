@@ -6,8 +6,8 @@
 */
 
 #include "../tests_header.h"
-#include "my/stdio.h"
 #include "my/unistd.h"
+#include "my/stdio.h"
 #include "my/stdlib.h"
 #include "my/string.h"
 #include <stdio.h>

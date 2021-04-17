@@ -33,7 +33,7 @@ static void midnight_bsd_do_test_str(int (*func)(int, my_file_t *))
     cr_assert_eq(fread(buf, 1, 10, check), 10);
     cr_assert_eq(my_strncmp(buf, str, 10), 0);
     cr_assert_eq(fclose(check), 0);
-    cr_assert_eq(unlink(path), 0);
+    cr_assert_eq(my_unlink(path), 0);
 }
 
 // Note: The original for these also has tests for putc_unlocked
@@ -56,7 +56,7 @@ static void midnight_bsd_do_test_err(int (*func)(int, my_file_t *))
 
     cr_assert_neq(fp, NULL);
     cr_assert_eq(my_fclose(fp), 0);
-    cr_assert_eq(unlink(path), 0);
+    cr_assert_eq(my_unlink(path), 0);
     cr_assert_eq(func('x', fp), EOF);
 }
 
@@ -146,7 +146,7 @@ static void wine_do_test(int (*func)(int, my_file_t *))
     cr_assert_eq(func(0, fp), EOF);
     cr_assert_eq(my_fclose(fp), 0);
 
-    unlink(temp_filename);
+    my_unlink(temp_filename);
     free(temp_filename);
 }
 

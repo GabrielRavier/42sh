@@ -37,9 +37,9 @@ Test(MY_ASSERT, freebsd_false)
         _exit(EXIT_SUCCESS);
     }
 
-    int sta;
-    wait(&sta);
-    if (WIFSIGNALED(sta) != 0 || WIFEXITED(sta) == 0)
+    int status;
+    wait(&status);
+    if (WIFSIGNALED(status) != 0 || WIFEXITED(status) == 0 || WEXITSTATUS(status) != EXIT_SUCCESS)
         cr_assert(false && "MY_ASSERT should not have fired");
 }
 
@@ -53,8 +53,8 @@ Test(MY_ASSERT, freebsd_true)
         _exit(EXIT_SUCCESS);
     }
 
-    int sta;
-    wait(&sta);
-    if (WIFSIGNALED(sta) != 0 || WEXITSTATUS(sta) != 84)
+    int status;
+    wait(&status);
+    if (WIFSIGNALED(status) != 0 || WIFEXITED(status) == 0 || WEXITSTATUS(status) != 84)
         cr_assert(false && "MY_ASSERT should have fired");
 }
