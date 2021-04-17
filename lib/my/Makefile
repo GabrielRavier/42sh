@@ -198,7 +198,7 @@ obj/%.o: %.c
 	@mkdir --parents obj/src/stdio/printf_my_string_based/formatter
 	@mkdir --parents obj/src/stdio/printf_my_string_based/parse_conversion_info
 	@mkdir --parents obj/src/stdio/internal/file/normal
-	@mkdir --parents obj/src/stdlib/internal/arc4_stream/get
+	@mkdir --parents obj/src/stdlib
 	@mkdir --parents obj/src/string
 	@mkdir --parents obj/src/strings
 	@mkdir --parents obj/src/sys/stat
