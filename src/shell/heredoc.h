@@ -2,12 +2,11 @@
 ** EPITECH PROJECT, 2021
 ** mysh
 ** File description:
-** Declares init
+** Declares heredoc
 */
 
 #pragma once
 
 #include "../shell.h"
 
-void shell_init(struct shell *self);
-void shell_init_fds(struct shell *self);
+void shell_heredoc(struct shell *self, const shell_char_t *stop_line);

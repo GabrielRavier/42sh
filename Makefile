@@ -27,8 +27,20 @@ BINARY_NAME := mysh
 all: $(BINARY_NAME)
 
 # Sources for this project
-SOURCE_FILES := main error shell/read_character shell/init shell/do_line/do_line shell/process shell/lex/lex shell/lex/get_word lexical_word_list/free lexical_word_list/init
-# shell/execute shell/builtins shell/builtins/env shell/builtins/setenv shell/builtins/unsetenv shell/builtins/cd shell/builtins/exit
+SOURCE_FILES := main
+SOURCE_FILES += shell/read_character shell/process shell/fork shell/pipe shell/heredoc shell/flush_child_fds
+SOURCE_FILES += shell/init/init shell/init/fds
+SOURCE_FILES += shell/builtin/find shell/builtin/run
+SOURCE_FILES += shell/builtin/commands/cd shell/builtin/commands/env shell/builtin/commands/exit shell/builtin/commands/printenv shell/builtin/commands/setenv shell/builtin/commands/unsetenv
+SOURCE_FILES += shell/do_line/do_line
+SOURCE_FILES += shell/execute/execute
+SOURCE_FILES += shell/lex/lex shell/lex/get_word
+SOURCE_FILES += shell/parse_tree/from_lex_tree shell/parse_tree/free
+SOURCE_FILES += shell/proc/add shell/proc/wait_current shell/proc/print
+SOURCE_FILES += fd/move fd/copy
+SOURCE_FILES += shell_char/xstrdup shell_char/strlen shell_char/cstrchr shell_char/cstrcmp_ignore_quote shell_char/xstrdup_to_c shell_char/xdup_strv_to_c shell_char/strcmp
+SOURCE_FILES += lexical_word_list/init lexical_word_list/free
+# shell/builtins shell/builtins/env shell/builtins/setenv shell/builtins/unsetenv shell/builtins/cd shell/builtins/exit
 
 OBJECT_FILES := $(addprefix obj/, $(addsuffix .o, $(SOURCE_FILES)))
 
@@ -36,10 +48,16 @@ $(BINARY_NAME): libmy $(OBJECT_FILES)
 	$(CC) $(LDFLAGS) -o $@ $(OBJECT_FILES) -lmy
 
 obj/%.o: src/%.c libmy
-	mkdir --parents obj/shell/do_line
-	mkdir --parents obj/shell/builtins
-	mkdir --parents obj/shell/lex
-	mkdir --parents obj/lexical_word_list
+	@mkdir --parents obj/shell/init
+	@mkdir --parents obj/shell/do_line
+	@mkdir --parents obj/shell/execute
+	@mkdir --parents obj/shell/lex
+	@mkdir --parents obj/shell/parse_tree
+	@mkdir --parents obj/shell/proc
+	@mkdir --parents obj/shell/builtin/commands
+	@mkdir --parents obj/fd
+	@mkdir --parents obj/lexical_word_list
+	@mkdir --parents obj/shell_char
 	$(CC) -c $< -o $@ $(CFLAGS)
 
 # Just build the entire libmy when we need these headers
@@ -66,6 +84,6 @@ re: clean all
 # Runs tests
 tests_run:
 	$(MAKE) fclean
+	$(MAKE) --directory=lib/my tests_binary USE_LIBC_FILE=0 HAS_LIBC_ALLOC=1 HAS_LIBC_READ=1 HAS_LIBC_WRITE=1 HAS_LIBC_EXECVE=1 HAS_LIBC_OPEN=1 HAS_LIBC_CLOSE=1 HAS_LIBC_ISATTY=1 HAS_LIBC_LSEEK=1 HAS_LIBC_FSTAT=1 HAS_LIBC__EXIT=1 HAS_LIBC_REALLOC=1 HAS_LIBC_GETPID=1
 	$(MAKE) CFLAGS="$(CFLAGS) --coverage"
-	$(MAKE) --directory=lib/my tests_binary USE_LIBC_FILE=0 HAS_LIBC_ALLOC=1 HAS_LIBC_READ=1 HAS_LIBC_WRITE=1 HAS_LIBC_EXECVE=1 HAS_LIBC_OPEN=1 HAS_LIBC_CLOSE=1 HAS_LIBC_ISATTY=1 HAS_LIBC_LSEEK=1 HAS_LIBC_FSTAT=1 HAS_LIBC__EXIT=1 HAS_LIBC_REALLOC=1
-	./tests/libmy/test.sh & wait
+	./tests/libmy/test.sh & ./tests/mysh/test.sh & wait

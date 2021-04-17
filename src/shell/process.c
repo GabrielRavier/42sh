@@ -13,8 +13,8 @@
 void shell_process(struct shell *self)
 {
     while (true) {
-        if (self->is_interactive)
-            my_dputs("> ", STDOUT_FILENO);
+        if (self->input_is_tty)
+            my_dputs("> ", self->output_fd);
         shell_do_line(self);
     }
 }

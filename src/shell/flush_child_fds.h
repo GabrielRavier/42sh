@@ -2,12 +2,11 @@
 ** EPITECH PROJECT, 2021
 ** mysh
 ** File description:
-** Declares builtins stuff
+** Declares flush_child_fds
 */
 
 #pragma once
 
 #include "../shell.h"
-#include <stdbool.h>
 
-bool shell_do_builtins(struct shell *self);
+void shell_flush_child_fds(struct shell *self);

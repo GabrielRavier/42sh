@@ -1,0 +1,23 @@
+echo lin\|e1;
+echo lin\|e1; /bin/echo line1-2
+echo line2
+echo line3 | cat
+cat <stdins/big_script
+
+
+cat <<EOF
+bruh
+lmfao
+EOF
+
+
+
+echo yeeeeeeeeeet >>appended_output_file
+echo bruh >>appended_output_file
+cat appended_output_file
+rm appended_output_file
+echo bruh | echo
+cat <<finish_this_shit
+opwqk
+dwqpo90321re
+finish_this_shit

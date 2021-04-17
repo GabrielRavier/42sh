@@ -2,21 +2,22 @@
 ** EPITECH PROJECT, 2021
 ** mysh
 ** File description:
-** Defines builtin env
+** Defines builtin printenv
 */
 
-#include "functions.h"
+#include "../commands.h"
 #include "my/stdio.h"
 #include <stddef.h>
 
 extern char **environ;
 
-int shell_builtin_env(struct shell *self)
+void shell_builtin_printenv(struct shell *shell, shell_char_t **argv)
 {
     char *const *environ_it = environ;
 
-    (void)self;
+    (void)shell;
+    (void)argv;
     while (*environ_it != NULL)
         my_puts(*environ_it++);
-    return (0);
+    return;
 }

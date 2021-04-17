@@ -11,7 +11,7 @@
 
 int main(void)
 {
-    struct shell self;
+    static struct shell self;
 
     shell_init(&self);
     shell_process(&self);
