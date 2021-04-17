@@ -25,7 +25,7 @@ static uint64_t rnd_buffer;
 static bool do_loop(int *fd, char *template, char *x_es)
 {
     uint64_t rnd_tmp;
-    
+
     for (size_t count = 0; count < TMP_MAX; ++count) {
         rnd_tmp = rnd_buffer;
         for (size_t i = 0; i < 6; ++i) {

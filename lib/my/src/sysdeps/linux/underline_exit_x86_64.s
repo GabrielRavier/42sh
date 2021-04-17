@@ -40,6 +40,6 @@ my__exit:
 .Lset_errno_exit:
     mov [r8], eax
     jmp .Ldo_hlt
-    
+
     .cfi_endproc
     .size my__exit, . - my__exit
