@@ -8,6 +8,7 @@
 #pragma once
 
 #include "features.h"
+#include <stdint.h>
 #include <stddef.h>
 
 /// Sort an array of num_elements elements of size element_size, pointed to by
@@ -39,6 +40,10 @@ MY_ATTR_NONNULL((1, 4)) static inline void my_qsort_r(void *base,
         (&((struct my_qsort_r_internal_comparison_function_and_argument){
         comparison_function, argument})));
 }
+
+void *my_bsearch(const void *key, const void *base, size_t num_elements,
+    size_t element_size, int (*cmp)(const void *, const void *))
+    MY_ATTR_NONNULL((1, 2, 5)) MY_ATTR_WARN_UNUSED_RESULT;
 
 /// Changes the size of the memory block pointed to by ptr of original_length
 /// bytes to new_length bytes.
@@ -90,6 +95,17 @@ int my_setenv(const char *name, const char *value, int overwrite)
 // not exist in the environment
 int my_unsetenv(const char *name) MY_ATTR_NOTHROW MY_ATTR_NONNULL((1));
 
+// Generates a unique temporary filename from template, of which the last six
+// characters must be "XXXXXX" (which are replaced with characters that make the
+// filename unique). This returns a file descriptor to that file (open for
+// reading and writing), or -1 if it fails to do so
+int my_mkstemp(char *template) MY_ATTR_NONNULL((1)) MY_ATTR_WARN_UNUSED_RESULT;
+
+// Same as my_mkstemp, but template may contain a suffix after the Xs, of which
+// the length shall be suffix_length
+int my_mkstemps(char *template, int suffix_length) MY_ATTR_NONNULL((1))
+    MY_ATTR_WARN_UNUSED_RESULT;
+
 // Tries to allocate the asked-for amount of memory
 void *my_malloc(size_t size) MY_ATTR_NOTHROW MY_ATTR_MALLOC
     MY_ATTR_ALLOC_SIZE((1)) MY_ATTR_WARN_UNUSED_RESULT;
@@ -124,7 +140,7 @@ static inline void my_free_ptr(void *ptr)
     my_free(*(void **)ptr);
 }
 
+#define MY_CLEANUP_FREE __attribute__((cleanup(my_free_ptr)))
+
 // Terminates program execution with the given status
 _Noreturn void my__exit(int status) MY_ATTR_NOTHROW;
-
-#define MY_CLEANUP_FREE __attribute__((cleanup(my_free_ptr)))

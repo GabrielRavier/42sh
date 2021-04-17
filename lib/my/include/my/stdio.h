@@ -125,6 +125,15 @@ int my_vasprintf(char **MY_RESTRICT result_string_ptr,
     const char *MY_RESTRICT format, va_list arguments)
     MY_ATTR_FORMAT(printf, 2, 0) MY_ATTR_WARN_UNUSED_RESULT;
 
+/// Writes formatted output to the given string
+int my_sprintf(char *MY_RESTRICT result_string, const char *MY_RESTRICT format,
+    ...) MY_ATTR_NOTHROW;
+
+/// Same as my_sprintf, except it takes a va_list instead of a variable amount
+/// of arguments
+int my_vsprintf(char *MY_RESTRICT result_string, const char *MY_RESTRICT format,
+    va_list arguments) MY_ATTR_NOTHROW;
+
 // Open a file and create a new my_file_t for it
 my_file_t *my_fopen(const char *MY_RESTRICT filename,
     const char *MY_RESTRICT mode) MY_ATTR_WARN_UNUSED_RESULT;

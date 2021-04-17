@@ -36,6 +36,10 @@ char *my_strncpy(char *MY_RESTRICT destination, const char *MY_RESTRICT source,
 char *my_strdup(const char *string) MY_ATTR_NOTHROW MY_ATTR_WARN_UNUSED_RESULT
     MY_ATTR_MALLOC MY_ATTR_NONNULL((1)) MY_ATTR_ACCESS((read_only, 1));
 
+/// Version of my_strdup that either succeeds or doesn't return
+char *my_xstrdup(const char *string) MY_ATTR_NOTHROW MY_ATTR_WARN_UNUSED_RESULT
+    MY_ATTR_MALLOC MY_ATTR_NONNULL((1)) MY_ATTR_ACCESS((read_only, 1));
+
 /// Duplicates the given string, with a maximum length
 char *my_strndup(const char *string, size_t length) MY_ATTR_NOTHROW
     MY_ATTR_WARN_UNUSED_RESULT MY_ATTR_MALLOC MY_ATTR_NONNULL((1))
