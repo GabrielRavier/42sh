@@ -7,6 +7,7 @@
 
 #include "../tests_header.h"
 #include "my/stdio.h"
+#include "my/unistd.h"
 #include "my/string.h"
 #include <criterion/redirect.h>
 #include <unistd.h>

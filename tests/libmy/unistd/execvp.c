@@ -7,6 +7,7 @@
 
 #include "../tests_header.h"
 #include "my/unistd.h"
+#include "my/fcntl.h"
 #include "my/stdio.h"
 #include "my/stdlib.h"
 #include "my/string.h"
@@ -67,7 +68,7 @@ Test(my_execvp, glibc_3)
     char *filename;
     cr_assert_geq(my_asprintf(&filename, "%s/test_script", dir_template), 0);
 
-    int temp_file = creat(filename, O_WRONLY);
+    int temp_file = my_creat(filename, O_WRONLY);
     my_dputs("echo foo\n", temp_file);
     fchmod(temp_file, 0700);
     close(temp_file);

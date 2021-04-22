@@ -61,6 +61,12 @@ char *my_strchr(const char *str, int character) MY_ATTR_NOTHROW
     MY_ATTR_WARN_UNUSED_RESULT MY_ATTR_PURE MY_ATTR_NONNULL((1))
     MY_ATTR_ACCESS((read_only, 1));
 
+/// Returns a pointer to the last occurence of the given character in the given
+/// string
+char *my_strrchr(const char *str, int character) MY_ATTR_NOTHROW
+    MY_ATTR_WARN_UNUSED_RESULT MY_ATTR_PURE MY_ATTR_NONNULL((1))
+    MY_ATTR_ACCESS((read_only, 1));
+
 /// Compares two strings
 int my_strcmp(const char *string1, const char *string2) MY_ATTR_NOTHROW
     MY_ATTR_WARN_UNUSED_RESULT MY_ATTR_PURE MY_ATTR_NONNULL((1, 2))

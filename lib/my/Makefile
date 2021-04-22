@@ -102,7 +102,7 @@ SOURCE_FILES += stdio/printf_my_string_based/parse_conversion_info/parse_convers
 SOURCE_FILES += stdlib/qsort stdlib/qsort_r stdlib/realloc_size stdlib/strtol_base_str stdlib/strtol_base_str_part2 stdlib/strtol stdlib/strtoll stdlib/strtoul stdlib/strtoull stdlib/abs stdlib/abort stdlib/getenv_offset stdlib/getenv stdlib/setenv stdlib/unsetenv stdlib/free stdlib/malloc stdlib/calloc stdlib/xmalloc stdlib/xcalloc stdlib/realloc stdlib/xrealloc stdlib/bsearch stdlib/mkstemp stdlib/mkstemps
 
 # Stuff related to string.h
-SOURCE_FILES += string/strlen string/strcpy string/strncpy string/strstr string/strcmp string/strcat string/strncat string/strchr string/strspn string/strcspn string/strnlen string/strdup string/strndup string/xstrdup
+SOURCE_FILES += string/strlen string/strcpy string/strncpy string/strstr string/strcmp string/strcat string/strncat string/strchr string/strrchr string/strspn string/strcspn string/strnlen string/strdup string/strndup string/xstrdup
 ifeq ($(shell uname -p), x86_64)
 	SOURCE_FILES += string/memcpy_x86_64 string/memmove_x86_64 string/memcmp_x86_64 string/memmem_x86_64 string/memchr_x86_64 string/strncmp_x86_64 string/memset_x86_64
 else
@@ -143,7 +143,7 @@ TESTS_SOURCE_FILES += getopt/getopt
 TESTS_SOURCE_FILES += stdlib/strtol_base_str stdlib/strtol stdlib/abs stdlib/getenv stdlib/setenv stdlib/clearenv stdlib/putenv stdlib/qsort stdlib/qsort_r stdlib/underline_exit stdlib/mkstemp
 
 # Tests related to string.h
-TESTS_SOURCE_FILES += string/memchr string/memcpy string/memmove string/memcmp string/memmem string/memset string/strncmp
+TESTS_SOURCE_FILES += string/memchr string/memcpy string/memmove string/memcmp string/memmem string/memset string/strncmp string/strrchr
 
 # Tests related to strings.h
 TESTS_SOURCE_FILES += strings/bcopy

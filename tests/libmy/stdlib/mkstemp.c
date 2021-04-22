@@ -6,22 +6,15 @@
 */
 
 #include "../tests_header.h"
-#include "my/cpp-like/algorithm.h"
 #include "my/stdlib.h"
+#include "mktemp_netbsd_check_mode.h"
+#include "mkstemp_openbsd_check.h"
+#include "mkstemp_openbsd_startup.h"
 #include "my/stdio.h"
-#include "my/string.h"
-#include "my/unistd.h"
 #include "my/sys/stat.h"
 #include <unistd.h>
 #include <sys/mman.h>
-#include <errno.h>
 #include <limits.h>
-
-static void netbsd_check_mode(const struct stat *stat_buffer, int mode, bool is_dir)
-{
-    cr_assert_neq(is_dir ? S_ISDIR(stat_buffer->st_mode) : S_ISREG(stat_buffer->st_mode), 0);
-    cr_assert_neq(stat_buffer->st_mode & mode, 0);
-}
 
 Test(my_mkstemp, netbsd_basic)
 {
@@ -35,32 +28,7 @@ Test(my_mkstemp, netbsd_basic)
 
     struct stat stat_buffer;
     cr_assert_eq(my_fstat(fd, &stat_buffer), 0);
-    netbsd_check_mode(&stat_buffer, 0600, false);
-}
-
-static bool openbsd_check(int fd, const char *path, const char *prefix, size_t prefix_len, size_t x_len)
-{
-    if (x_len < 6) {
-        cr_assert_lt(fd, 0);
-        cr_assert_eq(errno, EINVAL);
-        return true;
-    }
-    cr_assert_geq(fd, 0);
-
-    struct stat stat_buffer, file_stat_buffer;
-    cr_assert_eq(stat(path, &stat_buffer), 0);
-    cr_assert_eq(stat(path, &file_stat_buffer), 0);
-    cr_assert_eq(stat_buffer.st_dev, file_stat_buffer.st_dev);
-    cr_assert_eq(stat_buffer.st_ino, file_stat_buffer.st_ino);
-    my_close(fd);
-    cr_assert_eq(my_memcmp(path, prefix, prefix_len), 0);
-    cr_assert_eq(my_memcmp(path + prefix_len + x_len, "", 1), 0);
-    for (const char *i = MY_MAX(path + prefix_len, path + prefix_len + x_len - 6); i < path + prefix_len + x_len; ++i) {
-        cr_assert_neq(*i, '\0');
-        if (*i == 'X')
-            return false;
-    }
-    return true;
+    mktemp_netbsd_check_mode(&stat_buffer, 0600, false);
 }
 
 static void openbsd_try(char *path, const char *prefix, size_t x_len)
@@ -71,8 +39,7 @@ static void openbsd_try(char *path, const char *prefix, size_t x_len)
         my_memcpy(path, prefix, prefix_len);
         my_memset(path + prefix_len, 'X', x_len);
         path[prefix_len + x_len] = '\0';
-        int fd = my_mkstemp(path);
-        if (openbsd_check(fd, path, prefix, prefix_len, x_len))
+        if (mkstemp_openbsd_check(my_mkstemp(path), path, prefix, prefix_len, "", 0, x_len))
             return;
     }
     cr_assert(false && "Failed to successfully pass checks after 100 tries");
@@ -80,21 +47,11 @@ static void openbsd_try(char *path, const char *prefix, size_t x_len)
 
 Test(my_mkstemp, openbsd)
 {
-    cr_assert_eq(chdir("/tmp"), 0);
-
     char cwd[PATH_MAX + 1];
-    cr_assert_neq(getcwd(cwd, sizeof(cwd) - 2), NULL);
-
-    size_t cwd_len = my_strlen(cwd);
-    cwd[cwd_len++] = '/';
-    cwd[cwd_len] = '\0';
-
-    long page_size = sysconf(_SC_PAGESIZE);
-    char *p = mmap(NULL, page_size * 3, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
-    cr_assert_neq(p, MAP_FAILED);
-    cr_assert_eq(mprotect(p, page_size, PROT_NONE), 0);
-    cr_assert_eq(mprotect(p + page_size * 2, page_size, PROT_NONE), 0);
-    p += page_size;
+    size_t cwd_len;
+    long page_size;
+    char *p;
+    mkstemp_openbsd_startup(cwd, &cwd_len, &page_size, &p);
 
     for (size_t i = 11; i-- != 0;) {
         /* try first at the start of a page, no prefix */
