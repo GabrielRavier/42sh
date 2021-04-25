@@ -25,6 +25,6 @@ void shell_do_line(struct shell *self)
     if (!self->error)
         shell_execute(self, parse_tree, NULL, NULL);
     else
-        shell_print_error(self, false);
+        shell_print_error(self);
     shell_parse_tree_free(parse_tree);
 }

@@ -44,6 +44,9 @@ static inline bool shell_char_is_type(shell_char_t c, unsigned type)
 shell_char_t *shell_char_xstrdup(const shell_char_t *str) MY_ATTR_NOTHROW
     MY_ATTR_WARN_UNUSED_RESULT MY_ATTR_MALLOC MY_ATTR_NONNULL((1))
     MY_ATTR_ACCESS((read_only, 1));
+shell_char_t *shell_char_xstrndup(const shell_char_t *str, size_t len)
+    MY_ATTR_NOTHROW MY_ATTR_WARN_UNUSED_RESULT MY_ATTR_MALLOC
+    MY_ATTR_NONNULL((1)) MY_ATTR_ACCESS((read_only, 1));
 size_t shell_char_strlen(const shell_char_t *string) MY_ATTR_NOTHROW
     MY_ATTR_WARN_UNUSED_RESULT MY_ATTR_NONNULL((1)) MY_ATTR_PURE
     MY_ATTR_ACCESS((read_only, 1));
@@ -61,6 +64,23 @@ int shell_char_cstrcmp_ignore_quote(const shell_char_t *string1,
 char *shell_char_xstrdup_to_c(const shell_char_t *str) MY_ATTR_NOTHROW
     MY_ATTR_WARN_UNUSED_RESULT MY_ATTR_MALLOC MY_ATTR_NONNULL((1))
     MY_ATTR_ACCESS((read_only, 1));
+shell_char_t *shell_char_xstrdup_from_c(const char *str) MY_ATTR_NOTHROW
+    MY_ATTR_WARN_UNUSED_RESULT MY_ATTR_MALLOC MY_ATTR_NONNULL((1))
+    MY_ATTR_ACCESS((read_only, 1));
+
+/// The result of this function is only valid until the next call to it
+char *shell_char_static_xstrdup_to_c(const shell_char_t *str) MY_ATTR_NOTHROW
+    MY_ATTR_WARN_UNUSED_RESULT MY_ATTR_NONNULL((1))
+    MY_ATTR_ACCESS((read_only, 1));
+
+shell_char_t *shell_char_getcwd_malloced(void);
+shell_char_t *shell_char_str_quote(shell_char_t *str);
+
 char **shell_char_xdup_strv_to_c(shell_char_t *const *strv) MY_ATTR_NOTHROW
     MY_ATTR_WARN_UNUSED_RESULT MY_ATTR_MALLOC MY_ATTR_NONNULL((1))
     MY_ATTR_ACCESS((read_only, 1));
+void shell_char_strv_free(shell_char_t **strv);
+void shell_char_strv_unquote(shell_char_t **strv);
+shell_char_t *shell_char_str_unquote(shell_char_t *str);
+shell_char_t *shell_char_alloc_concat(const shell_char_t *left,
+    const shell_char_t *right);

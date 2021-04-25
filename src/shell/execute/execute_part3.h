@@ -32,7 +32,7 @@ static inline void shell_execute_do_redirection_input_str(struct shell *self,
     if (fd < 0) {
         shell_set_error(self, SHELL_ERROR_SYSTEM, tmp_filename,
             strerror(errno));
-        shell_print_error(self, true);
+        shell_print_error(self);
     }
     fd_move(fd, STDIN_FILENO);
 }
@@ -49,10 +49,14 @@ static inline void shell_execute_do_redirection_input(struct shell *self,
             (void)dup(pipe_in[0]);
             my_close(pipe_in[0]);
             my_close(pipe_in[1]);
+        } else {
+            my_close(STDIN_FILENO);
+            (void)dup(self->old_stdin_fd);
         }
     }
 }
 
+// We copy our fds to the standard ones so that >/dev/std{out,err} work
 static inline void shell_execute_do_redirection_output_str(struct shell *self,
     struct shell_parse_tree *parse_tree)
 {
@@ -66,11 +70,11 @@ static inline void shell_execute_do_redirection_output_str(struct shell *self,
         tmp_filename, O_WRONLY | O_APPEND) : 0;
     if ((parse_tree->flags & PARSE_TREE_NODE_FLAGS_APPEND) == 0 ||
         fd < 0) {
-        fd = creat(tmp_filename, 0666);
+        fd = my_creat(tmp_filename, 0666);
         if (fd < 0) {
             shell_set_error(self, SHELL_ERROR_SYSTEM, tmp_filename,
-                            strerror(errno));
-            shell_print_error(self, true);
+                strerror(errno));
+            shell_print_error(self);
         }
     }
     fd_move(fd, STDOUT_FILENO);

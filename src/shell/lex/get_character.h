@@ -19,9 +19,7 @@ static inline shell_char_t shell_lex_get_character(struct shell *self)
         return c;
     }
     c = shell_read_character(self, true);
-    if (c == SHELL_CHAR_ERROR)
-        c = '\n';
-    return c;
+    return c == SHELL_CHAR_ERROR ? '\n' : c;
 }
 
 static inline void shell_lex_unget_character(struct shell *self, shell_char_t c)

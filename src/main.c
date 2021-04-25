@@ -8,12 +8,14 @@
 #include "shell.h"
 #include "shell/init.h"
 #include "shell/process.h"
+#include "shell/exit_from_status.h"
 
-int main(void)
+int main(int argc, char *argv[])
 {
     static struct shell self;
 
-    shell_init(&self);
+    (void)argc;
+    shell_init(&self, argv[0]);
     shell_process(&self);
-    return (self.last_command_exit_status);
+    shell_exit_from_status(&self);
 }

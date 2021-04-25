@@ -100,7 +100,7 @@ static inline void parse_part4_do_loop(struct parse_part4_state *st)
             parse_part4_do_input(st);
             continue;
         default:
-            if (st->self->error == SHELL_ERROR_NO_ERROR)
+            if (st->self->error == NULL)
                 st->parse_tree->argv[st->argument_count++] =
                     shell_char_xstrdup(st->i->word);
             continue;

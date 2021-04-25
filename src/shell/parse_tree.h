@@ -9,6 +9,10 @@
 
 #include "../shell_char.h"
 
+/// node_left and node_right are set if the node is a pipe
+/// node_left and node_right *may* be set if the node is a list
+/// str_left and str_right *may* be set if the node is a command
+/// argv is only relevant if the node is a command
 struct shell_parse_tree {
     enum {
         PARSE_TREE_NODE_TYPE_COMMAND,

@@ -8,12 +8,12 @@
 #include "heredoc.h"
 #include "set_error.h"
 #include "print_error.h"
-#include "read_character.h"
 #include "../shell_char_vector.h"
-#include "my/stdlib.h"
+#include "read_character.h"
+#include "my/stdio.h"
 #include "my/unistd.h"
-#include "my/fcntl.h"
 #include <string.h>
+#include <unistd.h>
 #include <errno.h>
 
 static void print_line_to_stdin(struct my_shell_char_vector *line_buffer)
@@ -50,7 +50,7 @@ static void do_line_loop(struct shell *self, const shell_char_t *stop_line)
     while (true) {
         my_shell_char_vector_resize(line_buffer, 0);
         c = do_single_line(self, line_buffer);
-        if (c == SHELL_CHAR_ERROR && line_buffer->size == 0)
+        if (c == SHELL_CHAR_ERROR && line_buffer->size != 0)
             c = '\n';
         my_shell_char_vector_append_single(line_buffer, '\0');
         if (c == SHELL_CHAR_ERROR || shell_char_strcmp(line_buffer->data,
@@ -61,6 +61,7 @@ static void do_line_loop(struct shell *self, const shell_char_t *stop_line)
     my_shell_char_vector_free(line_buffer);
 }
 
+// TODO Add proper error handling here instead of forcing an exit
 void shell_heredoc(struct shell *self, const shell_char_t *stop_line)
 {
     char heredoc_name[] = "/tmp/sh.XXXXXX";
@@ -69,7 +70,8 @@ void shell_heredoc(struct shell *self, const shell_char_t *stop_line)
     if (my_mkstemp(heredoc_name) == -1) {
         shell_set_error(self, SHELL_ERROR_SYSTEM, heredoc_name,
             strerror(errno));
-        shell_print_error(self, true);
+        ++self->child_depth;
+        shell_print_error(self);
     }
     my_unlink(heredoc_name);
     do_line_loop(self, stop_line);

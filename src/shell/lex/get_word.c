@@ -36,7 +36,8 @@ static bool do_meta_characters(struct shell *self,
     return true;
 }
 
-// If this returns false, the caller should immediately return (the word is over)
+// If this returns false, the caller should immediately return (the word is
+// over)
 static bool get_first_char(struct shell *self,
     struct my_shell_char_vector *word_buffer, shell_char_t *c)
 {

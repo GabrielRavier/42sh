@@ -6,6 +6,7 @@
 */
 
 #include "read_character.h"
+#include "exit_from_status.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -25,8 +26,7 @@ shell_char_t shell_read_character(struct shell *self, bool want_eof)
             sizeof(read_result)) {
             if (want_eof)
                 return SHELL_CHAR_ERROR;
-            else
-                exit(self->last_command_exit_status);
+            shell_exit_from_status(self);
         }
     while (read_result == 0);
     return read_result;

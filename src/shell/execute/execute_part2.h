@@ -9,6 +9,7 @@
 #include "../pipe.h"
 #include "../heredoc.h"
 #include "../builtin.h"
+#include "../print_error.h"
 #include "my/stdio.h"
 #include "my/unistd.h"
 #include "my/string.h"
@@ -20,7 +21,7 @@ _Noreturn static void shell_execute_do_exec(struct shell *self,
     char **argv = shell_char_xdup_strv_to_c(parse_tree->argv);
 
     my_execvp(argv[0], argv);
-    my_dprintf(self->error_output_fd, "%s: command not found\n", argv[0]);
+    my_dprintf(self->error_output_fd, "%s: Command not found.\n", argv[0]);
     exit(1);
 }
 
@@ -44,14 +45,15 @@ static bool shell_execute_do_command_pre_fork(struct shell *self,
     if ((parse_tree->argv[0][0] & (SHELL_CHAR_QUOTE | SHELL_CHAR_NOT_QUOTE)) ==
         SHELL_CHAR_QUOTE)
         my_memmove(parse_tree->argv[0], parse_tree->argv[0] + 1,
-                   (shell_char_strlen(parse_tree->argv[0] + 1) + 1) * sizeof(
-                       *parse_tree->argv[0]));
+            (shell_char_strlen(parse_tree->argv[0] + 1) + 1) * sizeof(
+            *parse_tree->argv[0]));
     if (parse_tree->argv[0] == NULL)
         return false;
     if (parse_tree->flags & PARSE_TREE_NODE_FLAGS_PIPE_OUTPUT)
         shell_pipe(self, pipe_out);
     if (parse_tree->flags & PARSE_TREE_NODE_FLAGS_INPUT_HEREDOC)
         shell_heredoc(self, parse_tree->str_left);
+    self->last_command_exit_status = 0;
     return true;
 }
 
@@ -61,6 +63,8 @@ static void shell_execute_do_builtin_or_exec(struct shell *self,
 {
     if (builtin) {
         shell_builtin_run(self, builtin, parse_tree);
+        if (self->error != NULL)
+            shell_print_error(self);
         if (has_forked)
             exit(self->last_command_exit_status);
         return;

@@ -13,6 +13,7 @@
 // Must be sorted, otherwise the bsearch in find won't work properly
 static const struct shell_builtin builtins[] = {
     {"cd", shell_builtin_cd, 0, SIZE_MAX},
+    {"chdir", shell_builtin_cd, 0, SIZE_MAX},
     {"env", shell_builtin_env, 0, SIZE_MAX},
     {"exit", shell_builtin_exit, 0, SIZE_MAX},
     {"printenv", shell_builtin_printenv, 0, SIZE_MAX},
