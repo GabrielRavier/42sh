@@ -48,3 +48,5 @@ pid_t my_getpid(void) MY_ATTR_NOTHROW;
 
 /// Remove the pathname name from the filesystem
 int my_unlink(const char *pathname) MY_ATTR_NOTHROW MY_ATTR_NONNULL((1));
+
+pid_t my_getpgrp(void) MY_ATTR_NOTHROW;

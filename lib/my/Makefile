@@ -128,9 +128,9 @@ endif
 
 # Syscalls
 ifeq ($(shell uname -sp), Linux x86_64)
-	SOURCE_FILES += sysdeps/linux/underline_exit_x86_64 sysdeps/linux/gettimeofday_x86_64 sysdeps/linux/unlink_x86_64 sysdeps/linux/lseek_x86_64
+	SOURCE_FILES += sysdeps/linux/underline_exit_x86_64 sysdeps/linux/gettimeofday_x86_64 sysdeps/linux/unlink_x86_64 sysdeps/linux/lseek_x86_64 sysdeps/linux/getpgrp_x86_64
 else
-	SOURCE_FILES += stdlib/underline_exit sys/time/gettimeofday unistd/unlink unistd/lseek
+	SOURCE_FILES += stdlib/underline_exit sys/time/gettimeofday unistd/unlink unistd/lseek unistd/getpgrp
 endif
 
 # Tests related to assert.h
@@ -154,8 +154,8 @@ TESTS_SOURCE_FILES += stdio/printf/printf stdio/putc stdio/fileno stdio/FILE std
 # Tests related to math.h
 TESTS_SOURCE_FILES += math/fabs math/signbit math/fpclassify
 
-# Tests relatesd to unistd.h
-TESTS_SOURCE_FILES += unistd/execvp
+# Tests related to unistd.h
+TESTS_SOURCE_FILES += unistd/execvp unistd/getpgrp
 
 OBJECT_FILES := $(addprefix obj/src/, $(addsuffix .o, $(SOURCE_FILES)))
 TESTS_OBJECT_FILES := $(addprefix obj/tests/, $(addsuffix .o, $(TESTS_SOURCE_FILES)))

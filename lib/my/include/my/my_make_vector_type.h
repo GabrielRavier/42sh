@@ -17,7 +17,7 @@
     #error "MY_VECTOR_TYPE must be defined before including this"
 #endif
 #ifndef MY_VECTOR_TYPE_NAME
-    #error "MY_VECTOR_TYPE_NAME must be defined before including this"X
+    #error "MY_VECTOR_TYPE_NAME must be defined before including this"
 #endif
 
 #define MY_INTERNAL_CONCAT_TOKENS_NX(a, b) a ## b

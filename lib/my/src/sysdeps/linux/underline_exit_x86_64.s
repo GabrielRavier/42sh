@@ -1,7 +1,7 @@
     .intel_syntax noprefix
     .text
 
-    # This is implemented as an infinite loop of using the exit syscall, then the exit_group syscall and finally using hlt
+    # This is implemented as an infinite loop of using the exit_group syscall, then the exit syscall and finally using hlt
     .globl my__exit
     .type my__exit, @function
     .p2align 4
