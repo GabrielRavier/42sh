@@ -6,7 +6,7 @@
 */
 
 #include "../fd.h"
-#include "my/assert.h"
+#include "my/unistd.h"
 #include <unistd.h>
 
 int fd_move(int src, int dest)
@@ -16,11 +16,11 @@ int fd_move(int src, int dest)
     if (dest >= 0) {
         dup2(src, dest);
         if (src != dest)
-            close(src);
+            my_close(src);
         return dest;
     }
     dest = fd_copy(src, dest);
     if (dest != src)
-        close(src);
+        my_close(src);
     return dest;
 }

@@ -7,22 +7,23 @@
 
 #include "../fd.h"
 #include "../shell.h"
+#include "my/unistd.h"
 #include <unistd.h>
 
-static int recursively_use_fds(int src, int dest)
+static int recursively_use_fds_until_dest(int src, int dest)
 {
-    int tmp = dup(src);
+    int new_fd = dup(src);
 
-    if (tmp < 0)
+    if (new_fd < 0)
         return -1;
-    if (dest == -1 && tmp > SHELL_SAFE_FD)
-        return tmp;
-    if (tmp != dest) {
-        dest = recursively_use_fds(tmp, dest);
-        close(tmp);
+    if (dest == -1 && new_fd > SHELL_SAFE_FD)
+        return new_fd;
+    if (new_fd != dest) {
+        dest = recursively_use_fds_until_dest(new_fd, dest);
+        my_close(new_fd);
         return dest;
     }
-    return tmp;
+    return new_fd;
 }
 
 int fd_copy(int src, int dest)
@@ -33,5 +34,5 @@ int fd_copy(int src, int dest)
         dup2(src, dest);
         return dest;
     }
-    return recursively_use_fds(src, dest);
+    return recursively_use_fds_until_dest(src, dest);
 }
