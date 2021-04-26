@@ -41,8 +41,7 @@ static bool try_from_plus(struct shell *self, const shell_char_t *destination,
     self->current_dir->prev->next = self->current_dir->next;
     self->current_dir->next->prev = self->current_dir->prev;
     dir_free(self->current_dir);
-    shell_dir_set_current(self, dir, flags);
-    return false;
+    return !shell_dir_set_current(self, dir, flags) ? false : false;
 }
 
 static shell_char_t *do_cd_home(struct shell *self)
@@ -92,12 +91,12 @@ void shell_builtin_cd(struct shell *self, shell_char_t **argv)
         shell_var_get_value(self, OWD) : *argv, flags, argv);
     if (destination_copied == NULL)
         return;
-    dir = my_xcalloc(1, sizeof(*dir));
-    dir->name = destination_copied;
-    dir->next = self->current_dir->next;
-    dir->prev = self->current_dir->prev;
+    dir = my_xmalloc(sizeof(*dir));
+    *dir = (struct dir){self->current_dir->next, self->current_dir->prev,
+        destination_copied, 0};
     dir->prev->next = dir;
     dir->next->prev = dir;
     dir_free(self->current_dir);
-    shell_dir_set_current(self, dir, flags);
+    if (!shell_dir_set_current(self, dir, flags))
+        return;
 }

@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "my/features.h"
 #include "shell_char.h"
 
 /// We store variables in an AVL tree
@@ -25,9 +26,12 @@ struct var {
     int balance;
     enum {
         VAR_FLAG_READ_WRITE = 0x1,
+        VAR_FLAG_NO_GLOB = 0x2,
     } flags;
 };
 
-struct var *var_get(struct var *head, const shell_char_t *name);
-const shell_char_t *var_get_value(struct var *head, const shell_char_t *name);
+struct var *var_get(struct var *head, const shell_char_t *name)
+    MY_ATTR_WARN_UNUSED_RESULT;
+const shell_char_t *var_get_value(struct var *head, const shell_char_t *name)
+    MY_ATTR_WARN_UNUSED_RESULT;
 void var_tree_balance(struct var *start, bool is_from_right_child);

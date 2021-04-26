@@ -45,7 +45,7 @@ static shell_char_t *do_handling_if_getcwd_null(struct shell *self,
     return shell_char_xstrdup_from_c("/");
 }
 
-void shell_init_dir(struct shell *self, const shell_char_t *home_val)
+bool shell_init_dir(struct shell *self, const shell_char_t *home_val)
 {
     shell_char_t *current_dir = shell_char_getcwd_malloced();
     shell_char_t *cwd_name = do_handling_if_getcwd_null(self, current_dir,
@@ -58,5 +58,5 @@ void shell_init_dir(struct shell *self, const shell_char_t *home_val)
     first_cwd->next = &self->head_dir;
     first_cwd->prev = &self->head_dir;
     self->force_print_directory_stack = false;
-    shell_dir_set_current(self, first_cwd, 0);
+    return shell_dir_set_current(self, first_cwd, 0);
 }

@@ -9,6 +9,7 @@
 
 #include "../shell.h"
 #include "../dir.h"
+#include "my/features.h"
 
 enum {
     SHELL_DIR_CMD_OPT_PRINT = 0x1,
@@ -27,13 +28,15 @@ typedef struct {
 } sdcpo_opts_t;
 
 // The options string must be in the order given in the flags enum
-bool shell_dir_command_parse_options(sdcpo_opts_t *o);
+bool shell_dir_command_parse_options(sdcpo_opts_t *o)
+    MY_ATTR_WARN_UNUSED_RESULT;
 
 // The flags here are the SHELL_DIR_CMD_OPT ones
-void shell_dir_set_current(struct shell *self, struct dir *dir, int flags);
+MY_ATTR_WARN_UNUSED_RESULT bool shell_dir_set_current(struct shell *self,
+    struct dir *dir, int flags);
 void shell_dir_print_stack(struct shell *self, int flags);
 
 // This will deal with all the bullshit like trying with the destination as a
 // variable name or stuff like that
 shell_char_t *shell_dir_do_cmd_chdir(struct shell *self,
-    const shell_char_t *destination, bool is_owd);
+    const shell_char_t *destination, bool is_owd) MY_ATTR_WARN_UNUSED_RESULT;

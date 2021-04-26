@@ -23,7 +23,7 @@ enum {
     SHELL_CHAR_TYPE_ESCAPE = 0x2,
 };
 
-static const unsigned char SHELL_CHAR_TYPE_MAP[0x100] = {
+static const unsigned char SHELL_CHAR_TYPE_MAP[0x80] = {
     ['\t'] = SHELL_CHAR_TYPE_META,
     ['\n'] = SHELL_CHAR_TYPE_META,
     [' '] = SHELL_CHAR_TYPE_META,
@@ -34,7 +34,8 @@ static const unsigned char SHELL_CHAR_TYPE_MAP[0x100] = {
     ['|'] = SHELL_CHAR_TYPE_META,
 };
 
-static inline bool shell_char_is_type(shell_char_t c, unsigned type)
+MY_ATTR_WARN_UNUSED_RESULT static inline bool shell_char_is_type(shell_char_t c,
+    unsigned type)
 {
     if ((c & SHELL_CHAR_QUOTE) || c >= 0x80)
         return false;
@@ -73,7 +74,7 @@ char *shell_char_static_xstrdup_to_c(const shell_char_t *str) MY_ATTR_NOTHROW
     MY_ATTR_WARN_UNUSED_RESULT MY_ATTR_NONNULL((1))
     MY_ATTR_ACCESS((read_only, 1));
 
-shell_char_t *shell_char_getcwd_malloced(void);
+shell_char_t *shell_char_getcwd_malloced(void) MY_ATTR_WARN_UNUSED_RESULT;
 shell_char_t *shell_char_str_quote(shell_char_t *str);
 
 char **shell_char_xdup_strv_to_c(shell_char_t *const *strv) MY_ATTR_NOTHROW
@@ -83,4 +84,8 @@ void shell_char_strv_free(shell_char_t **strv);
 void shell_char_strv_unquote(shell_char_t **strv);
 shell_char_t *shell_char_str_unquote(shell_char_t *str);
 shell_char_t *shell_char_alloc_concat(const shell_char_t *left,
-    const shell_char_t *right);
+    const shell_char_t *right) MY_ATTR_WARN_UNUSED_RESULT;
+shell_char_t **shell_char_strv_dup(const shell_char_t **strv)
+    MY_ATTR_WARN_UNUSED_RESULT;
+size_t shell_char_strv_len(const shell_char_t **strv)
+    MY_ATTR_WARN_UNUSED_RESULT MY_ATTR_PURE;

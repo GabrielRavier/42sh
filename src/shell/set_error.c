@@ -32,6 +32,7 @@ static const char *const SHELL_SET_ERROR_FORMATS[SHELL_ERROR_LAST_ERROR] = {
     "Unknown user: %s",
     "No $home variable set",
     "Ambiguous",
+    "No match",
 };
 
 void shell_set_error(struct shell *self,

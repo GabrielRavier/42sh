@@ -32,19 +32,23 @@ static void guarantee_012_open(struct shell *self)
     my_close(fd);
 }
 
-void shell_init(struct shell *self, const char *argv0)
+bool shell_init(struct shell *self, const char *argv0)
 {
+    const shell_char_t *home_val;
+
     my_memset(self, 0, sizeof(*self));
     self->line_buffer_current_ptr = self->line_buffer;
     guarantee_012_open(self);
     shell_init_program_name(self, argv0);
     shell_init_fds(self);
     self->input_is_tty = isatty(self->input_fd);
-    shell_init_dir(self, shell_init_home(self));
+    if (!shell_init_home(self, &home_val) || !shell_init_dir(self, home_val))
+        return false;
     self->parent_sigint_handler = signal(SIGINT, SIG_IGN);
     signal(SIGINT, self->parent_sigint_handler);
     self->should_set_interrupts = (self->input_is_tty &&
         isatty(self->output_fd)) || self->parent_sigint_handler == SIG_DFL;
     self->pgrp = my_getpgrp();
     lexical_word_list_init(&self->current_lexical_word);
+    return true;
 }
