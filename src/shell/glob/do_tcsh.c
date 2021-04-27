@@ -47,8 +47,7 @@ static bool tcsh_glob_tilde(struct shell *self,
         *result = shell_char_xstrdup(str);
         return true;
     }
-    for (++str; *str != '\0' && *str != '/' && *str != ':'; ++str)
-        ;
+    for (++str; *str != '\0' && *str != '/' && *str != ':'; ++str);
     username = shell_char_xstrndup(orig + 1, str - (orig + 1));
     home_dir = shell_get_home_dir(self, username);
     return finish_tilde(&((ft_opts_t){self, home_dir, username, str, result}));

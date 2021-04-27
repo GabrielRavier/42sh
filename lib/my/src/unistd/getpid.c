@@ -23,4 +23,3 @@ pid_t my_getpid(void)
     my__exit(84);
 }
 #endif
-

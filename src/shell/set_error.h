@@ -10,4 +10,3 @@
 #include "../shell.h"
 
 void shell_set_error(struct shell *self, enum shell_error_type error, ...);
-

@@ -19,4 +19,3 @@ shell_char_t *shell_char_xstrdup_from_c(const char *string)
         duplicate_string[i] = string[i];
     return duplicate_string;
 }
-

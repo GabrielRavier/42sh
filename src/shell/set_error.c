@@ -35,8 +35,7 @@ static const char *const SHELL_SET_ERROR_FORMATS[SHELL_ERROR_LAST_ERROR] = {
     "No match",
 };
 
-void shell_set_error(struct shell *self,
-    enum shell_error_type error, ...)
+void shell_set_error(struct shell *self, enum shell_error_type error, ...)
 {
     va_list arg_list;
     int flags = error & SHELL_ERROR_FLAG_MASK;

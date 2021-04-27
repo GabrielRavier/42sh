@@ -9,8 +9,8 @@
 #include "../glob.h"
 #include "../set_error.h"
 
-static void do_raw_set(struct shell *self,
-    const shell_char_t *var, shell_char_t **valv, int flags)
+static void do_raw_set(struct shell *self, const shell_char_t *var,
+    shell_char_t **valv, int flags)
 {
     struct var *var_i = &self->vars_head;
     struct var *var_j;

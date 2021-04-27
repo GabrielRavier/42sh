@@ -21,8 +21,7 @@ static bool check_args(struct shell *self, shell_char_t **argv)
         return (false);
     }
     for (size_t i = 0; argv[1][i]; ++i)
-        if (!my_isalnum(argv[1][i]) &&
-            argv[1][i] != '_' && argv[1][i] != '.') {
+        if (!my_isalnum(argv[1][i]) && argv[1][i] != '_' && argv[1][i] != '.') {
             shell_set_error(self, SHELL_ERROR_VAR_NAME_MUST_CONTAIN_ALNUM);
             return (false);
         }

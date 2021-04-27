@@ -16,6 +16,5 @@ void shell_init_fds(struct shell *self)
     self->output_fd = fd_copy(STDOUT_FILENO, SHELL_PREFERRED_OUTPUT_FD);
     self->error_output_fd = fd_copy(STDERR_FILENO,
         SHELL_PREFERRED_ERROR_OUTPUT_FD);
-    self->old_stdin_fd = fd_copy(self->input_fd,
-        SHELL_PREFERRED_OLD_STDIN_FD);
+    self->old_stdin_fd = fd_copy(self->input_fd, SHELL_PREFERRED_OLD_STDIN_FD);
 }

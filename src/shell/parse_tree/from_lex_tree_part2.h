@@ -51,14 +51,12 @@ static inline void parse_part4_do_output(struct parse_part4_state *st)
     if (st->i->word[1] == '>')
         st->parse_tree->flags |= PARSE_TREE_NODE_FLAGS_APPEND;
     if (st->i->next == st->word_list_end) {
-        shell_set_error(st->self,
-            SHELL_ERROR_MISSING_NAME_FOR_REDIRECTION);
+        shell_set_error(st->self, SHELL_ERROR_MISSING_NAME_FOR_REDIRECTION);
         return;
     }
     st->i = st->i->next;
     if (shell_char_cstrchr("<>", st->i->word[0])) {
-        shell_set_error(st->self,
-            SHELL_ERROR_MISSING_NAME_FOR_REDIRECTION);
+        shell_set_error(st->self, SHELL_ERROR_MISSING_NAME_FOR_REDIRECTION);
         return;
     }
     if ((st->flags & PARSER_FLAGS_OUTPUT) || st->parse_tree->str_right)
@@ -72,19 +70,16 @@ static inline void parse_part4_do_input(struct parse_part4_state *st)
     if (st->i->word[1] == '<')
         st->parse_tree->flags |= PARSE_TREE_NODE_FLAGS_INPUT_HEREDOC;
     if (st->i->next == st->word_list_end) {
-        shell_set_error(st->self,
-            SHELL_ERROR_MISSING_NAME_FOR_REDIRECTION);
+        shell_set_error(st->self, SHELL_ERROR_MISSING_NAME_FOR_REDIRECTION);
         return;
     }
     st->i = st->i->next;
     if (shell_char_cstrchr("<>", st->i->word[0])) {
-        shell_set_error(st->self,
-            SHELL_ERROR_MISSING_NAME_FOR_REDIRECTION);
+        shell_set_error(st->self, SHELL_ERROR_MISSING_NAME_FOR_REDIRECTION);
         return;
     }
     if ((st->flags & PARSER_FLAGS_INPUT) || st->parse_tree->str_left)
-        shell_set_error(st->self,
-            SHELL_ERROR_AMBIGUOUS_INPUT_REDIRECT);
+        shell_set_error(st->self, SHELL_ERROR_AMBIGUOUS_INPUT_REDIRECT);
     else
         st->parse_tree->str_left = shell_char_xstrdup(st->i->word);
 }

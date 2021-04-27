@@ -68,8 +68,7 @@ static inline void shell_execute_do_redirection_output_str(struct shell *self,
     fd_copy(self->error_output_fd, STDERR_FILENO);
     fd = (parse_tree->flags & PARSE_TREE_NODE_FLAGS_APPEND) ? open(
         tmp_filename, O_WRONLY | O_APPEND) : 0;
-    if ((parse_tree->flags & PARSE_TREE_NODE_FLAGS_APPEND) == 0 ||
-        fd < 0) {
+    if ((parse_tree->flags & PARSE_TREE_NODE_FLAGS_APPEND) == 0 || fd < 0) {
         fd = my_creat(tmp_filename, 0666);
         if (fd < 0) {
             shell_set_error(self, SHELL_ERROR_SYSTEM, tmp_filename,

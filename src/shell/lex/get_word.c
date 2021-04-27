@@ -19,7 +19,7 @@ static bool do_meta_characters(struct shell *self,
     struct my_shell_char_vector *word_buffer, shell_char_t *c)
 {
     shell_char_t c_after;
-    
+
     if (*c == '<' || *c == '>') {
         my_shell_char_vector_append_single(word_buffer, *c);
         c_after = shell_lex_get_character(self);

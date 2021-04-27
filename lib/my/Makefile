@@ -2,7 +2,7 @@
 ## EPITECH PROJECT, 2020
 ## libmy
 ## File description:
-## Makefile for libmy.a
+## Makefile for libmy
 ##
 
 # We use `override` to enable setting part of CFLAGS on the command line

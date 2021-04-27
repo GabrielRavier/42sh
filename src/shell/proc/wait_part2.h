@@ -28,11 +28,9 @@ static inline void do_next_wait_found_set_status_reason(struct shell_proc *i,
             if (WCOREDUMP(status))
                 i->flags |= SHELL_PROC_FLAG_DUMPED_CORE;
             i->reason = WTERMSIG(status);
-        }
-        else {
+        } else {
             i->reason = WEXITSTATUS(status);
-            i->flags |= (i->reason != 0) ?
-                SHELL_PROC_FLAG_ABNORMAL_EXIT :
+            i->flags |= (i->reason != 0) ? SHELL_PROC_FLAG_ABNORMAL_EXIT :
                 SHELL_PROC_FLAG_NORMAL_EXIT;
         }
     }
@@ -85,8 +83,7 @@ static inline void do_next_wait_found(struct shell *self, struct shell_proc *pro
     do_next_wait_found_set_status_reason(proc, status);
     job_flags = make_job_flags(proc);
     proc->flags &= ~SHELL_PROC_FLAG_FOREGROUND;
-    if ((job_flags & (SHELL_PROC_FLAG_RUNNING | SHELL_PROC_FLAG_REPORTED)) ==
-        0)
+    if ((job_flags & (SHELL_PROC_FLAG_RUNNING | SHELL_PROC_FLAG_REPORTED)) == 0)
         do_next_wait_found_not_running_or_reported(self, proc, job_flags);
 }
 
