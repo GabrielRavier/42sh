@@ -32,10 +32,8 @@ shell_char_t *shell_char_alloc_concat(const shell_char_t *left,
         left = &NUL;
     if (right == NULL)
         right = &NUL;
-    for (left_end = left; *left_end++ != '\0';)
-        ;
-    for (right_end = right; *right_end++ != '\0';)
-        ;
+    for (left_end = left; *left_end++ != '\0';);
+    for (right_end = right; *right_end++ != '\0';);
     result = my_xmalloc(sizeof(*result) * ((left_end - left) + (right_end -
         right) - 1));
     set_result(result, left, right);

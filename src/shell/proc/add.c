@@ -19,8 +19,7 @@ static void do_current_job(struct shell *self, struct shell_proc *proc)
         proc->next_in_job_list = self->current_job;
         proc->job_leader_pid = self->current_job->pid;
         for (i = self->current_job; i->next_in_job_list != self->current_job;
-            i = i->next_in_job_list)
-            ;
+            i = i->next_in_job_list);
         i->next_in_job_list = proc;
     } else {
         self->current_job = proc;
