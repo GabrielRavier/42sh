@@ -90,7 +90,7 @@ SOURCE_FILES += math/fabs math/fpclassify math/signbit
 SOURCE_FILES += signal/sigaddset
 
 # Stuff related to stdio.h
-SOURCE_FILES += stdio/putchar stdio/dputc stdio/dgetc stdio/dputs stdio/puts stdio/fclose stdio/g_my_standard_files stdio/fflush stdio/putc stdio/fputc stdio/fopen stdio/fileno stdio/ferror stdio/fwrite stdio/printf stdio/dprintf stdio/asprintf stdio/sprintf
+SOURCE_FILES += stdio/putchar stdio/dputc stdio/dgetc stdio/dputs stdio/puts stdio/fclose stdio/g_my_standard_files stdio/fflush stdio/putc stdio/fputc stdio/fopen stdio/fileno stdio/ferror stdio/fwrite stdio/printf stdio/dprintf stdio/asprintf stdio/sprintf stdio/xasprintf stdio/xvasprintf
 SOURCE_FILES += stdio/internal/file/normal/read stdio/internal/file/normal/write stdio/internal/file/normal/seek stdio/internal/file/normal/close stdio/internal/file/parse_mode stdio/internal/file/find_ptr stdio/internal/file/flush_skip_non_write stdio/internal/file/all_for_each stdio/internal/file/write_to_buffer stdio/internal/file/setup_write stdio/internal/file/make_buffer stdio/internal/file/determine_buffering stdio/internal/file/do_write stdio/internal/file/do_read stdio/internal/file/do_seek stdio/internal/file/cleanup
 
 # Stuff related to printf's my_string-based implementation
