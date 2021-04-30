@@ -15,7 +15,7 @@
 #include "my/string.h"
 #include <stdlib.h>
 
-_Noreturn static void shell_execute_do_exec(struct shell *self,
+_Noreturn static inline void shell_execute_do_exec(struct shell *self,
     struct shell_parse_tree *parse_tree)
 {
     char **argv = shell_char_xdup_strv_to_c(parse_tree->argv);
@@ -39,7 +39,7 @@ static void shell_execute_do_parent(struct shell *self,
     return;
 }
 
-static bool shell_execute_do_command_pre_fork(struct shell *self,
+static inline bool shell_execute_do_command_pre_fork(struct shell *self,
     struct shell_parse_tree *parse_tree, int *pipe_out)
 {
     if ((parse_tree->argv[0][0] & (SHELL_CHAR_QUOTE | SHELL_CHAR_NOT_QUOTE)) ==
@@ -57,7 +57,7 @@ static bool shell_execute_do_command_pre_fork(struct shell *self,
     return true;
 }
 
-static void shell_execute_do_builtin_or_exec(struct shell *self,
+static inline void shell_execute_do_builtin_or_exec(struct shell *self,
     struct shell_parse_tree *parse_tree, struct shell_builtin *builtin,
     bool has_forked)
 {
