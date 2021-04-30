@@ -25,25 +25,25 @@ typedef FILE my_file_t;
 
 typedef off_t my_fpos_t;
 
-// A buffer for the my_file_t implementation
+/// A buffer for the my_file_t implementation
 struct my_file_buffer {
     ssize_t size;
     unsigned char *base;
 };
 
-// This is the structure we use to implement my_file_t
-// fd is the file descriptor attached to the file (or -1 if we're not a file)
-// offset is the current file offset from lseek
-// internal_data is passed to read, write, seek and close
-// line_buffer_size is either 0 or -buffer.size, this is to optimize putc
-// buffer_ptr points to the next byte in the buffer
-// one_char_read_buffer is the "buffer" we use when unbuffered or when malloc
-// fails
-// Whether flags is non-0 marks whether the file entry is used (used in
-// find_ptr to determine which files are in use)
-// MY_FILE_FLAG_FSEEK_OPT and MY_FILE_FLAG_NO_FSEEK_OPT both exist because we
-// want to be able to distinguish the case where we haven't yet determined
-// whether the optimization is possible
+/// This is the structure we use to implement my_file_t
+/// fd is the file descriptor attached to the file (or -1 if we're not a file)
+/// offset is the current file offset from lseek
+/// internal_data is passed to read, write, seek and close
+/// line_buffer_size is either 0 or -buffer.size, this is to optimize putc
+/// buffer_ptr points to the next byte in the buffer
+/// one_char_read_buffer is the "buffer" we use when unbuffered or when malloc
+/// fails
+/// Whether flags is non-0 marks whether the file entry is used (used in
+/// find_ptr to determine which files are in use)
+/// MY_FILE_FLAG_FSEEK_OPT and MY_FILE_FLAG_NO_FSEEK_OPT both exist because we
+/// want to be able to distinguish the case where we haven't yet determined
+/// whether the optimization is possible
 extern struct my_file_type {
     int fd;
     off_t offset;
@@ -143,29 +143,37 @@ int my_sprintf(char *MY_RESTRICT result_string, const char *MY_RESTRICT format,
 int my_vsprintf(char *MY_RESTRICT result_string, const char *MY_RESTRICT format,
     va_list arguments) MY_ATTR_NOTHROW;
 
-// Open a file and create a new my_file_t for it
+/// Open a file and create a new my_file_t for it
 my_file_t *my_fopen(const char *MY_RESTRICT filename,
     const char *MY_RESTRICT mode) MY_ATTR_WARN_UNUSED_RESULT;
 
-// Writes a character to fp
+/// Version of my_fopen that either succeeds or doesn't return
+my_file_t *my_xfopen(const char *MY_RESTRICT filename,
+    const char *MY_RESTRICT mode) MY_ATTR_WARN_UNUSED_RESULT;
+
+/// Writes a character to fp
 int my_fputc(int c, my_file_t *fp);
 int my_putc(int c, my_file_t *fp);
 
-// Closes the passed file
+/// Closes the passed file
 int my_fclose(my_file_t *fp);
 
-// Flushes the passed file, or all of them if fp is NULL
+/// Flushes the passed file, or all of them if fp is NULL
 int my_fflush(my_file_t *fp);
 
-// Returns the file descriptor for the given file
+/// Returns the file descriptor for the given file
 int my_fileno(my_file_t *fp) MY_ATTR_NOTHROW MY_ATTR_WARN_UNUSED_RESULT;
 
-// Returns the error indicator for the given file
+/// Returns the error indicator for the given file
 int my_ferror(my_file_t *fp) MY_ATTR_NOTHROW MY_ATTR_WARN_UNUSED_RESULT;
 
-// Writes size * n bytes from the given buffer to the given file
+/// Writes size * n bytes from the given buffer to the given file
 size_t my_fwrite(const void *MY_RESTRICT buffer, size_t size, size_t count,
     my_file_t *fp);
+
+/// Checks for error, flushes and closes the file and does not return if any of
+/// those fail
+void my_xfclose(my_file_t *fp);
 
 static inline void my_fclose_ptr(my_file_t **ptr)
 {
