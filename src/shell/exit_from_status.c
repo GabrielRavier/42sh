@@ -14,5 +14,4 @@ void shell_exit_from_status(struct shell *self)
 {
     self->child_depth = 1;
     shell_exit(self, self->last_command_exit_status);
-    MY_ASSERT(false);
 }

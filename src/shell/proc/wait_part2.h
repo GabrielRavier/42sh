@@ -73,8 +73,8 @@ static inline void do_next_wait_found_not_running_or_reported(
         shell_putchar(self, '\n');
 }
 
-static inline void do_next_wait_found(struct shell *self, struct shell_proc *proc,
-    int status)
+static inline void do_next_wait_found(struct shell *self,
+    struct shell_proc *proc, int status)
 {
     int job_flags;
 

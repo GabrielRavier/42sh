@@ -13,5 +13,4 @@ void shell_exit(struct shell *self, int status)
 {
     (void)self;
     my__exit(status);
-    MY_ASSERT(false);
 }
