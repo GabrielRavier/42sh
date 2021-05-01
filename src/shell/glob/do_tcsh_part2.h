@@ -18,7 +18,7 @@ typedef struct {
     shell_char_t **result;
 } ft_opts_t;
 
-static bool finish_tilde(ft_opts_t *o)
+static inline bool finish_tilde(ft_opts_t *o)
 {
     if (o->home_dir == NULL) {
         if (*o->username != '\0')
