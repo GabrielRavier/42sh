@@ -19,6 +19,21 @@ static my_fpos_t finish_not_failed(my_file_t *fp, my_fpos_t seek_result)
     return seek_result;
 }
 
+static my_fpos_t finish_failed(my_file_t *fp, my_fpos_t offset, int whence,
+    int errno_from_seek)
+{
+    if (errno_from_seek == 0) {
+        if (offset != 0 || whence != SEEK_CUR) {
+            fp->buffer_ptr = fp->buffer.base;
+            fp->read_space_left = 0;
+        }
+        fp->flags &= MY_FILE_FLAG_ERROR;
+        errno = EINVAL;
+    }
+    fp->flags &= ~MY_FILE_FLAG_IS_OFFSET_CORRECT;
+    return -1;
+}
+
 my_fpos_t my_internal_file_do_seek(my_file_t *fp, my_fpos_t offset, int whence)
 {
     int saved_errno = errno;
@@ -30,16 +45,7 @@ my_fpos_t my_internal_file_do_seek(my_file_t *fp, my_fpos_t offset, int whence)
     errno_from_seek = errno;
     if (errno == 0)
         errno = saved_errno;
-    if (seek_result < 0) {
-        if (errno_from_seek == 0) {
-            if (offset != 0 || whence != SEEK_CUR)
-                fp->buffer_ptr = fp->buffer.base;
-            fp->flags &= MY_FILE_FLAG_ERROR;
-            errno = EINVAL;
-        }
-        fp->flags &= ~MY_FILE_FLAG_IS_OFFSET_CORRECT;
-        return -1;
-    }
-    return finish_not_failed(fp, seek_result);
+    return seek_result < 0 ? finish_failed(fp, offset, whence, errno_from_seek)
+        : finish_not_failed(fp, seek_result);
 }
 #endif

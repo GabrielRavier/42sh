@@ -12,6 +12,8 @@
 
 #if !LIBMY_USE_LIBC_FILE
 
+// r means open for reading, w for writing, a for appending. Anything else for
+// the first character means we have an illegal mode
 static bool parse_first_char(char first_char, int *open_flags_read_write_type,
     int *open_flags_always)
 {

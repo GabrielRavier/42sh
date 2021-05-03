@@ -50,6 +50,7 @@ static my_file_t *make_found_file(my_file_t *fp)
 {
     fp->flags = !0;
     fp->write_space_left = 0;
+    fp->read_space_left = 0;
     fp->buffer_ptr = NULL;
     fp->buffer.base = NULL;
     fp->buffer.size = 0;

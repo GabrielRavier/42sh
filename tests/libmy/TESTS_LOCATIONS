@@ -1,3 +1,5 @@
+ALSO ADD MEMMEM TESTS FROM GLIBC
+
 math:
 
 Get stuff from bionic for isfinite, isnan, isinf, isnormal, finitef, isfinite,
@@ -41,27 +43,27 @@ stdio:
 
 Get stuff from bionic for fbufsize, flbf, fpending, fpurge, flushlbf,
 freadable, fwriteable, freading, fwriting, fseterr, fsetlocking, flockfile,
-tmpfile, getdelim, getline, popen, getc, scanf, wscanf, fprintf, fwprintf,
-fputs, fputwc, fgetpos, fsetpos, fdopen, fopen, fseek, fgetwc, fmemopen, fputs,
-open_memstream, freopen, fread, fclose, ftell, funopen, fopen, remove, perror,
-putchar, putchar_unlocked, feof_unlocked, ferror_unlocked, putc_unlocked,
-fputc_unlocked, getc_unlocked, fgetc_unlocked, fwrite_unlocked, fflush_unlocked,
-fread_unlocked, fputs_unlocked, fgets_unlocked, rename, renameat, renameat2,
-tempnam, tmpnam, printf
+tmpfile, getdelim, getline, popen, scanf, wscanf, fprintf, fwprintf, fputwc,
+fgetpos, fsetpos, fdopen, fopen, fseek, fgetwc, fmemopen, open_memstream,
+freopen, fread, fclose, ftell, funopen, fopen, remove, perror, putchar,
+putchar_unlocked, feof_unlocked, ferror_unlocked, putc_unlocked, fputc_unlocked,
+getc_unlocked, fgetc_unlocked, fwrite_unlocked, fflush_unlocked, fread_unlocked,
+fputs_unlocked, fgets_unlocked, rename, renameat, renameat2, tempnam, tmpnam,
+printf
 
 Get stuff from dietlibc for fgets, printf, getline
 
-Get stuff from cloudlibc for clearerr, feof, ferror, fflush, fgetc, fgetpos,
-fgets, fgetwc, fgetws, fprintf, fputs, fputwc, fputws, fread, fscanf, fseeko,
-fsetpos, ftello, fwide, fwprintf, fwscanf, getc, getdelim, getline, getwc,
-putwc, rewind, setvbuf, ungetc, ungetwc, fmemopen, tmpfile
+Get stuff from cloudlibc for clearerr, fflush, fgetpos, fgets, fgetwc, fgetws,
+fprintf, fputwc, fputws, fread, fscanf, fseeko, fsetpos, ftello, fwide,
+fwprintf, fwscanf, getdelim, getline, getwc, putwc, rewind, setvbuf, ungetc,
+ungetwc, fmemopen, tmpfile
 
 Get stuff from DeforaOS for fmemopen, fopen, printf, sscanf, tmpfile, tmpnam
 
 Get stuff from plauger for vfprintf, vprintf, vsprintf, sprintf, sscanf,
-fprintf, fgetpos, fsetpos, fscanf, fseek, setvbuf, scanf, fclose, tmpnam, feof,
-ferror, fgetc, clearerr, fputs, getchar, fgets, ungetc, gets, fread, remove,
-rename, fopen, tmpfile, perror, putchar, puts
+fprintf, fgetpos, fsetpos, fscanf, fseek, setvbuf, scanf, fclose, tmpnam,
+clearerr, fputs, getchar, fgets, ungetc, gets, fread, remove, rename, fopen,
+tmpfile, perror, putchar, puts
 
 stdlib:
 
@@ -138,22 +140,21 @@ fegetenv, fesetenv, fegetround, fesetround, vsscanf, creal, nexttoward,
 nexttowardf, nexttowardl, wctrans, towctrans
 
 wine/msvcr90: malloc, free, srand, strtok, wcstok, strerror, tmpnam, asctime,
-ecvt, localtime, vswprintf, fopen, fclose, unlink, feof, ferror,
-mbstowcs, wcstombs, setlocale, swscanf
+ecvt, localtime, vswprintf, fopen, fclose, unlink, mbstowcs, wcstombs,
+setlocale, swscanf
 
 wine/msvcrt: fopen, ftell, fgetpos, fclose, unlink, fdopen, lseek, fread,
-setvbuf, fgets, feof, fgets, rewind, fsetpos, ungetc, fgetc, fgetws, fseek,
-getw, fputs, getc, fread, tempnam, fgetc, fflush, fgetwc, fputwc, tmpnam,
-fcloseall, open, fstat, stat, dup2, pipe, mkdir, write, close, rmdir, dup,
-mktemp, calloc, malloc, realloc, setlocale, atan, exp, tanh, popen, pclose,
-srand, sprintf, vswprintf, swprintf, wcsstr, wcslen, wcscmp, snprintf, fprintf,
-ftell, fwprintf, fscanf, fcvt, ecvt, vswprintf, vsprintf, sscanf, swscanf,
-signal, raise, strcmp, strncmp, strcpy, strnlem, mbsrtowcs, wcsrtombs, wctob,
-btowc, wcrtomb, tolower, towlower, towupper, mbrlen, mbrtowc, swab, strcspn,
-strcmp, strdup, strtok, strtol, strnlen, strtod, mbstowcs, wcstombs, gcvt,
-wctob, btowc, wctomb, tolower, wcstol, atoi, atol, atof, strncpy, strxfrm,
-strstr, iswdigit, wcscmp, gmtime, strftime, wcsftime, asctime, time, localtime,
-ctime, mktime, tzset
+setvbuf, fgets, fgets, rewind, fsetpos, ungetc, fgetws, fseek, getw, fputs,
+fread, tempnam, fflush, fgetwc, fputwc, tmpnam, fcloseall, open, fstat, stat,
+dup2, pipe, mkdir, write, close, rmdir, dup, mktemp, calloc, malloc, realloc,
+setlocale, atan, exp, tanh, popen, pclose, srand, sprintf, vswprintf, swprintf,
+wcsstr, wcslen, wcscmp, snprintf, fprintf, ftell, fwprintf, fscanf, fcvt, ecvt,
+vswprintf, vsprintf, sscanf, swscanf, signal, raise, strcmp, strncmp, strcpy,
+strnlem, mbsrtowcs, wcsrtombs, wctob, btowc, wcrtomb, tolower, towlower,
+towupper, mbrlen, mbrtowc, swab, strcspn, strcmp, strdup, strtok, strtol,
+strnlen, strtod, mbstowcs, wcstombs, gcvt, wctob, btowc, wctomb, tolower,
+wcstol, atoi, atol, atof, strncpy, strxfrm, strstr, iswdigit, wcscmp, gmtime,
+strftime, wcsftime, asctime, time, localtime, ctime, mktime, tzset
 
 wine/ntdll: atoi, atol, wcstol, wcstoul, towlower, towupper, wcschr, wcsrchr,
 bsearch, tolower, toupper, sscanf, iswctype, iswalpha, iswdigit, iswlower,
@@ -162,5 +163,3 @@ isprint, ispunct, isspace, isupper, isxdigit
 
 wine/ucrtbase: strtod, wcstok, snprintf, swprintf, fprintf, fwprintf, vsprintf,
 vsscanf
-
-Also add memmem tests from glibc

@@ -16,6 +16,7 @@ int my_fflush(my_file_t *fp)
     return fflush(fp);
 }
 #else
+// SUSv3 says we return 0 for the non-write case
 int my_fflush(my_file_t *fp)
 {
     if (fp == NULL)

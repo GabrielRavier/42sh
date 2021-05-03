@@ -55,9 +55,11 @@ extern struct my_file_type {
         MY_FILE_FLAG_LINE_BUFFERED = 1 << 4,
         MY_FILE_FLAG_BUFFER_MALLOCED = 1 << 5,
         MY_FILE_FLAG_ERROR = 1 << 6,
-        MY_FILE_FLAG_IS_OFFSET_CORRECT = 1 << 7,
-        MY_FILE_FLAG_FSEEK_OPT = 1 << 8,
-        MY_FILE_FLAG_NO_FSEEK_OPT = 1 << 9,
+        MY_FILE_FLAG_EOF = 1 << 7,
+        MY_FILE_FLAG_IS_OFFSET_CORRECT = 1 << 8,
+        MY_FILE_FLAG_FSEEK_OPT = 1 << 9,
+        MY_FILE_FLAG_NO_FSEEK_OPT = 1 << 10,
+        MY_FILE_FLAG_ALL_FOR_EACH_IGNORE = 1 << 11,
     } flags;
     void *internal_data;
     ssize_t (*read)(void *internal_data, unsigned char *buffer, ssize_t count);
@@ -66,6 +68,7 @@ extern struct my_file_type {
     my_fpos_t (*seek)(void *internal_data, my_fpos_t offset, int whence);
     int (*close)(void *internal_data);
     ssize_t write_space_left;
+    ssize_t read_space_left;
     ssize_t line_buffer_size;
     unsigned char *buffer_ptr;
     struct my_file_buffer buffer;
@@ -155,6 +158,13 @@ my_file_t *my_xfopen(const char *MY_RESTRICT filename,
 int my_fputc(int c, my_file_t *fp);
 int my_putc(int c, my_file_t *fp);
 
+/// Reads a character from fp
+int my_fgetc(my_file_t *fp);
+int my_getc(my_file_t *fp);
+
+/// Writes a string to fp
+int my_fputs(const char *MY_RESTRICT str, my_file_t *MY_RESTRICT fp);
+
 /// Closes the passed file
 int my_fclose(my_file_t *fp);
 
@@ -163,6 +173,9 @@ int my_fflush(my_file_t *fp);
 
 /// Returns the file descriptor for the given file
 int my_fileno(my_file_t *fp) MY_ATTR_NOTHROW MY_ATTR_WARN_UNUSED_RESULT;
+
+/// Returns the EOF indicator for the given file
+int my_feof(my_file_t *fp) MY_ATTR_NOTHROW MY_ATTR_WARN_UNUSED_RESULT;
 
 /// Returns the error indicator for the given file
 int my_ferror(my_file_t *fp) MY_ATTR_NOTHROW MY_ATTR_WARN_UNUSED_RESULT;

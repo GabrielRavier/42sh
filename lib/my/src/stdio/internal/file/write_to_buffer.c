@@ -20,13 +20,14 @@
 int my_internal_file_write_to_buffer(my_file_t *fp, int c)
 {
     unsigned char c_uchar = c;
-    ssize_t bytes_in_buffer = fp->buffer_ptr - fp->buffer.base;
+    ssize_t bytes_in_buffer;
 
     fp->write_space_left = fp->line_buffer_size;
     if (!my_internal_file_can_write(fp)) {
         errno = EBADF;
         return EOF;
     }
+    bytes_in_buffer = fp->buffer_ptr - fp->buffer.base;
     if (bytes_in_buffer >= fp->buffer.size) {
         if (my_fflush(fp) != 0)
             return EOF;

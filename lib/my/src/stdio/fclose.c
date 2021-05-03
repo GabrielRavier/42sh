@@ -34,6 +34,7 @@ int my_fclose(my_file_t *fp)
     if (fp->flags & MY_FILE_FLAG_BUFFER_MALLOCED)
         my_free(fp->buffer.base);
     fp->write_space_left = 0;
+    fp->read_space_left = 0;
     fp->fd = -1;
     fp->flags = 0;
     return result;

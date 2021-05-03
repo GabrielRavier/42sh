@@ -10,6 +10,7 @@
 #include "my/stdio.h"
 #include "my/stdlib.h"
 #include "my/string.h"
+#include <unistd.h>
 #include <errno.h>
 
 // Add the rest of this once we have fprintf, fwprintf, fputs or fputwc
@@ -28,6 +29,10 @@ Test(my_stdio, bionic_cantwrite)
     errno = 0;
     cr_assert_eq(my_fwrite("hello", 1, 2, fp), 0);
     cr_assert_eq(errno, EBADF);
+
+    errno = 0;
+    cr_assert_eq(my_fputs("hello", fp), EOF);
+    cr_assert_eq(errno, EBADF);
 }
 
 static void cloudlibc_random_pair(size_t max, size_t *a, size_t *b)
@@ -37,15 +42,26 @@ static void cloudlibc_random_pair(size_t max, size_t *a, size_t *b)
     *b = (*a == 0) ? (size_t)random() : total / *a;
 }
 
+static void cloudlibc_random_string(char *buffer, size_t length)
+{
+    for (size_t i = 0; i < length; ++i) {
+        buffer[i] = random();
+        if (buffer[i] == '\0')
+            buffer[i] = 1;
+    }
+    buffer[length] = '\0';
+}
+
 static void cloudlibc_do_random_test(my_file_t *fp)
 {
     char contents[1024] = {0};
     bool has_error = false;
+    bool has_eof = false;
     off_t offset = 0;
     off_t length = 0;
 
     for (size_t i = 0; i < 10000; ++i) {
-        switch (random() % 5) {
+        switch (random() % 9) {
         case 0:
             cr_assert_eq((bool)my_ferror(fp), has_error);
             break;
@@ -90,13 +106,47 @@ static void cloudlibc_do_random_test(my_file_t *fp)
             }
             break;
         }
+        case 5:
+            cr_assert_eq((bool)my_feof(fp), has_eof);
+            break;
+        case 6:
+        {
+            size_t write_length = random() % (sizeof(contents) - offset + 1);
+            char write_buffer[sizeof(contents) + 1];
+            cloudlibc_random_string(write_buffer, write_length);
+
+            cr_assert_geq(my_fputs(write_buffer, fp), 0);
+
+            if (write_length != 0) {
+                my_memcpy(contents + offset, write_buffer, write_length);
+                offset += write_length;
+                length = MY_MAX(length, offset);
+            }
+            break;
+        }
+        case 7:
+            if (offset < length)
+                cr_assert_eq(my_fgetc(fp), contents[offset++]);
+            else {
+                cr_assert_eq(my_fgetc(fp), EOF);
+                has_eof = true;
+            }
+            break;
+        case 8:
+            if (offset < length)
+                cr_assert_eq(my_getc(fp), contents[offset++]);
+            else {
+                cr_assert_eq(my_getc(fp), EOF);
+                has_eof = true;
+            }
+            break;
         default:
             cr_assert(false && "Should NEVER be reached");
         }
         cr_assert_geq(offset, 0);
-        cr_assert_leq(offset, sizeof(contents));
+        cr_assert_leq(offset, (off_t)sizeof(contents));
         cr_assert_geq(length, 0);
-        cr_assert_leq(length, sizeof(contents));
+        cr_assert_leq(length, (off_t)sizeof(contents));
     }
     cr_assert_eq(my_fclose(fp), 0);
 }
@@ -109,4 +159,51 @@ Test(my_stdio, cloudlibc_random)
         my_file_t *fp = my_fopen(filename, "w+");
         cloudlibc_do_random_test(fp);
     }
+}
+
+// Add the rest of this once we have clearerr, freopen, getchar, fgets, ungetc,
+// gets, fread, remove, rename, tmpnam and tmpfile
+Test(my_stdio, plauger)
+{
+    char *filename = tmpnam(NULL);
+    my_file_t *fp = my_fopen(filename, "w");
+
+    cr_assert_neq(fp, NULL);
+    cr_assert_neq(fp, my_stdin);
+    cr_assert_neq(fp, my_stdout);
+    cr_assert_neq(fp, my_stderr);
+    cr_assert_eq(my_feof(fp), 0);
+    cr_assert_eq(my_ferror(fp), 0);
+    cr_assert_eq(my_feof(fp), 0);
+    cr_assert_eq(my_ferror(fp), 0);
+    cr_assert_eq(my_fgetc(fp), EOF);
+    cr_assert_eq(my_feof(fp), 0);
+    cr_assert_neq(my_ferror(fp), 0);
+}
+
+Test(my_stdio, picolibc_posix_io)
+{
+    char template[] = "/tmp/libmy-picolibc-posix-io-test.XXXXXX";
+    cr_assert_neq(mkdtemp(template), NULL);
+    cr_assert_eq(chdir(template), 0);
+
+    static const char *FILENAME = "posix-io-test-file";
+    FILE *libc_fp = fopen(FILENAME, "w");
+    cr_assert_neq(libc_fp, NULL);
+
+    static const char *TEST_STRING = "hello, world\n";
+    cr_assert_eq((size_t)fprintf(libc_fp, "%s", TEST_STRING), my_strlen(TEST_STRING));
+    cr_assert_eq(fclose(libc_fp), 0);
+
+    my_file_t *my_fp = my_fopen(FILENAME, "r");
+    cr_assert_neq(my_fp, NULL);
+
+    const char *it = TEST_STRING;
+    while (true) {
+        int c = (random() & 1 ? &my_getc : &my_fgetc)(my_fp);
+        if (c == EOF)
+            break;
+        cr_assert_eq(c, *it++);
+    }
+    cr_assert_eq(*it, '\0');
 }

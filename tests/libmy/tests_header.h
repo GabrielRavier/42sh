@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2020
 ** libmy
 ** File description:
-** Header for tests
+** Header for all tests
 */
 
 #pragma once
