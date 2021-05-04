@@ -24,10 +24,13 @@ static my_fpos_t finish_failed(my_file_t *fp, my_fpos_t offset, int whence,
 {
     if (errno_from_seek == 0) {
         if (offset != 0 || whence != SEEK_CUR) {
+            if (my_internal_file_has_active_ungetc(fp))
+                my_internal_file_free_ungetc_buffer(fp);
             fp->buffer_ptr = fp->buffer.base;
             fp->read_space_left = 0;
+            fp->flags &= ~MY_FILE_FLAG_EOF;
         }
-        fp->flags &= MY_FILE_FLAG_ERROR;
+        fp->flags |= MY_FILE_FLAG_ERROR;
         errno = EINVAL;
     }
     fp->flags &= ~MY_FILE_FLAG_IS_OFFSET_CORRECT;

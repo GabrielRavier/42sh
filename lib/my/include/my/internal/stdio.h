@@ -8,6 +8,7 @@
 #pragma once
 
 #include "my/stdio.h"
+#include "my/stdlib.h"
 #include <stdbool.h>
 
 /// These are the functions used for normal FILE pointers, i.e. those made with
@@ -73,10 +74,27 @@ int my_internal_file_refill(my_file_t *fp);
 
 #if !LIBMY_USE_LIBC_FILE
 
+/// Returns whether we can write to the given file (it will also try to setup
+/// for it if possible)
 static inline bool my_internal_file_can_write(my_file_t *fp)
 {
     return !(((fp->flags & MY_FILE_FLAG_WRITE) == 0 || (fp->buffer.base ==
         NULL)) && !my_internal_file_setup_write(fp));
+}
+
+/// Checks whether the given file has an active ungetc buffer
+static inline bool my_internal_file_has_active_ungetc(my_file_t *fp)
+{
+    return fp->ungetc_buffer.base != NULL;
+}
+
+/// Frees an active ungetc buffer (note: does not do any other cleanup such as
+/// restoring the ordinary unread data)
+static inline void my_internal_file_free_ungetc_buffer(my_file_t *fp)
+{
+    if (fp->ungetc_buffer.base != fp->six_char_ungetc_buffer)
+        my_free(fp->ungetc_buffer.base);
+    fp->ungetc_buffer.base = NULL;
 }
 
 #endif

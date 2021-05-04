@@ -10,7 +10,7 @@
 
 #if LIBMY_USE_LIBC_FILE
 
-my_file_t *my_getc(my_file_t *fp)
+int my_getc(my_file_t *fp)
 {
     return getc(fp);
 }

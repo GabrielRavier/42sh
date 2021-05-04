@@ -11,7 +11,8 @@
 #if !LIBMY_USE_LIBC_FILE
 
 // We specifically don't unset EOF when changing from read to write so that it
-// stays sticky as C99 mandates
+// stays sticky as C99 mandates. We also clobber any ungetc data here to avoid
+// problems when switching back to reading
 static bool handle_non_write(my_file_t *fp)
 {
     if (!(fp->flags & MY_FILE_FLAG_WRITE)) {
@@ -21,6 +22,8 @@ static bool handle_non_write(my_file_t *fp)
             return false;
         }
         if (fp->flags & MY_FILE_FLAG_READ) {
+            if (my_internal_file_has_active_ungetc(fp))
+                my_internal_file_free_ungetc_buffer(fp);
             fp->flags &= ~MY_FILE_FLAG_READ;
             fp->read_space_left = 0;
             fp->buffer_ptr = fp->buffer.base;

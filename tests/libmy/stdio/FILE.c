@@ -52,49 +52,66 @@ static void cloudlibc_random_string(char *buffer, size_t length)
     buffer[length] = '\0';
 }
 
+#if 0
+#define LOG_DEBUG printf
+#else
+#define LOG_DEBUG(...)
+#endif
+
 static void cloudlibc_do_random_test(my_file_t *fp)
 {
-    char contents[1024] = {0};
+    unsigned char contents[1024] = {0};
     bool has_error = false;
     bool has_eof = false;
     off_t offset = 0;
     off_t length = 0;
+    unsigned char pushbacks[100];
+    size_t num_pushbacks = 0;
 
     for (size_t i = 0; i < 10000; ++i) {
-        switch (random() % 9) {
+        switch (random() % 10) {
         case 0:
+            LOG_DEBUG("ferror(fp) == %d\n", has_error);
             cr_assert_eq((bool)my_ferror(fp), has_error);
             break;
         case 1:
+            LOG_DEBUG("fflush\n");
             cr_assert_eq(my_fflush(fp), 0);
             break;
         case 2:
             if (offset < (off_t)sizeof(contents)) {
                 unsigned int c = random();
+                LOG_DEBUG("fputc(%u, fp) -> %u\n", c, (unsigned char)c);
                 cr_assert_eq(my_fputc(c, fp), (unsigned char)c);
                 contents[offset++] = c;
                 if (length < offset)
                     length = offset;
+                num_pushbacks = 0;
             }
             break;
         case 3:
             if (offset < (off_t)sizeof(contents)) {
                 unsigned int c = random();
+                LOG_DEBUG("putc(%u, fp) -> %u\n", c, (unsigned char)c);
                 cr_assert_eq(my_putc(c, fp), (unsigned char)c);
                 contents[offset++] = c;
                 if (length < offset)
                     length = offset;
+                num_pushbacks = 0;
             }
             break;
         case 4:
         {
             size_t size, count;
             cloudlibc_random_pair(sizeof(contents) - offset, &size, &count);
+            LOG_DEBUG("fwrite(following_buffer, %zu, %zu, fp)\n", size, count);
 
             char write_buffer[sizeof(contents)];
             size_t write_length = size * count;
-            for (size_t j = 0; j < write_length; ++j)
+            for (size_t j = 0; j < write_length; ++j) {
                 write_buffer[j] = random();
+                LOG_DEBUG("byte %zu: %u\n", j, write_buffer[j]);
+            }
 
             size_t result = write_length == 0 ? 0 : count;
             cr_assert_eq(my_fwrite(write_buffer, size, count, fp), result);
@@ -103,14 +120,17 @@ static void cloudlibc_do_random_test(my_file_t *fp)
                 my_memcpy(contents + offset, write_buffer, write_length);
                 offset += write_length;
                 length = MY_MAX(length, offset);
+                num_pushbacks = 0;
             }
             break;
         }
         case 5:
+            LOG_DEBUG("feof\n");
             cr_assert_eq((bool)my_feof(fp), has_eof);
             break;
         case 6:
         {
+            LOG_DEBUG("fputs\n");
             size_t write_length = random() % (sizeof(contents) - offset + 1);
             char write_buffer[sizeof(contents) + 1];
             cloudlibc_random_string(write_buffer, write_length);
@@ -121,23 +141,50 @@ static void cloudlibc_do_random_test(my_file_t *fp)
                 my_memcpy(contents + offset, write_buffer, write_length);
                 offset += write_length;
                 length = MY_MAX(length, offset);
+                num_pushbacks = 0;
             }
             break;
         }
         case 7:
-            if (offset < length)
-                cr_assert_eq(my_fgetc(fp), contents[offset++]);
+        {
+            int c = my_fgetc(fp);
+            LOG_DEBUG("fgetc(fp) -> %d\n", c);
+            if (num_pushbacks > 0)
+                cr_assert_eq(c, pushbacks[--num_pushbacks]);
+            else if (offset < length)
+                cr_assert_eq(c, contents[offset++]);
             else {
-                cr_assert_eq(my_fgetc(fp), EOF);
+                cr_assert_eq(c, EOF);
                 has_eof = true;
             }
             break;
+        }
         case 8:
-            if (offset < length)
-                cr_assert_eq(my_getc(fp), contents[offset++]);
+        {
+            int c = my_getc(fp);
+            LOG_DEBUG("getc(fp) -> %d\n", c);
+            if (num_pushbacks > 0)
+                cr_assert_eq(c, pushbacks[--num_pushbacks]);
+            else if (offset < length)
+                cr_assert_eq(c, contents[offset++]);
             else {
-                cr_assert_eq(my_getc(fp), EOF);
+                cr_assert_eq(c, EOF);
                 has_eof = true;
+            }
+            break;
+        }
+        case 9:
+            if (num_pushbacks < sizeof(pushbacks)) {
+                unsigned int c = random();
+                LOG_DEBUG("ungetc(%u, fp) -> %u\n", c, (unsigned char)c);
+                if ((int)c == EOF)
+                    cr_assert_eq(my_ungetc(c, fp), EOF);
+                else
+                    cr_assert_eq(my_ungetc(c, fp), (unsigned char)c);
+                if ((int)c != EOF) {
+                    pushbacks[num_pushbacks++] = c;
+                    has_eof = false;
+                }
             }
             break;
         default:
@@ -161,8 +208,8 @@ Test(my_stdio, cloudlibc_random)
     }
 }
 
-// Add the rest of this once we have clearerr, freopen, getchar, fgets, ungetc,
-// gets, fread, remove, rename, tmpnam and tmpfile
+// Add the rest of this once we have clearerr, freopen, getchar, fgets, gets,
+// fread, remove, rename, tmpnam and tmpfile
 Test(my_stdio, plauger)
 {
     char *filename = tmpnam(NULL);

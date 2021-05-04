@@ -33,6 +33,8 @@ int my_fclose(my_file_t *fp)
         result = EOF;
     if (fp->flags & MY_FILE_FLAG_BUFFER_MALLOCED)
         my_free(fp->buffer.base);
+    if (my_internal_file_has_active_ungetc(fp))
+        my_internal_file_free_ungetc_buffer(fp);
     fp->write_space_left = 0;
     fp->read_space_left = 0;
     fp->fd = -1;

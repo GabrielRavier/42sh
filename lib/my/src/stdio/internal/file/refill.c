@@ -46,6 +46,23 @@ static int do_after_read_check(my_file_t *fp)
     return 0;
 }
 
+// If we were already reading, and there is an ungetc buffer, we must have been
+// reading from that. We must thus drop it and restore the previous buffer, and
+// if there's something there, the buffer has been "re-filled"
+// Returns whether the caller should return 0
+static bool do_ungetc_buffer(my_file_t *fp)
+{
+    if (my_internal_file_has_active_ungetc(fp)) {
+        my_internal_file_free_ungetc_buffer(fp);
+        fp->read_space_left = fp->ungetc_saved_read_space_left;
+        if (fp->read_space_left != 0) {
+            fp->buffer_ptr = fp->ungetc_saved_buffer_ptr;
+            return true;
+        }
+    }
+    return false;
+}
+
 // Setting of read_space_left to 0 is largely done to make calling this more
 // convenient
 // If we aren't reading and this isn't a read-write file, we error, otherwise we
@@ -71,7 +88,8 @@ int my_internal_file_refill(my_file_t *fp)
             fp->line_buffer_size = 0;
         }
         fp->flags |= MY_FILE_FLAG_READ;
-    }
+    } else if (do_ungetc_buffer(fp))
+        return 0;
     return do_after_read_check(fp);
 }
 #endif

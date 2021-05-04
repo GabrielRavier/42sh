@@ -39,6 +39,16 @@ struct my_file_buffer {
 /// buffer_ptr points to the next byte in the buffer
 /// one_char_read_buffer is the "buffer" we use when unbuffered or when malloc
 /// fails
+/// When ungetc pushes back more characters than are in buffer, or characters
+/// that don't match the ones in buffer, we use the ungetc variables. Those
+/// contain a buffer for ungetc data, and the old value for read_space_left
+/// and buffer_ptr. When there is an active ungetc buffer, ungetc_buffer.base
+/// is non-NULL, and inversely
+/// six_char_ungetc_buffer is the buffer we use for ungetc to minimize malloc
+/// usage and guarantee we will have one when malloc fails
+/// ungetc_saved_read_space_left saves read_space_left when the ungetc buffer is
+/// active
+/// same for ungetc_saved_buffer_ptr except for buffer_ptr
 /// Whether flags is non-0 marks whether the file entry is used (used in
 /// find_ptr to determine which files are in use)
 /// MY_FILE_FLAG_FSEEK_OPT and MY_FILE_FLAG_NO_FSEEK_OPT both exist because we
@@ -73,6 +83,10 @@ extern struct my_file_type {
     unsigned char *buffer_ptr;
     struct my_file_buffer buffer;
     unsigned char one_char_read_buffer[1];
+    unsigned char six_char_ungetc_buffer[6];
+    struct my_file_buffer ungetc_buffer;
+    ssize_t ungetc_saved_read_space_left;
+    unsigned char *ungetc_saved_buffer_ptr;
 } g_my_standard_files[3];
 
 typedef struct my_file_type my_file_t;
@@ -161,6 +175,9 @@ int my_putc(int c, my_file_t *fp);
 /// Reads a character from fp
 int my_fgetc(my_file_t *fp);
 int my_getc(my_file_t *fp);
+
+/// Pushes back a character onto the stream input buffer
+int my_ungetc(int c, my_file_t *fp);
 
 /// Writes a string to fp
 int my_fputs(const char *MY_RESTRICT str, my_file_t *MY_RESTRICT fp);

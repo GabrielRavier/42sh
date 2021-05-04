@@ -55,15 +55,15 @@ Get stuff from dietlibc for fgets, printf, getline
 
 Get stuff from cloudlibc for clearerr, fflush, fgetpos, fgets, fgetwc, fgetws,
 fprintf, fputwc, fputws, fread, fscanf, fseeko, fsetpos, ftello, fwide,
-fwprintf, fwscanf, getdelim, getline, getwc, putwc, rewind, setvbuf, ungetc,
-ungetwc, fmemopen, tmpfile
+fwprintf, fwscanf, getdelim, getline, getwc, putwc, rewind, setvbuf, ungetwc,
+fmemopen, tmpfile
 
 Get stuff from DeforaOS for fmemopen, fopen, printf, sscanf, tmpfile, tmpnam
 
 Get stuff from plauger for vfprintf, vprintf, vsprintf, sprintf, sscanf,
 fprintf, fgetpos, fsetpos, fscanf, fseek, setvbuf, scanf, fclose, tmpnam,
-clearerr, fputs, getchar, fgets, ungetc, gets, fread, remove, rename, fopen,
-tmpfile, perror, putchar, puts
+clearerr, fputs, getchar, fgets, gets, fread, remove, rename, fopen, tmpfile,
+perror, putchar, puts
 
 stdlib:
 
@@ -144,9 +144,9 @@ ecvt, localtime, vswprintf, fopen, fclose, unlink, mbstowcs, wcstombs,
 setlocale, swscanf
 
 wine/msvcrt: fopen, ftell, fgetpos, fclose, unlink, fdopen, lseek, fread,
-setvbuf, fgets, fgets, rewind, fsetpos, ungetc, fgetws, fseek, getw, fputs,
-fread, tempnam, fflush, fgetwc, fputwc, tmpnam, fcloseall, open, fstat, stat,
-dup2, pipe, mkdir, write, close, rmdir, dup, mktemp, calloc, malloc, realloc,
+setvbuf, fgets, fgets, rewind, fsetpos, fgetws, fseek, getw, fputs, fread,
+tempnam, fflush, fgetwc, fputwc, tmpnam, fcloseall, open, fstat, stat, dup2,
+pipe, mkdir, write, close, rmdir, dup, mktemp, calloc, malloc, realloc,
 setlocale, atan, exp, tanh, popen, pclose, srand, sprintf, vswprintf, swprintf,
 wcsstr, wcslen, wcscmp, snprintf, fprintf, ftell, fwprintf, fscanf, fcvt, ecvt,
 vswprintf, vsprintf, sscanf, swscanf, signal, raise, strcmp, strncmp, strcpy,

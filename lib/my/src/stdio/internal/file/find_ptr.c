@@ -45,7 +45,7 @@ static struct my_internal_file_bucket *make_more_files(void)
 
 // This marks a file as used and initializes it to default values, i.e. we have
 // nothing to write, we don't have a pointer nor a buffer, we're not (yet) line
-// buffered and we have no file
+// buffered, we have no file and we have no ungetc buffer
 static my_file_t *make_found_file(my_file_t *fp)
 {
     fp->flags = !0;
@@ -56,6 +56,8 @@ static my_file_t *make_found_file(my_file_t *fp)
     fp->buffer.size = 0;
     fp->line_buffer_size = 0;
     fp->fd = -1;
+    fp->ungetc_buffer.base = NULL;
+    fp->ungetc_buffer.size = 0;
     return fp;
 }
 
