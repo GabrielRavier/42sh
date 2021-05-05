@@ -3,7 +3,7 @@
 # Execute tests from the directory that which contains the script
 cd "$(dirname "$0")"
 
-MYSH=$(realpath ../../mysh)
+MYSH=$(realpath ../../42sh)
 
 do_one_test()
 {

@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** mysh
+** 42sh
 ** File description:
 ** Defines part2 of cd
 */

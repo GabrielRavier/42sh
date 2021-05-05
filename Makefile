@@ -1,6 +1,6 @@
 ##
 ## EPITECH PROJECT, 2020
-## mysh
+## 42sh
 ## File description:
 ## Makefile for this project
 ##
@@ -22,7 +22,7 @@ override CFLAGS += -DLIBMY_USE_LIBC_FILE=0
 
 .PREVIOUS: obj/%.o
 
-BINARY_NAME := mysh
+BINARY_NAME := 42sh
 
 all: $(BINARY_NAME)
 
@@ -95,4 +95,4 @@ tests_run:
 	$(MAKE) fclean
 	$(MAKE) --directory=lib/my tests_binary USE_LIBC_FILE=0 HAS_LIBC_ALLOC=1 HAS_LIBC_READ=1 HAS_LIBC_WRITE=1 HAS_LIBC_EXECVE=1 HAS_LIBC_OPEN=1 HAS_LIBC_CLOSE=1 HAS_LIBC_ISATTY=1 HAS_LIBC_LSEEK=1 HAS_LIBC_FSTAT=1 HAS_LIBC__EXIT=1 HAS_LIBC_REALLOC=1 HAS_LIBC_GETPID=1
 	$(MAKE) CFLAGS="$(CFLAGS) --coverage"
-	./tests/libmy/test.sh & ./tests/mysh/test.sh & wait
+	./tests/libmy/test.sh & ./tests/42sh/test.sh & wait

@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** mysh
+** 42sh
 ** File description:
 ** Defines lex_tree_to_parse_tree
 */

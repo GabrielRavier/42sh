@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** mysh
+** 42sh
 ** File description:
 ** Defines xdup_strv_to_c
 */

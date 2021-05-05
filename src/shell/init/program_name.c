@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** mysh
+** 42sh
 ** File description:
 ** Defines program_name
 */
@@ -16,5 +16,5 @@ void shell_init_program_name(struct shell *self, const char *argv0)
     if (*strrchr_result == '-')
         ++strrchr_result;
     self->program_name = my_xstrdup((strrchr_result != NULL &&
-        *strrchr_result != '\0') ? strrchr_result : "mysh");
+        *strrchr_result != '\0') ? strrchr_result : "42sh");
 }

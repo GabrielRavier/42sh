@@ -4,5 +4,5 @@
 /lib/libmy.a
 
 # Ignore files produced by us
-/mysh
+/42sh
 /obj/
