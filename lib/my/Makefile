@@ -60,7 +60,7 @@ override CFLAGS += -DLIBMY_USE_LIBC_FILE=$(USE_LIBC_FILE) -DLIBMY_HAS_LIBC_ALLOC
 
 .PREVIOUS: obj/%.o
 
-HEADER_FILES := my my/assert my/ctype my/fcntl my/features my/getopt my/macros my/math my/signal my/stdio my/stdlib my/string my/strings my/sys/stat my/sys/time my/unistd
+HEADER_FILES := my my/assert my/ctype my/fcntl my/features my/getopt my/macros my/math my/search my/signal my/stdio my/stdlib my/string my/strings my/sys/stat my/sys/time my/unistd
 HEADER_FILES += my/my_string my/my_make_vector_type
 HEADER_FILES += my/cpp-like/algorithm my/cpp-like/iterator my/cpp-like/limits my/cpp-like/utility
 HEADER_FILES := $(addprefix ../../include/, $(addsuffix .h, $(HEADER_FILES)))
@@ -85,6 +85,9 @@ SOURCE_FILES += inttypes/strtoimax inttypes/strtoumax
 
 # Stuff related to math.h
 SOURCE_FILES += math/fabs math/fpclassify math/signbit
+
+# Stuff related to search.h
+SOURCE_FILES += search/lfind
 
 # Stuff related to signal.h
 SOURCE_FILES += signal/sigaddset
@@ -195,6 +198,7 @@ obj/%.o: %.c
 	@mkdir --parents obj/src/inttypes
 	@mkdir --parents obj/src/math
 	@mkdir --parents obj/src/my_string
+	@mkdir --parents obj/src/search
 	@mkdir --parents obj/src/signal
 	@mkdir --parents obj/src/stdio/printf_my_string_based/formatter
 	@mkdir --parents obj/src/stdio/printf_my_string_based/parse_conversion_info
