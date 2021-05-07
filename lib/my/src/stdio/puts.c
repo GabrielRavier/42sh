@@ -11,8 +11,6 @@
 
 int my_puts(const char *string)
 {
-    if ((my_dputs(string, STDOUT_FILENO) == EOF) || my_dputc('\n',
-        STDOUT_FILENO) == EOF)
-        return EOF;
-    return 0;
+    my_fputs(string, my_stdout);
+    return my_putc('\n', my_stdout);
 }
