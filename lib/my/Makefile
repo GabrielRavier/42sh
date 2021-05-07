@@ -90,12 +90,12 @@ SOURCE_FILES += math/fabs math/fpclassify math/signbit
 SOURCE_FILES += signal/sigaddset
 
 # Stuff related to stdio.h
-SOURCE_FILES += stdio/putchar stdio/dputc stdio/dgetc stdio/dputs stdio/puts stdio/fclose stdio/g_my_standard_files stdio/fflush stdio/putc stdio/fputc stdio/fopen stdio/fileno stdio/ferror stdio/fwrite stdio/printf stdio/dprintf stdio/asprintf stdio/sprintf stdio/xasprintf stdio/xvasprintf stdio/xfopen stdio/xfclose stdio/feof stdio/fputs stdio/fgetc stdio/getc stdio/ungetc
+SOURCE_FILES += stdio/putchar stdio/dputc stdio/dgetc stdio/dputs stdio/puts stdio/fclose stdio/g_my_standard_files stdio/fflush stdio/putc stdio/fputc stdio/fopen stdio/fileno stdio/ferror stdio/fwrite stdio/printf stdio/dprintf stdio/asprintf stdio/sprintf stdio/xasprintf stdio/xvasprintf stdio/xfopen stdio/xfclose stdio/feof stdio/fputs stdio/fgetc stdio/getc stdio/ungetc stdio/fprintf stdio/fseterr
 SOURCE_FILES += stdio/internal/file/parse_mode stdio/internal/file/find_ptr stdio/internal/file/flush_skip_non_write stdio/internal/file/all_for_each stdio/internal/file/write_to_buffer stdio/internal/file/setup_write stdio/internal/file/make_buffer stdio/internal/file/determine_buffering stdio/internal/file/do_write stdio/internal/file/do_read stdio/internal/file/do_seek stdio/internal/file/cleanup stdio/internal/file/refill
 SOURCE_FILES += stdio/internal/file/normal/read stdio/internal/file/normal/write stdio/internal/file/normal/seek stdio/internal/file/normal/close
 
 # Stuff related to printf's my_string-based implementation
-SOURCE_FILES += stdio/printf_my_string_based/vprintf stdio/printf_my_string_based/vdprintf stdio/printf_my_string_based/vasprintf stdio/printf_my_string_based/vsprintf
+SOURCE_FILES += stdio/printf_my_string_based/vprintf stdio/printf_my_string_based/vdprintf stdio/printf_my_string_based/vasprintf stdio/printf_my_string_based/vsprintf stdio/printf_my_string_based/vfprintf
 SOURCE_FILES += stdio/printf_my_string_based/formatter/append_number_base stdio/printf_my_string_based/formatter/utf32_char_to_utf8 stdio/printf_my_string_based/formatter/char stdio/printf_my_string_based/formatter/cstring stdio/printf_my_string_based/formatter/signed_integer stdio/printf_my_string_based/formatter/unsigned_integer stdio/printf_my_string_based/formatter/percent_sign stdio/printf_my_string_based/formatter/n stdio/printf_my_string_based/formatter/pointer
 SOURCE_FILES += stdio/printf_my_string_based/parse_conversion_info/parse_conversion_info stdio/printf_my_string_based/parse_conversion_info/parse_int stdio/printf_my_string_based/handle_invalid stdio/printf_my_string_based/padding
 

@@ -129,6 +129,16 @@ int my_dprintf(int fd, const char *MY_RESTRICT format, ...)
 int my_vdprintf(int fd, const char *MY_RESTRICT format, va_list arguments)
     MY_ATTR_FORMAT(printf, 2, 0);
 
+/// Writes formatted output to fp
+int my_fprintf(my_file_t *fp, const char *MY_RESTRICT format, ...)
+    MY_ATTR_FORMAT(printf, 2, 3);
+
+/// Like my_fprintf, except it takes a va_list instead of a variables amount of
+/// arguments
+int my_vfprintf(my_file_t *fp, const char *MY_RESTRICT format,
+    va_list arguments)
+    MY_ATTR_FORMAT(printf, 2, 0);
+
 /// Allocate a string large enough to hold the formatted output (including the
 /// null terminator), write formatted output to it and return a pointer to it
 /// through the first argument
@@ -196,6 +206,9 @@ int my_feof(my_file_t *fp) MY_ATTR_NOTHROW MY_ATTR_WARN_UNUSED_RESULT;
 
 /// Returns the error indicator for the given file
 int my_ferror(my_file_t *fp) MY_ATTR_NOTHROW MY_ATTR_WARN_UNUSED_RESULT;
+
+/// Sets the error indicator for the given file
+void my_fseterr(my_file_t *fp) MY_ATTR_NOTHROW;
 
 /// Writes size * n bytes from the given buffer to the given file
 size_t my_fwrite(const void *MY_RESTRICT buffer, size_t size, size_t count,
