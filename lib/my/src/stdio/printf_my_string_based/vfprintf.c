@@ -17,7 +17,7 @@ int my_vfprintf(my_file_t *fp, const char *format, va_list arguments)
         my_fseterr(fp);
         return -1;
     }
-    if (my_fwrite(string_to_print, 1, string_length, fp) <
+    if (my_fwrite(string_to_print, 1, (size_t)string_length, fp) !=
         (size_t)string_length) {
         my_free(string_to_print);
         return -1;

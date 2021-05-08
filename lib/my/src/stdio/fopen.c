@@ -39,7 +39,7 @@ my_file_t *my_fopen(const char *filename, const char *mode)
     if (fp == NULL)
         return NULL;
     fp->fd = my_open(filename, open_flags, 0666);
-    if (my_fileno(fp) < 0) {
+    if (fp->fd < 0) {
         fp->flags = 0;
         return NULL;
     }

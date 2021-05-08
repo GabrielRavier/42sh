@@ -40,10 +40,10 @@ Test(my_getopt, escape_options_without_arguments, .init = cr_redirect_stderr)
     do_one_test(argc, (char **)argv, optstring, 'c', 6, NULL);
     do_one_test(argc, (char **)argv, optstring, '?', 6, NULL);
     if (expected_stderr)
-        fprintf(expected_stderr, "my_getopt_test: invalid option -- 'd'\n");
+        fputs("my_getopt_test: invalid option -- 'd'\n", expected_stderr);
     do_one_test(argc, (char **)argv, optstring, '?', 7, NULL);
     if (expected_stderr)
-        fprintf(expected_stderr, "my_getopt_test: invalid option -- 'e'\n");
+        fputs("my_getopt_test: invalid option -- 'e'\n", expected_stderr);
     do_one_test(argc, (char **)argv, optstring, -1, 8, NULL);
 
     if (expected_stderr) {
@@ -99,7 +99,7 @@ Test(my_getopt, midnight_bsd, .init = cr_redirect_stderr)
     optind = 0;
     do_one_test(argc, (char **)argv4, optstring, '?', 2, NULL);
     if (expected_stderr)
-        fprintf(expected_stderr, "my_getopt_test: invalid option -- 'e'\n");
+        fputs("my_getopt_test: invalid option -- 'e'\n", expected_stderr);
     do_one_test(argc, (char **)argv4, optstring, -1, 2, NULL);
 
     const char *argv5[] = {"my_getopt_test", "-d", "--", "-c", "1"};
