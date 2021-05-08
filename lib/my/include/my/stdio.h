@@ -210,6 +210,9 @@ int my_ferror(my_file_t *fp) MY_ATTR_NOTHROW MY_ATTR_WARN_UNUSED_RESULT;
 /// Sets the error indicator for the given file
 void my_fseterr(my_file_t *fp) MY_ATTR_NOTHROW;
 
+/// Clears the error and EOF indicators for the given file
+void my_clearerr(my_file_t *fp) MY_ATTR_NOTHROW;
+
 /// Writes size * n bytes from the given buffer to the given file
 size_t my_fwrite(const void *MY_RESTRICT buffer, size_t size, size_t count,
     my_file_t *fp);
