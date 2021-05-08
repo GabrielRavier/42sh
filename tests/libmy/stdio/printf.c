@@ -5,22 +5,12 @@
 ** Tests printf
 */
 
-#ifndef _GNU_SOURCE
-    #define _GNU_SOURCE
-#endif
-//#define STANDALONE // Define if this doesn't have my/macros.h
-//#define NO_MY_VASPRINTF // Define if you don't have my_vasprintf
-#include <criterion/criterion.h>
-#include <criterion/assert.h>
+#define _GNU_SOURCE
+#include "../tests_header.h"
+#include "my/stdio.h"
 #include <criterion/redirect.h>
-#include "my/stdio.h" // Modify this if this isn't the header that declares my_printf and others
 #include "my/string.h"
-#ifndef STANDALONE
-    #include "my/cpp-like/iterator.h"
-#else
-    #define MY_ATTRIBUTE(attr) __attribute__(attr)
-    #define MY_ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
-#endif
+#include "my/cpp-like/iterator.h"
 #include <locale.h>
 #include <stdio.h>
 #include <math.h>
@@ -52,6 +42,7 @@ static FILE *libc_string_file = NULL;
 // Compares the content of the combined libc output to stdout
 static void compare_all_libc_to_stdout(void)
 {
+    my_fflush(my_stdout);
     cr_assert_neq(libc_string_file, NULL);
     cr_assert_stdout_eq(libc_string_file);
     fclose(libc_string_file);
@@ -67,31 +58,29 @@ static void do_init(void)
 // Compares the output that our printf and the printf of the libc gives for a given format and arguments
 MY_ATTRIBUTE((format(printf, 1, 2))) static void compare_printfs(const char *format, ...)
 {
+    if (my_ferror(my_stdout))
+        my_clearerr(my_stdout);
+    
     va_list arguments;
-
     va_start(arguments, format);
     const int our_printf_retval = my_vprintf(format, arguments);
     va_end(arguments);
 
-#ifndef NO_MY_VASPRINTF
     va_start(arguments, format);
     char *result_us = NULL;
     const int our_length = my_vasprintf(&result_us, format, arguments);
     va_end(arguments);
-#endif
 
     va_start(arguments, format);
     char *result_libc = NULL;
     const int libc_length = vasprintf(&result_libc, format, arguments);
     va_end(arguments);
 
-#ifndef NO_MY_VASPRINTF
     if (result_us != NULL || result_libc != NULL) {
         cr_assert_str_eq(result_us, result_libc);
         cr_assert_eq(our_length, libc_length);
         cr_assert_eq(memcmp(result_us, result_libc, (size_t)our_length), 0);
     }
-#endif
     cr_assert_eq(our_printf_retval, libc_length);
 
     if (result_libc) {
@@ -101,9 +90,7 @@ MY_ATTRIBUTE((format(printf, 1, 2))) static void compare_printfs(const char *for
     } else
         cr_assert(our_printf_retval < 0);
 
-#ifndef NO_MY_VASPRINTF
     free(result_us);
-#endif
     free(result_libc);
 }
 
@@ -382,26 +369,8 @@ Test(my_printf, field_width, .init = do_init, .fini = compare_all_libc_to_stdout
 {
     const char *input = "0123456789";
     compare_printfs("%s", input);
-    compare_printfs("%*s", 1, input);
-    compare_printfs("%*s", 2, input);
-    compare_printfs("%*s", 3, input);
-    compare_printfs("%*s", 4, input);
-    compare_printfs("%*s", 5, input);
-    compare_printfs("%*s", 6, input);
-    compare_printfs("%*s", 7, input);
-    compare_printfs("%*s", 8, input);
-    compare_printfs("%*s", 9, input);
-    compare_printfs("%*s", 10, input);
-    compare_printfs("%*s", -1, input);
-    compare_printfs("%*s", -2, input);
-    compare_printfs("%*s", -3, input);
-    compare_printfs("%*s", -4, input);
-    compare_printfs("%*s", -5, input);
-    compare_printfs("%*s", -6, input);
-    compare_printfs("%*s", -7, input);
-    compare_printfs("%*s", -8, input);
-    compare_printfs("%*s", -9, input);
-    compare_printfs("%*s", -10, input);
+    for (int i = -10; i < 11; ++i)
+        compare_printfs("%*s", i, input);
     compare_printfs("%10s", input);
     compare_printfs("a%08xz", 0x123456);
     compare_printfs("a%5dz", 1234);
@@ -1196,6 +1165,7 @@ Test(my_printf, format_n, .init = do_init)
     my_printf("foo %hhn", &bytes[3]);
     cr_assert_not(bytes[0] != '\xff' || bytes[1] != '\xff' || bytes[2] != '\xff' || bytes[4] != '\xff' || bytes[5] != '\xff' || bytes[6] != '\xff');
     cr_assert_eq(bytes[3], 4);
+    my_fflush(my_stdout);
     cr_assert_stdout_eq_str("123 123 123 123 123 123 123 123 foo ");
 }
 
@@ -1637,6 +1607,7 @@ Test(my_printf, format_epitech_extension_capital_s)
 {
     cr_redirect_stdout();
     my_printf("%S", "a\002\377\012\370b");
+    my_fflush(my_stdout);
     cr_assert_stdout_eq_str("a\\002\\377\\012\\370b");
 }
 
@@ -1644,5 +1615,6 @@ Test(my_printf, format_epitech_extension_b)
 {
     cr_redirect_stdout();
     my_printf("%b", 022645);
+    my_fflush(my_stdout);
     cr_assert_stdout_eq_str("10010110100101");
 }

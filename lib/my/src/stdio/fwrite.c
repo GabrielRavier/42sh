@@ -19,7 +19,7 @@ size_t my_fwrite(const void *MY_RESTRICT buffer_param, size_t size,
     size_t count, my_file_t *fp)
 {
     size_t result = 0;
-    unsigned char *buffer = (unsigned char *)buffer_param;
+    const unsigned char *buffer = (const unsigned char *)buffer_param;
 
     if (size)
         for (; result < count; ++result) {

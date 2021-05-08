@@ -27,6 +27,10 @@ Test(my_stdio, bionic_cantwrite)
     cr_assert_eq(errno, EBADF);
 
     errno = 0;
+    cr_assert_eq(my_fprintf(fp, "hello"), EOF);
+    cr_assert_eq(errno, EBADF);
+
+    errno = 0;
     cr_assert_eq(my_fwrite("hello", 1, 2, fp), 0);
     cr_assert_eq(errno, EBADF);
 
@@ -69,7 +73,7 @@ static void cloudlibc_do_random_test(my_file_t *fp)
     size_t num_pushbacks = 0;
 
     for (size_t i = 0; i < 10000; ++i) {
-        switch (random() % 10) {
+        switch (random() % 11) {
         case 0:
             LOG_DEBUG("ferror(fp) == %d\n", has_error);
             cr_assert_eq((bool)my_ferror(fp), has_error);
@@ -187,6 +191,20 @@ static void cloudlibc_do_random_test(my_file_t *fp)
                 }
             }
             break;
+        case 10:
+        {
+            char write_buffer[sizeof(contents) + 1];
+            size_t write_length = random() % (sizeof(contents) - offset + 1);
+            cloudlibc_random_string(write_buffer, write_length);
+            cr_assert_eq(my_fprintf(fp, "%s", write_buffer), (int)write_length);
+            if (write_length != 0) {
+                my_memcpy(contents + offset, write_buffer, write_length);
+                offset += write_length;
+                length = MY_MAX(length, offset);
+                num_pushbacks = 0;
+            }
+            break;
+        }
         default:
             cr_assert(false && "Should NEVER be reached");
         }
@@ -235,19 +253,19 @@ Test(my_stdio, picolibc_posix_io)
     cr_assert_eq(chdir(template), 0);
 
     static const char *FILENAME = "posix-io-test-file";
-    FILE *libc_fp = fopen(FILENAME, "w");
-    cr_assert_neq(libc_fp, NULL);
+    my_file_t *fp = my_fopen(FILENAME, "w");
+    cr_assert_neq(fp, NULL);
 
     static const char *TEST_STRING = "hello, world\n";
-    cr_assert_eq((size_t)fprintf(libc_fp, "%s", TEST_STRING), my_strlen(TEST_STRING));
-    cr_assert_eq(fclose(libc_fp), 0);
+    cr_assert_eq((size_t)my_fprintf(fp, "%s", TEST_STRING), my_strlen(TEST_STRING));
+    cr_assert_eq(my_fclose(fp), 0);
 
-    my_file_t *my_fp = my_fopen(FILENAME, "r");
-    cr_assert_neq(my_fp, NULL);
+    fp = my_fopen(FILENAME, "r");
+    cr_assert_neq(fp, NULL);
 
     const char *it = TEST_STRING;
     while (true) {
-        int c = (random() & 1 ? &my_getc : &my_fgetc)(my_fp);
+        int c = (random() & 1 ? &my_getc : &my_fgetc)(fp);
         if (c == EOF)
             break;
         cr_assert_eq(c, *it++);
