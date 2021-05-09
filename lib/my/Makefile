@@ -143,6 +143,9 @@ TESTS_SOURCE_FILES := assert/assert
 # Tests related to getopt.h
 TESTS_SOURCE_FILES += getopt/getopt
 
+# Tests related to search.h
+TESTS_SOURCE_FILES += search/lfind search/generic
+
 # Tests related to stdlib.h
 TESTS_SOURCE_FILES += stdlib/strtol_base_str stdlib/strtol stdlib/abs stdlib/getenv stdlib/setenv stdlib/clearenv stdlib/putenv stdlib/qsort stdlib/qsort_r stdlib/underline_exit stdlib/mkstemp
 
@@ -219,6 +222,7 @@ obj/tests/%.o: ../../tests/libmy/%.c
 	@mkdir --parents obj/tests/string
 	@mkdir --parents obj/tests/strings
 	@mkdir --parents obj/tests/unistd
+	@mkdir --parents obj/tests/search
 	$(CC) -c $< -o $@ $(CFLAGS) --coverage -DLIBMY_COVERAGE -D_GNU_SOURCE # We sometimes need _GNU_SOURCE for tests, such as for memmem, get_current_dir_name or SNANL
 
 # Include dependencies
