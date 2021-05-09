@@ -5,7 +5,9 @@
 ** Tests printf
 */
 
-#define _GNU_SOURCE
+#ifndef _GNU_SOURCE
+    #define _GNU_SOURCE
+#endif
 #include "../tests_header.h"
 #include "my/stdio.h"
 #include <criterion/redirect.h>
