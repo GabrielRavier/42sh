@@ -14,7 +14,7 @@
 #include <errno.h>
 
 // Add the rest of this once we have fprintf, fwprintf, fputs or fputwc
-Test(my_stdio, bionic_cantwrite)
+Test(my_FILE, bionic_cantwrite)
 {
     my_file_t *fp = my_fopen("/proc/version", "r");
 
@@ -216,7 +216,7 @@ static void cloudlibc_do_random_test(my_file_t *fp)
     cr_assert_eq(my_fclose(fp), 0);
 }
 
-Test(my_stdio, cloudlibc_random)
+Test(my_FILE, cloudlibc_random)
 {
     char *filename = tmpnam(NULL);
 
@@ -228,7 +228,7 @@ Test(my_stdio, cloudlibc_random)
 
 // Add the rest of this once we have clearerr, freopen, getchar, fgets, gets,
 // fread, remove, rename, tmpnam and tmpfile
-Test(my_stdio, plauger)
+Test(my_FILE, plauger)
 {
     char *filename = tmpnam(NULL);
     my_file_t *fp = my_fopen(filename, "w");
@@ -246,7 +246,7 @@ Test(my_stdio, plauger)
     cr_assert_neq(my_ferror(fp), 0);
 }
 
-Test(my_stdio, picolibc_posix_io)
+Test(my_FILE, picolibc_posix_io)
 {
     char template[] = "/tmp/libmy-picolibc-posix-io-test.XXXXXX";
     cr_assert_neq(mkdtemp(template), NULL);
