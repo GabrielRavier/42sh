@@ -153,7 +153,7 @@ TESTS_SOURCE_FILES += string/memchr string/memcpy string/memmove string/memcmp s
 TESTS_SOURCE_FILES += strings/bcopy
 
 # Tests related to stdio.h
-TESTS_SOURCE_FILES += stdio/printf stdio/putc stdio/fileno stdio/FILE stdio/fwrite stdio/ungetc stdio/fprintf stdio/fopen
+TESTS_SOURCE_FILES += stdio/printf stdio/putc stdio/fileno stdio/FILE stdio/fwrite stdio/ungetc stdio/fprintf stdio/fopen stdio/fseterr stdio/dprintf
 
 # Tests related to math.h
 TESTS_SOURCE_FILES += math/fabs math/signbit math/fpclassify
