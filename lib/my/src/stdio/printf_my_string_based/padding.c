@@ -12,13 +12,15 @@ static void do_padding_loop(struct my_string *destination,
     size_t destination_length_before_conversion, size_t converted_length,
     struct my_printf_conversion_info *conversion_info)
 {
+    size_t inserted_chars = 0;
+
     while (converted_length++ < (size_t)conversion_info->field_width)
         if (conversion_info->flag_minus)
             my_string_append_char(destination, ' ');
         else
             my_string_insert_char(destination,
                 conversion_info->flag_0 ? '0' : ' ',
-                destination_length_before_conversion);
+                destination_length_before_conversion + inserted_chars++);
 }
 
 void my_asprintf_do_padding(const struct asprintf_do_padding_params *params)
