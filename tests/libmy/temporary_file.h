@@ -16,7 +16,7 @@ struct test_temporary_file {
     char path[1024];
 };
 
-struct test_temporary_file test_temporary_file_new(void)
+static inline struct test_temporary_file test_temporary_file_new(void)
 {
     struct test_temporary_file result;
     my_strcpy(result.path, "/tmp/libmy-test-temporary-file.XXXXXX");
@@ -24,7 +24,7 @@ struct test_temporary_file test_temporary_file_new(void)
     return result;
 }
 
-void test_temporary_file_destroy(const struct test_temporary_file *self)
+static inline void test_temporary_file_destroy(const struct test_temporary_file *self)
 {
     my_close(self->fd);
     my_unlink(self->path);
