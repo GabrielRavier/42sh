@@ -19,7 +19,7 @@ do_one_test()
 
 for i in stdins/*[^~]
 do
-    do_one_test $i exit_statuses/$(basename $i) stdouts/$(basename $i) stderrs/$(basename $i)
+    do_one_test $i exit_statuses/$(basename $i) stdouts/$(basename $i) stderrs/$(basename $i)&
 done
 
 # Wait for all tests to be over before exiting

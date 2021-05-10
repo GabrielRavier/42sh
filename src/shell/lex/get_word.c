@@ -20,7 +20,7 @@ static bool do_meta_characters(struct shell *self,
 {
     shell_char_t c_after;
 
-    if (*c == '<' || *c == '>') {
+    if (*c == '<' || *c == '>' || *c == '&' || *c == '|') {
         my_shell_char_vector_append_single(word_buffer, *c);
         c_after = shell_lex_get_character(self);
         if (c_after == *c)
@@ -29,7 +29,7 @@ static bool do_meta_characters(struct shell *self,
             shell_lex_unget_character(self, c_after);
         return false;
     }
-    if (*c == '|' || *c == ';' || *c == '\n') {
+    if (*c == ';' || *c == '\n') {
         my_shell_char_vector_append_single(word_buffer, *c);
         return false;
     }

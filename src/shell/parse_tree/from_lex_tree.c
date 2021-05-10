@@ -12,7 +12,7 @@
 #include "my/cpp-like/utility.h"
 #include "my/stdlib.h"
 
-static struct shell_parse_tree *parse_part3(struct shell *self,
+static struct shell_parse_tree *parse_part5(struct shell *self,
     struct lexical_word_list *word_list,
     struct lexical_word_list *word_list_end, int flags)
 {
@@ -24,10 +24,54 @@ static struct shell_parse_tree *parse_part3(struct shell *self,
         case '|':
             result = my_xcalloc(1, sizeof(*result));
             result->type = PARSE_TREE_NODE_TYPE_PIPE;
-            result->node_left = parse_part4(self, word_list, i,
+            result->node_left = parse_part6(self, word_list, i,
                 flags | PARSER_FLAGS_OUTPUT);
-            result->node_right = parse_part3(self, i->next, word_list_end,
+            result->node_right = parse_part5(self, i->next, word_list_end,
                 flags | PARSER_FLAGS_INPUT);
+            return result;
+        }
+    return parse_part6(self, word_list, word_list_end, flags);
+}
+
+static struct shell_parse_tree *parse_part4(struct shell *self,
+    struct lexical_word_list *word_list,
+    struct lexical_word_list *word_list_end, int flags)
+{
+    struct shell_parse_tree *result;
+
+    for (struct lexical_word_list *i = word_list; i != word_list_end;
+        i = i->next)
+        switch (i->word[0]) {
+        case '&':
+            if (i->word[1] != '&')
+                continue;
+            result = my_calloc(1, sizeof(*result));
+            result->type = PARSE_TREE_NODE_TYPE_AND;
+            result->node_left = parse_part5(self, word_list, i, flags);
+            result->node_right = parse_part4(self, i->next, word_list_end,
+                flags);
+            return result;
+        }
+    return parse_part5(self, word_list, word_list_end, flags);
+}
+
+static struct shell_parse_tree *parse_part3(struct shell *self,
+    struct lexical_word_list *word_list,
+    struct lexical_word_list *word_list_end, int flags)
+{
+    struct shell_parse_tree *result;
+
+    for (struct lexical_word_list *i = word_list; i != word_list_end;
+        i = i->next)
+        switch (i->word[0]) {
+        case '|':
+            if (i->word[1] != '|')
+                continue;
+            result = my_calloc(1, sizeof(*result));
+            result->type = PARSE_TREE_NODE_TYPE_OR;
+            result->node_left = parse_part4(self, word_list, i, flags);
+            result->node_right = parse_part3(self, i->next, word_list_end,
+                flags);
             return result;
         }
     return parse_part4(self, word_list, word_list_end, flags);

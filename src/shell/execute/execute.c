@@ -8,6 +8,7 @@
 #include "../execute.h"
 #include "execute_part2.h"
 #include "execute_part3.h"
+#include "execute_part4.h"
 #include "../fork.h"
 #include "../flush_child_fds.h"
 
@@ -88,6 +89,10 @@ void shell_execute(struct shell *self, struct shell_parse_tree *parse_tree,
         break;
     case PARSE_TREE_NODE_TYPE_PIPE:
         shell_execute_do_pipe(self, parse_tree, pipe_in, pipe_out);
+        break;
+    case PARSE_TREE_NODE_TYPE_AND:
+    case PARSE_TREE_NODE_TYPE_OR:
+        shell_execute_do_or_and(self, parse_tree, pipe_in, pipe_out);
         break;
     }
     if (self->child_io_fds_setup)

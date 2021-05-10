@@ -22,6 +22,8 @@ void shell_parse_tree_free(struct shell_parse_tree *self)
         break;
     case PARSE_TREE_NODE_TYPE_LIST:
     case PARSE_TREE_NODE_TYPE_PIPE:
+    case PARSE_TREE_NODE_TYPE_AND:
+    case PARSE_TREE_NODE_TYPE_OR:
         shell_parse_tree_free(self->node_left);
         shell_parse_tree_free(self->node_right);
         break;

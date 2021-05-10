@@ -14,7 +14,7 @@
 #include <sys/types.h>
 #include <stddef.h>
 
-struct parse_part4_state {
+struct parse_part6_state {
     struct shell *self;
     struct lexical_word_list *word_list;
     struct lexical_word_list *word_list_end;
@@ -24,8 +24,8 @@ struct parse_part4_state {
     ssize_t argument_count;
 };
 
-static inline size_t parse_part4_get_argument_count(
-    struct parse_part4_state *st)
+static inline size_t parse_part6_get_argument_count(
+    struct parse_part6_state *st)
 {
     ssize_t argument_count = 0;
 
@@ -46,7 +46,7 @@ static inline size_t parse_part4_get_argument_count(
     return MY_MAX(argument_count, 0);
 }
 
-static inline void parse_part4_do_output(struct parse_part4_state *st)
+static inline void parse_part6_do_output(struct parse_part6_state *st)
 {
     if (st->i->word[1] == '>')
         st->parse_tree->flags |= PARSE_TREE_NODE_FLAGS_APPEND;
@@ -65,7 +65,7 @@ static inline void parse_part4_do_output(struct parse_part4_state *st)
         st->parse_tree->str_right = shell_char_xstrdup(st->i->word);
 }
 
-static inline void parse_part4_do_input(struct parse_part4_state *st)
+static inline void parse_part6_do_input(struct parse_part6_state *st)
 {
     if (st->i->word[1] == '<')
         st->parse_tree->flags |= PARSE_TREE_NODE_FLAGS_INPUT_HEREDOC;
@@ -84,15 +84,15 @@ static inline void parse_part4_do_input(struct parse_part4_state *st)
         st->parse_tree->str_left = shell_char_xstrdup(st->i->word);
 }
 
-static inline void parse_part4_do_loop(struct parse_part4_state *st)
+static inline void parse_part6_do_loop(struct parse_part6_state *st)
 {
     for (st->i = st->word_list; st->i != st->word_list_end; st->i = st->i->next)
         switch (st->i->word[0]) {
         case '>':
-            parse_part4_do_output(st);
+            parse_part6_do_output(st);
             continue;
         case '<':
-            parse_part4_do_input(st);
+            parse_part6_do_input(st);
             continue;
         default:
             if (st->self->error == NULL)
@@ -102,16 +102,16 @@ static inline void parse_part4_do_loop(struct parse_part4_state *st)
         }
 }
 
-static inline struct shell_parse_tree *parse_part4(struct shell *self,
+static inline struct shell_parse_tree *parse_part6(struct shell *self,
     struct lexical_word_list *word_list,
     struct lexical_word_list *word_list_end, int flags)
 {
-    struct parse_part4_state st = {self, word_list, word_list_end, flags,
+    struct parse_part6_state st = {self, word_list, word_list_end, flags,
         my_xcalloc(1, sizeof(*st.parse_tree)), NULL, 0};
 
-    st.parse_tree->argv = my_xcalloc(parse_part4_get_argument_count(&st) +
+    st.parse_tree->argv = my_xcalloc(parse_part6_get_argument_count(&st) +
         1, sizeof(st.parse_tree->argv));
-    parse_part4_do_loop(&st);
+    parse_part6_do_loop(&st);
     if (st.argument_count == 0)
         shell_set_error(self, SHELL_ERROR_NULL_COMMAND);
     st.parse_tree->type = PARSE_TREE_NODE_TYPE_COMMAND;

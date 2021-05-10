@@ -17,7 +17,9 @@ struct shell_parse_tree {
     enum {
         PARSE_TREE_NODE_TYPE_COMMAND,
         PARSE_TREE_NODE_TYPE_LIST,
-        PARSE_TREE_NODE_TYPE_PIPE
+        PARSE_TREE_NODE_TYPE_PIPE,
+        PARSE_TREE_NODE_TYPE_OR,
+        PARSE_TREE_NODE_TYPE_AND,
     } type;
     enum {
         PARSE_TREE_NODE_FLAGS_APPEND = 0x1,
