@@ -43,27 +43,26 @@ stdio:
 
 Get stuff from bionic for fbufsize, flbf, fpending, fpurge, flushlbf,
 freadable, fwriteable, freading, fwriting, fseterr, fsetlocking, flockfile,
-tmpfile, getdelim, getline, popen, scanf, wscanf, fprintf, fwprintf, fputwc,
-fgetpos, fsetpos, fdopen, fopen, fseek, fgetwc, fmemopen, open_memstream,
-freopen, fread, fclose, ftell, funopen, fopen, remove, perror, putchar,
-putchar_unlocked, feof_unlocked, ferror_unlocked, putc_unlocked, fputc_unlocked,
-getc_unlocked, fgetc_unlocked, fwrite_unlocked, fflush_unlocked, fread_unlocked,
+tmpfile, getdelim, getline, popen, scanf, wscanf, fwprintf, fputwc, fgetpos,
+fsetpos, fdopen, fopen, fseek, fgetwc, fmemopen, open_memstream, freopen, fread,
+fclose, ftell, funopen, fopen, remove, perror, putchar, putchar_unlocked,
+feof_unlocked, ferror_unlocked, putc_unlocked, fputc_unlocked, getc_unlocked,
+fgetc_unlocked, fwrite_unlocked, fflush_unlocked, fread_unlocked,
 fputs_unlocked, fgets_unlocked, rename, renameat, renameat2, tempnam, tmpnam,
 printf
 
 Get stuff from dietlibc for fgets, printf, getline
 
 Get stuff from cloudlibc for clearerr, fflush, fgetpos, fgets, fgetwc, fgetws,
-fprintf, fputwc, fputws, fread, fscanf, fseeko, fsetpos, ftello, fwide,
-fwprintf, fwscanf, getdelim, getline, getwc, putwc, rewind, setvbuf, ungetwc,
+fputwc, fputws, fread, fscanf, fseeko, fsetpos, ftello, fwide, fwprintf,
+fwscanf, getdelim, getline, getwc, putwc, rewind, setvbuf, ungetwc,
 fmemopen, tmpfile
 
 Get stuff from DeforaOS for fmemopen, fopen, printf, sscanf, tmpfile, tmpnam
 
-Get stuff from plauger for vfprintf, vprintf, vsprintf, sprintf, sscanf,
-fprintf, fgetpos, fsetpos, fscanf, fseek, setvbuf, scanf, fclose, tmpnam,
-clearerr, fputs, getchar, fgets, gets, fread, remove, rename, fopen, tmpfile,
-perror, putchar, puts
+Get stuff from plauger for vprintf, vsprintf, sprintf, sscanf, fgetpos, fsetpos,
+fscanf, fseek, setvbuf, scanf, fclose, tmpnam, clearerr, fputs, getchar, fgets,
+gets, fread, remove, rename, fopen, tmpfile, perror, putchar, puts
 
 stdlib:
 
@@ -148,7 +147,7 @@ setvbuf, fgets, fgets, rewind, fsetpos, fgetws, fseek, getw, fputs, fread,
 tempnam, fflush, fgetwc, fputwc, tmpnam, fcloseall, open, fstat, stat, dup2,
 pipe, mkdir, write, close, rmdir, dup, mktemp, calloc, malloc, realloc,
 setlocale, atan, exp, tanh, popen, pclose, srand, sprintf, vswprintf, swprintf,
-wcsstr, wcslen, wcscmp, snprintf, fprintf, ftell, fwprintf, fscanf, fcvt, ecvt,
+wcsstr, wcslen, wcscmp, snprintf, ftell, fwprintf, fscanf, fcvt, ecvt,
 vswprintf, vsprintf, sscanf, swscanf, signal, raise, strcmp, strncmp, strcpy,
 strnlem, mbsrtowcs, wcsrtombs, wctob, btowc, wcrtomb, tolower, towlower,
 towupper, mbrlen, mbrtowc, swab, strcspn, strcmp, strdup, strtok, strtol,
@@ -161,5 +160,4 @@ bsearch, tolower, toupper, sscanf, iswctype, iswalpha, iswdigit, iswlower,
 iswspace, iswxdigit, isalnum, isalpha, iscntrl, isdigit, isgraph, islower,
 isprint, ispunct, isspace, isupper, isxdigit
 
-wine/ucrtbase: strtod, wcstok, snprintf, swprintf, fprintf, fwprintf, vsprintf,
-vsscanf
+wine/ucrtbase: strtod, wcstok, snprintf, swprintf, fwprintf, vsprintf, vsscanf
