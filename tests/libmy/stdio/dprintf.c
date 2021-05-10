@@ -25,7 +25,7 @@ Test(my_dprintf, cloudlibc_bad)
     cr_assert_eq(fcntl(fds[1], F_SETFL, O_NONBLOCK), 0);
 
     errno = 0;
-    cr_assert_eq(my_dprintf(fds[1], "%10000000s", ""), -1);
+    cr_assert_eq(my_dprintf(fds[1], "%5000000s", ""), -1);
     cr_assert_eq(errno, EAGAIN);
     cr_assert_eq(my_close(fds[0]), 0);
     cr_assert_eq(my_close(fds[1]), 0);
