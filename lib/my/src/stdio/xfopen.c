@@ -14,8 +14,9 @@ my_file_t *my_xfopen(const char *filename, const char *mode)
     my_file_t *result = my_fopen(filename, mode);
 
     if (result == NULL) {
-        my_dprintf(STDERR_FILENO, "Could not open '%s' (mode '%s')\n",
+        my_fprintf(my_stderr, "Could not open '%s' (mode '%s')\n",
             filename, mode);
+        my_fflush(my_stderr);
         my__exit(84);
     }
     return result;

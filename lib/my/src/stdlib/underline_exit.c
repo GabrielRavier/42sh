@@ -18,8 +18,9 @@ void my__exit(int status)
 #else
 void my__exit(int status)
 {
-    my_dprintf(STDERR_FILENO, "Tried to _exit with status %d but _exit not "
+    my_fprintf(my_stderr, "Tried to _exit with status %d but _exit not "
         "available. Aborting...\n", status & 0xFF);
+    my_fflush(my_stderr);
     my_abort();
 }
 #endif

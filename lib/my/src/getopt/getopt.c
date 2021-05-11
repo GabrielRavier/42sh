@@ -27,7 +27,7 @@ static int do_found_option(struct getopt_state *state)
         if (state->argv[optind][*state->ptr_optposition + 1] != '\0')
             optarg = &state->argv[optind++][*state->ptr_optposition + 1];
         else if (++optind >= state->argc) {
-            my_dprintf(STDERR_FILENO, "%s: option requires an argument -- %c\n",
+            my_fprintf(my_stderr, "%s: option requires an argument -- %c\n",
                 state->argv[0], state->argument_character);
             *state->ptr_optposition = 1;
             return '?';
@@ -43,7 +43,7 @@ static int do_found_option(struct getopt_state *state)
 
 static int do_illegal_option(struct getopt_state *state)
 {
-    my_dprintf(STDERR_FILENO, "%s: invalid option -- '%c'\n", state->argv[0],
+    my_fprintf(my_stderr, "%s: invalid option -- '%c'\n", state->argv[0],
         state->argument_character);
     if (state->argv[optind][++*state->ptr_optposition] == '\0') {
         ++optind;

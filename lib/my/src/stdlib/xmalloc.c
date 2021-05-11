@@ -14,8 +14,9 @@ void *my_xmalloc(size_t size)
     void *result = my_malloc(size);
 
     if (result == NULL) {
-        my_dprintf(STDERR_FILENO, "Out of memory while trying to allocate %zu "
+        my_fprintf(my_stderr, "Out of memory while trying to allocate %zu "
             "bytes\n", size);
+        my_fflush(my_stderr);
         my__exit(84);
     }
     return result;

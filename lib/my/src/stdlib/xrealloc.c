@@ -17,8 +17,9 @@ void *my_xrealloc(void *ptr, size_t size)
 
     if (result == NULL && size != 0) {
         my_free(ptr);
-        my_dprintf(STDERR_FILENO, "Out of memory while trying to allocate %zu "
+        my_fprintf(my_stderr, "Out of memory while trying to allocate %zu "
             "bytes\n", size);
+        my_fflush(my_stderr);
         my__exit(84);
     }
     return result;
