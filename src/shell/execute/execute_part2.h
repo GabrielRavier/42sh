@@ -11,6 +11,7 @@
 #include "../builtin.h"
 #include "../print_error.h"
 #include "my/stdio.h"
+#include "my/stdlib.h"
 #include "my/unistd.h"
 #include "my/string.h"
 #include <stdlib.h>
@@ -22,6 +23,9 @@ _Noreturn static inline void shell_execute_do_exec(struct shell *self,
 
     my_execvp(argv[0], argv);
     my_dprintf(self->error_output_fd, "%s: Command not found.\n", argv[0]);
+    for (size_t i = 0; argv[i] != NULL; ++i)
+        my_free(argv[i]);
+    my_free(argv);
     exit(1);
 }
 
