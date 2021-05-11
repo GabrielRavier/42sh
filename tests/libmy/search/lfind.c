@@ -23,7 +23,7 @@ Test(my_lfind, cloudlibc_simple)
 {
     int arr[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-    for (int i = -MY_ARRAY_SIZE(arr); i < 2 * (int)MY_ARRAY_SIZE(arr); ++i) { 
+    for (int i = -MY_ARRAY_SIZE(arr); i < 2 * (int)MY_ARRAY_SIZE(arr); ++i) {
         void *result = my_lfind(&i, arr, MY_ARRAY_SIZE(arr), sizeof(arr[0]), compare_ints);
         if (i < 0 || i >= (int)MY_ARRAY_SIZE(arr))
             cr_assert_eq(result, NULL);

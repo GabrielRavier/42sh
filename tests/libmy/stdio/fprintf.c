@@ -18,7 +18,7 @@ Test(my_fprintf, freebsd_simple_string)
     char template[] = "/tmp/libmy-test-fprintf-freebsd-simple-string.XXXXXX";
     cr_assert_eq(mkdtemp(template), template);
     cr_assert_eq(chdir(template), 0);
-    
+
     my_file_t *file = my_fopen("test.txt", "w+");
     cr_assert_neq(file, NULL);
 

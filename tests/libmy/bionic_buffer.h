@@ -251,7 +251,7 @@ static inline void bionic_run_single_buffer_overread_test(void (*test_func)(uint
     cr_assert_eq(mprotect(&memory[page_size], page_size, PROT_READ | PROT_WRITE), 0);
     free(memory);
 }
-    
+
 static inline void bionic_run_cmp_buffer_align_test(size_t max_test_size, void (*test_cmp_func)(uint8_t *, uint8_t *, size_t), void (*test_miscmp_func)(uint8_t *, uint8_t *, size_t, size_t), size_t (*set_incr)(size_t))
 {
     if (set_incr == NULL)
@@ -314,7 +314,7 @@ static inline void bionic_run_cmp_buffer_overread_test(void (*test_cmp_func)(uin
             test_miscmp_func(&memory1[page_size - i], &memory2[page_size - j], i, j);
         }
     }
-    
+
     cr_assert_eq(mprotect(&memory1[page_size], page_size, PROT_READ | PROT_WRITE), 0);
     cr_assert_eq(mprotect(&memory2[page_size], page_size, PROT_READ | PROT_WRITE), 0);
     free(memory1);

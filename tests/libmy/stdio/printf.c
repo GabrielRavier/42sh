@@ -62,7 +62,7 @@ MY_ATTRIBUTE((format(printf, 1, 2))) static void compare_printfs(const char *for
 {
     if (my_ferror(my_stdout))
         my_clearerr(my_stdout);
-    
+
     va_list arguments;
     va_start(arguments, format);
     const int our_printf_retval = my_vprintf(format, arguments);

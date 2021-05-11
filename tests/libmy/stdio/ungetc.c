@@ -13,7 +13,7 @@
 Test(my_ungetc, dietlibc)
 {
     const char *filename = tmpnam(NULL);
-    
+
     my_file_t *fp = my_fopen(filename, "w");
     cr_assert_neq(fp, NULL);
 

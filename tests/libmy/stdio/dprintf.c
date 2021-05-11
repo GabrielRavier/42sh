@@ -69,10 +69,10 @@ Test(my_dprintf, gnulib)
 Test(my_dprintf, bionic)
 {
     struct test_temporary_file tf = test_temporary_file_new();
-    
+
     cr_assert_eq(my_dprintf(tf.fd, "hello\n"), 6);
     my_lseek(tf.fd, 0, SEEK_SET);
     // Finish this once we have fdopen
-    
+
     test_temporary_file_destroy(&tf);
 }
