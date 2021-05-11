@@ -32,6 +32,7 @@ static const unsigned char SHELL_CHAR_TYPE_MAP[0x80] = {
     ['>'] = SHELL_CHAR_TYPE_META,
     ['\\'] = SHELL_CHAR_TYPE_ESCAPE,
     ['|'] = SHELL_CHAR_TYPE_META,
+    ['&'] = SHELL_CHAR_TYPE_META,
 };
 
 MY_ATTR_WARN_UNUSED_RESULT static inline bool shell_char_is_type(shell_char_t c,
