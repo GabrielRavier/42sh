@@ -30,7 +30,7 @@ static my_fpos_t finish_failed(my_file_t *fp, my_fpos_t offset, int whence,
             fp->read_space_left = 0;
             fp->flags &= ~MY_FILE_FLAG_EOF;
         }
-        fp->flags |= MY_FILE_FLAG_ERROR;
+        my_fseterr(fp);
         errno = EINVAL;
     }
     fp->flags &= ~MY_FILE_FLAG_IS_OFFSET_CORRECT;

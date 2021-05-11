@@ -24,7 +24,7 @@ int my_internal_file_flush_skip_non_write(my_file_t *fp)
         bytes_written = my_internal_file_do_write(fp->internal_data, base_it,
             bytes_to_write);
         if (bytes_written <= 0) {
-            fp->flags |= MY_FILE_FLAG_ERROR;
+            my_fseterr(fp);
             return EOF;
         }
         bytes_to_write -= bytes_written;

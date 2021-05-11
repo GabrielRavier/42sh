@@ -18,7 +18,7 @@ static bool handle_non_write(my_file_t *fp)
     if (!(fp->flags & MY_FILE_FLAG_WRITE)) {
         if (!(fp->flags & MY_FILE_FLAG_READ_WRITE)) {
             errno = EBADF;
-            fp->flags |= MY_FILE_FLAG_ERROR;
+            my_fseterr(fp);
             return false;
         }
         if (fp->flags & MY_FILE_FLAG_READ) {
