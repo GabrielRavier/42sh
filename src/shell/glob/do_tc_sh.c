@@ -6,14 +6,14 @@
 */
 
 #include "../glob.h"
-#include "do_tcsh_part2.h"
+#include "do_tc_sh_part2.h"
 #include "../get_home_dir.h"
 #include "../set_error.h"
 #include "my/stdlib.h"
 
 static const size_t SIZE_INCR = 100;
 
-static bool tcsh_glob_tilde(struct shell *self,
+static bool tc_sh_glob_tilde(struct shell *self,
     const shell_char_t *str, shell_char_t **result)
 {
     const shell_char_t *orig = str;
@@ -48,7 +48,7 @@ static shell_char_t **make_vec_loop(shell_char_t **start, size_t size,
     return start;
 }
 
-bool shell_glob_do_tcsh(struct shell *self, const shell_char_t **strv,
+bool shell_glob_do_tc_sh(struct shell *self, const shell_char_t **strv,
     shell_char_t ***result)
 {
     shell_char_t **start = make_vec_loop(my_xmalloc(sizeof(*start) *
@@ -56,7 +56,7 @@ bool shell_glob_do_tcsh(struct shell *self, const shell_char_t **strv,
     shell_char_t **it = start;
 
     for (const shell_char_t *i = *it; i != NULL; i = *++it)
-        if (*i == '~' && !tcsh_glob_tilde(self, i, it)) {
+        if (*i == '~' && !tc_sh_glob_tilde(self, i, it)) {
             shell_char_strv_free(start);
             return false;
         }

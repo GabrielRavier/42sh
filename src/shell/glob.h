@@ -18,7 +18,7 @@ enum {
 bool shell_glob_str(struct shell *self, const shell_char_t *str, int flags,
     shell_char_t **result) MY_ATTR_WARN_UNUSED_RESULT;
 
-bool shell_glob_do_tcsh(struct shell *self, const shell_char_t **strv,
+bool shell_glob_do_tc_sh(struct shell *self, const shell_char_t **strv,
     shell_char_t ***result) MY_ATTR_WARN_UNUSED_RESULT;
 
 // We don't handle stuff that would be handled by actual glob(3) calls yet, so

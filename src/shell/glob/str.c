@@ -24,7 +24,7 @@ bool shell_glob_str(struct shell *self, const shell_char_t *str, int flags,
         return true;
     }
     if (glob_flags & SHELL_GLOB_FLAG_TCSH)
-        return (!shell_glob_do_tcsh(self, strv, &tmp_strv)) ? false :
+        return (!shell_glob_do_tc_sh(self, strv, &tmp_strv)) ? false :
             make_result(&((mr_opts_t){self, str, flags, tmp_strv, result}));
     __builtin_trap();
 }

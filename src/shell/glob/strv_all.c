@@ -16,7 +16,7 @@ bool shell_glob_strv_all(struct shell *self,
         return true;
     }
     if (flags & SHELL_GLOB_FLAG_TCSH) {
-        if (!shell_glob_do_tcsh(self, strv, result))
+        if (!shell_glob_do_tc_sh(self, strv, result))
             return false;
     } else
         *result = shell_char_strv_dup(strv);
