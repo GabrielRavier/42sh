@@ -73,7 +73,7 @@ static void cloudlibc_do_random_test(my_file_t *fp)
     size_t num_pushbacks = 0;
 
     for (size_t i = 0; i < 10000; ++i) {
-        switch (random() % 11) {
+        switch (random() % 12) {
         case 0:
             LOG_DEBUG("ferror(fp) == %d\n", has_error);
             cr_assert_eq((bool)my_ferror(fp), has_error);
@@ -205,6 +205,11 @@ static void cloudlibc_do_random_test(my_file_t *fp)
             }
             break;
         }
+        case 11:
+            my_clearerr(fp);
+            has_eof = false;
+            has_error = false;
+            break;
         default:
             cr_assert(false && "Should NEVER be reached");
         }
@@ -226,8 +231,8 @@ Test(my_FILE, cloudlibc_random)
     }
 }
 
-// Add the rest of this once we have clearerr, freopen, getchar, fgets, gets,
-// fread, remove, rename, tmpnam and tmpfile
+// Add the rest of this once we have freopen, getchar, fgets, gets, fread,
+// remove, rename, tmpnam and tmpfile
 Test(my_FILE, plauger)
 {
     char *filename = tmpnam(NULL);
@@ -244,6 +249,17 @@ Test(my_FILE, plauger)
     cr_assert_eq(my_fgetc(fp), EOF);
     cr_assert_eq(my_feof(fp), 0);
     cr_assert_neq(my_ferror(fp), 0);
+    my_clearerr(fp);
+    cr_assert_eq(my_ferror(fp), 0);
+    cr_assert_eq(my_fputc('a', fp), 'a');
+    cr_assert_eq(my_putc('b', fp), 'b');
+    cr_assert_geq(my_fputs("cde\n", fp), 0);
+    cr_assert_geq(my_fputs("fghij\n", fp), 0);
+    cr_assert_eq(my_fflush(fp), 0);
+    cr_assert_eq(my_fwrite("klmnopq\n", 2, 4, fp), 4);
+    cr_assert_eq(my_fclose(fp), 0);
+
+    cr_assert_eq(remove(filename), 0);
 }
 
 Test(my_FILE, picolibc_posix_io)

@@ -53,16 +53,15 @@ printf
 
 Get stuff from dietlibc for fgets, printf, getline
 
-Get stuff from cloudlibc for clearerr, fflush, fgetpos, fgets, fgetwc, fgetws,
-fputwc, fputws, fread, fscanf, fseeko, fsetpos, ftello, fwide, fwprintf,
-fwscanf, getdelim, getline, getwc, putwc, rewind, setvbuf, ungetwc,
-fmemopen, tmpfile
+Get stuff from cloudlibc for fflush, fgetpos, fgets, fgetwc, fgetws, fputwc,
+fputws, fread, fscanf, fseeko, fsetpos, ftello, fwide, fwprintf, fwscanf,
+getdelim, getline, getwc, putwc, rewind, setvbuf, ungetwc, fmemopen, tmpfile
 
 Get stuff from DeforaOS for fmemopen, fopen, printf, sscanf, tmpfile, tmpnam
 
 Get stuff from plauger for vprintf, vsprintf, sprintf, sscanf, fgetpos, fsetpos,
-fscanf, fseek, setvbuf, scanf, fclose, tmpnam, clearerr, fputs, getchar, fgets,
-gets, fread, remove, rename, fopen, tmpfile, perror, putchar, puts
+fscanf, fseek, setvbuf, scanf, fclose, tmpnam, fputs, getchar, fgets, gets,
+fread, remove, rename, fopen, tmpfile, perror, putchar, puts
 
 stdlib:
 
