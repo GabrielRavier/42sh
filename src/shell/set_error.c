@@ -33,6 +33,7 @@ static const char *const SHELL_SET_ERROR_FORMATS[SHELL_ERROR_LAST_ERROR] = {
     "No $home variable set",
     "Ambiguous",
     "No match",
+    "Unmatched '%c'",
 };
 
 void shell_set_error(struct shell *self, enum shell_error_type error, ...)

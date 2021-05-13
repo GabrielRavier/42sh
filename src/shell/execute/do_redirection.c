@@ -2,23 +2,24 @@
 ** EPITECH PROJECT, 2021
 ** 42sh
 ** File description:
-** Defines part 3 of execute
+** Defines do_redirection
 */
 
-#include "../execute.h"
+#include "do_redirection.h"
 #include "../set_error.h"
 #include "../print_error.h"
+#include "../parse_tree.h"
 #include "../../fd.h"
 #include "my/stdlib.h"
 #include "my/unistd.h"
 #include "my/fcntl.h"
+#include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <string.h>
 #include <errno.h>
 
 // We copy our fds to the standard ones so that </dev/std{in,out,err} work
-static inline void shell_execute_do_redirection_input_str(struct shell *self,
+static void shell_execute_do_redirection_input_str(struct shell *self,
     struct shell_parse_tree *parse_tree)
 {
     MY_CLEANUP_FREE char *tmp_filename;
@@ -38,7 +39,7 @@ static inline void shell_execute_do_redirection_input_str(struct shell *self,
 }
 
 // INPUT_HEREDOC is handled by shell_heredoc
-static inline void shell_execute_do_redirection_input(struct shell *self,
+static void shell_execute_do_redirection_input(struct shell *self,
     struct shell_parse_tree *parse_tree, int *pipe_in)
 {
     if ((parse_tree->flags & PARSE_TREE_NODE_FLAGS_INPUT_HEREDOC) == 0) {
@@ -57,7 +58,7 @@ static inline void shell_execute_do_redirection_input(struct shell *self,
 }
 
 // We copy our fds to the standard ones so that >/dev/std{out,err} work
-static inline void shell_execute_do_redirection_output_str(struct shell *self,
+static void shell_execute_do_redirection_output_str(struct shell *self,
     struct shell_parse_tree *parse_tree)
 {
     MY_CLEANUP_FREE char *tmp_filename = shell_char_xstrdup_to_c(
@@ -79,7 +80,7 @@ static inline void shell_execute_do_redirection_output_str(struct shell *self,
     fd_move(fd, STDOUT_FILENO);
 }
 
-static inline void shell_execute_do_redirection_output(struct shell *self,
+static void shell_execute_do_redirection_output(struct shell *self,
     struct shell_parse_tree *parse_tree, int *pipe_out)
 {
     if (parse_tree->str_right != NULL)
@@ -91,7 +92,7 @@ static inline void shell_execute_do_redirection_output(struct shell *self,
     }
 }
 
-static inline void shell_execute_do_redirection(struct shell *self,
+void shell_execute_do_redirection(struct shell *self,
     struct shell_parse_tree *parse_tree, int *pipe_in, int *pipe_out)
 {
     if (self->child_io_fds_setup)

@@ -32,14 +32,14 @@ SOURCE_FILES += shell/read_character shell/process shell/fork shell/pipe shell/h
 SOURCE_FILES += shell/init/init shell/init/fds shell/init/program_name shell/init/dir shell/init/home
 SOURCE_FILES += shell/builtin/find shell/builtin/run
 SOURCE_FILES += shell/builtin/commands/cd shell/builtin/commands/env shell/builtin/commands/exit shell/builtin/commands/printenv shell/builtin/commands/setenv shell/builtin/commands/unsetenv
-SOURCE_FILES += shell/do_line/do_line
-SOURCE_FILES += shell/execute/execute
-SOURCE_FILES += shell/lex/lex shell/lex/get_word
+SOURCE_FILES += shell/execute/execute shell/execute/do_command shell/execute/do_redirection
+SOURCE_FILES += shell/lex/lex shell/lex/get_word/get_word
 SOURCE_FILES += shell/parse_tree/from_lex_tree shell/parse_tree/free
 SOURCE_FILES += shell/proc/add shell/proc/wait_current shell/proc/print shell/proc/wait shell/proc/free shell/proc/flush shell/proc/clear_current_previous shell/proc/get_new_current_job
 SOURCE_FILES += shell/dir/set_current shell/dir/do_cmd_chdir shell/dir/command_parse_options shell/dir/print_stack
 SOURCE_FILES += shell/var/set_valv
 SOURCE_FILES += shell/glob/str shell/glob/strv_get_flags shell/glob/do_tc_sh shell/glob/strv_all
+SOURCE_FILES += shell/fixup/parse_tree shell/fixup/strv shell/fixup/get_character shell/fixup/read_character
 SOURCE_FILES += fd/move fd/copy
 SOURCE_FILES += shell_char/xstrdup shell_char/strlen shell_char/cstrchr shell_char/cstrcmp_ignore_quote shell_char/xstrdup_to_c shell_char/xdup_strv_to_c shell_char/strcmp shell_char/static_xstrdup_to_c shell_char/xstrdup_from_c shell_char/strv_unquote shell_char/strv_free shell_char/getcwd_malloced shell_char/str_quote shell_char/str_unquote shell_char/alloc_concat shell_char/xstrndup shell_char/strv_dup shell_char/strv_len
 SOURCE_FILES += lexical_word_list/init lexical_word_list/free
@@ -56,11 +56,12 @@ obj/%.o: src/%.c libmy
 	@mkdir --parents obj/shell/dir
 	@mkdir --parents obj/shell/do_line
 	@mkdir --parents obj/shell/execute
-	@mkdir --parents obj/shell/lex
+	@mkdir --parents obj/shell/lex/get_word
 	@mkdir --parents obj/shell/parse_tree
 	@mkdir --parents obj/shell/proc
 	@mkdir --parents obj/shell/var
 	@mkdir --parents obj/shell/glob
+	@mkdir --parents obj/shell/fixup
 	@mkdir --parents obj/shell/builtin/commands
 	@mkdir --parents obj/dir
 	@mkdir --parents obj/fd

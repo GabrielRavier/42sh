@@ -10,7 +10,7 @@
 
 void shell_putchar(struct shell *self, shell_char_t character)
 {
-    character &= SHELL_CHAR_NOT_QUOTE;
+    character &= SHELL_CHAR_NOT_QUOTED;
     *self->line_buffer_current_ptr++ = character;
     if (self->line_buffer_current_ptr == &self->line_buffer[sizeof(
         self->line_buffer) - 1] || character == '\n')

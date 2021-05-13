@@ -35,7 +35,7 @@ static shell_char_t do_single_line(struct shell *self,
         c = shell_read_character(self, true);
         if (c == SHELL_CHAR_ERROR || c == '\n')
             break;
-        c &= SHELL_CHAR_NOT_QUOTE;
+        c &= SHELL_CHAR_NOT_QUOTED;
         if (c)
             my_shell_char_vector_append_single(line_buffer, c);
     }

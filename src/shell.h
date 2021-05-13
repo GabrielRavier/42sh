@@ -19,6 +19,14 @@ struct shell_lex_state {
     shell_char_t peek_character;
 };
 
+// This is for shell_fixup_read_character
+struct shell_fixup_state {
+    shell_char_t *cur_str_input;
+    shell_char_t *const *cur_strv_input;
+    shell_char_t peek_char_get_character;
+    shell_char_t peek_char_read_character;
+};
+
 enum shell_error_type {
     SHELL_ERROR_NO_ERROR,
     SHELL_ERROR_MISSING_NAME_FOR_REDIRECTION,
@@ -41,6 +49,7 @@ enum shell_error_type {
     SHELL_ERROR_NO_HOME_VAR_SET,
     SHELL_ERROR_AMBIGUOUS,
     SHELL_ERROR_NO_MATCH,
+    SHELL_ERROR_UNMATCHED_QUOTE,
     SHELL_ERROR_LAST_ERROR,
     SHELL_ERROR_FLAG_NAME = 0x40000000,
     SHELL_ERROR_FLAG_MASK = 0x40000000,
@@ -83,6 +92,7 @@ struct shell {
     const char *error_program_name;
     struct lexical_word_list current_lexical_word;
     struct shell_lex_state lex;
+    struct shell_fixup_state fixup;
     struct var vars_head;
     struct dir head_dir, *current_dir;
     struct shell_proc head_proc, *current_job, *current_job_in_table,

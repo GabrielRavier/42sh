@@ -34,7 +34,7 @@ struct shell_builtin *shell_builtin_find(struct shell_parse_tree *parse_tree)
 {
     const shell_char_t *command_name = parse_tree->argv[0];
 
-    if (*command_name & SHELL_CHAR_QUOTE)
+    if (*command_name & SHELL_CHAR_QUOTED)
         return NULL;
     return my_bsearch(command_name, &builtins[0], MY_ARRAY_SIZE(builtins),
         sizeof(builtins[0]), cmp_command_name_builtin);

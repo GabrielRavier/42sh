@@ -5,9 +5,10 @@
 ** Defines get_word
 */
 
-#include "get_word.h"
-#include "get_character.h"
-#include "../../shell_char_vector.h"
+#include "../get_word.h"
+#include "../get_character.h"
+#include "get_word_part2.h"
+#include "../../../shell_char_vector.h"
 
 static shell_char_t *finish_buffer(struct my_shell_char_vector *word_buffer)
 {
@@ -51,30 +52,9 @@ static bool get_first_char(struct shell *self,
             *c = shell_lex_get_character(self);
             if (*c == '\n')
                 continue;
-            *c |= SHELL_CHAR_QUOTE;
+            *c |= SHELL_CHAR_QUOTED;
         }
         return true;
-    }
-}
-
-static void letter_loop(struct shell *self,
-    struct my_shell_char_vector *word_buffer, shell_char_t c)
-{
-    while (true) {
-        if (shell_char_is_type(c, SHELL_CHAR_TYPE_META |
-            SHELL_CHAR_TYPE_ESCAPE)) {
-            if (c == '\\') {
-                c = shell_lex_get_character(self);
-                if (c == '\n')
-                    break;
-                c |= SHELL_CHAR_QUOTE;
-            } else {
-                shell_lex_unget_character(self, c);
-                break;
-            }
-        }
-        my_shell_char_vector_append_single(word_buffer, c);
-        c = shell_lex_get_character(self);
     }
 }
 
@@ -85,6 +65,6 @@ shell_char_t *shell_lex_get_word(struct shell *self)
 
     if (!get_first_char(self, word_buffer, &c))
         return finish_buffer(word_buffer);
-    letter_loop(self, word_buffer, c);
+    part2_letter_loop(self, word_buffer, c);
     return finish_buffer(word_buffer);
 }

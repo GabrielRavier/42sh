@@ -14,31 +14,37 @@
 
 typedef uint32_t shell_char_t;
 
-static const shell_char_t SHELL_CHAR_ERROR = 0xFFFFFFFF;
-static const shell_char_t SHELL_CHAR_QUOTE = 0x80000000;
-static const shell_char_t SHELL_CHAR_NOT_QUOTE = 0x7FFFFFFF;
+#define SHELL_CHAR_ERROR ((uint32_t)0xFFFFFFFF)
+static const shell_char_t SHELL_CHAR_QUOTED = 0x80000000;
+static const shell_char_t SHELL_CHAR_NOT_QUOTED = 0x7FFFFFFF;
 
 enum {
     SHELL_CHAR_TYPE_META = 0x1,
     SHELL_CHAR_TYPE_ESCAPE = 0x2,
+    SHELL_CHAR_TYPE_QUOTE = 0x4,
+    SHELL_CHAR_TYPE_SPACE = 0x8,
+    SHELL_CHAR_TYPE_NEWLINE = 0x10,
+    SHELL_CHAR_TYPE_ALL_QUOTES = SHELL_CHAR_TYPE_ESCAPE | SHELL_CHAR_TYPE_QUOTE,
 };
 
 static const unsigned char SHELL_CHAR_TYPE_MAP[0x80] = {
-    ['\t'] = SHELL_CHAR_TYPE_META,
-    ['\n'] = SHELL_CHAR_TYPE_META,
-    [' '] = SHELL_CHAR_TYPE_META,
+    ['\t'] = SHELL_CHAR_TYPE_META | SHELL_CHAR_TYPE_SPACE,
+    ['\n'] = SHELL_CHAR_TYPE_META | SHELL_CHAR_TYPE_NEWLINE,
+    [' '] = SHELL_CHAR_TYPE_META | SHELL_CHAR_TYPE_SPACE,
     [';'] = SHELL_CHAR_TYPE_META,
     ['<'] = SHELL_CHAR_TYPE_META,
     ['>'] = SHELL_CHAR_TYPE_META,
     ['\\'] = SHELL_CHAR_TYPE_ESCAPE,
     ['|'] = SHELL_CHAR_TYPE_META,
     ['&'] = SHELL_CHAR_TYPE_META,
+    ['"'] = SHELL_CHAR_TYPE_QUOTE,
+    ['\''] = SHELL_CHAR_TYPE_QUOTE,
 };
 
 MY_ATTR_WARN_UNUSED_RESULT static inline bool shell_char_is_type(shell_char_t c,
     unsigned type)
 {
-    if ((c & SHELL_CHAR_QUOTE) || c >= 0x80)
+    if ((c & SHELL_CHAR_QUOTED) || c >= 0x80)
         return false;
     return SHELL_CHAR_TYPE_MAP[c] & type;
 }
