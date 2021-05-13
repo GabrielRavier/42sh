@@ -6,6 +6,7 @@
 */
 
 #include "from_lex_tree.h"
+#include "../parse_tree.h"
 #include "from_lex_tree_part2.h"
 #include "../set_error.h"
 #include "my/cpp-like/algorithm.h"

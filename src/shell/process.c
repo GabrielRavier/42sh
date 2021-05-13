@@ -8,7 +8,7 @@
 #include "process.h"
 #include "flush_output_buffer.h"
 #include "lex.h"
-#include "parse_tree/from_lex_tree.h"
+#include "parse_tree.h"
 #include "execute.h"
 #include "print_error.h"
 #include "printf.h"

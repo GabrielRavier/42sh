@@ -41,4 +41,10 @@ struct shell_parse_tree {
     shell_char_t **argv;
 };
 
+struct shell;
+struct lexical_word_list;
+
+struct shell_parse_tree *shell_parse_tree_from_lex_tree(struct shell *self,
+    struct lexical_word_list *word_list_start,
+    struct lexical_word_list *word_list_end, int flags);
 void shell_parse_tree_free(struct shell_parse_tree *self);
