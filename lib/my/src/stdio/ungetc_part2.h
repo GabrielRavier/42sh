@@ -13,6 +13,8 @@
 #include "my/string.h"
 #include <stdbool.h>
 
+#if !LIBMY_USE_LIBC_FILE
+
 /// This is for when we want to get a new buffer, rather than expanding the old
 /// one
 static bool expand_six_char_ungetc_buffer(my_file_t *fp)
@@ -89,3 +91,4 @@ static int do_non_active_ungetc(my_file_t *fp, int c)
     fp->read_space_left = 1;
     return c;
 }
+#endif
