@@ -45,9 +45,9 @@ bool shell_init(struct shell *self, const char *argv0)
     if (!shell_init_home(self, &home_val) || !shell_init_dir(self, home_val))
         return false;
     sigaction(SIGINT, NULL, &self->parent_sigint_action);
-    self->should_set_interrupts = (self->input_is_tty &&
-        isatty(self->output_fd)) || self->parent_sigint_action.sa_handler ==
-        SIG_DFL;
+    if ((self->input_is_tty && isatty(self->output_fd)) ||
+        self->parent_sigint_action.sa_handler == SIG_DFL)
+        self->should_set_interrupts = true;
     self->pgrp = my_getpgrp();
     lexical_word_list_init(&self->current_lexical_word);
     return true;
