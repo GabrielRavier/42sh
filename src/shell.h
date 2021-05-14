@@ -12,6 +12,7 @@
 #include "var.h"
 #include "lexical_word_list.h"
 #include "shell_char.h"
+#include <signal.h>
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -86,7 +87,7 @@ struct shell {
     char line_buffer[8192];
     char *line_buffer_current_ptr;
     bool handling_error;
-    void (*parent_sigint_handler)(int);
+    struct sigaction parent_sigint_action;
     shell_char_t peek_read;
     char *error;
     const char *error_program_name;
