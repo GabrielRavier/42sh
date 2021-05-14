@@ -8,6 +8,7 @@
 #include "../execute.h"
 #include "do_command_part2.h"
 #include "do_redirection.h"
+#include "do_exec.h"
 #include "../fixup.h"
 #include "../heredoc.h"
 #include "../builtin.h"
