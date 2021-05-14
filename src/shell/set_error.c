@@ -46,13 +46,10 @@ void shell_set_error(struct shell *self, enum shell_error_type error, ...)
     if (self->error == NULL) {
         MY_ASSERT(error > 0 && error < SHELL_ERROR_LAST_ERROR);
         va_start(arg_list, error);
-        if (my_vasprintf(&self->error, SHELL_SET_ERROR_FORMATS[error],
-            arg_list) < 0)
-            self->error = my_xstrdup("Couldn't make error message");
+        my_xvasprintf(&self->error, SHELL_SET_ERROR_FORMATS[error], arg_list);
         va_end(arg_list);
         if (flags & SHELL_ERROR_FLAG_NAME)
-            if (my_asprintf(&self->error, "%s: %s", self->error_program_name,
-                self->error) < 0)
-                self->error = my_xstrdup("Couldn't make error message");
+            my_xasprintf(&self->error, "%s: %s", self->error_program_name,
+                self->error);
     }
 }

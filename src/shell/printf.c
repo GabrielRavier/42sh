@@ -18,9 +18,7 @@ void shell_printf(struct shell *self, const char *format, ...)
     char *vasprintf_result;
 
     va_start(arg_list, format);
-    if (my_vasprintf(&vasprintf_result, format, arg_list) < 0)
-        vasprintf_result = my_xstrdup(
-            "Placeholder for shell_printf because my_vasprintf failed");
+    my_xvasprintf(&vasprintf_result, format, arg_list);
     va_end(arg_list);
     for (size_t i = 0; vasprintf_result[i] != '\0'; ++i)
         shell_putchar(self, vasprintf_result[i]);
