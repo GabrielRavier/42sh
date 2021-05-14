@@ -89,7 +89,6 @@ fclean: clean
 
 # "Remakes" the project. This rule is shit and won't work properly with parallel make, but it's not like I'm using this target, and neither is Marvin using parallel Make (afaik)
 re: clean all
-	$(MAKE) --directory=lib/my re $(LIBMY_CONFIGURATION)
 
 # Runs tests
 tests_run:
