@@ -36,6 +36,7 @@ static const char *const SHELL_SET_ERROR_FORMATS[SHELL_ERROR_LAST_ERROR] = {
     "Unmatched '%c'",
 };
 
+// If the assert fails, we're gonna crash anyway
 void shell_set_error(struct shell *self, enum shell_error_type error, ...)
 {
     va_list arg_list;

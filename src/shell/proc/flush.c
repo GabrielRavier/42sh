@@ -9,6 +9,7 @@
 #include "../../shell.h"
 #include "my/assert.h"
 
+// The initial MY_ASSERT is to make sure we don't try to flush a process twice
 void shell_proc_flush(struct shell *self, struct shell_proc *proc)
 {
     struct shell_proc *i;

@@ -92,6 +92,8 @@ static inline void do_switch_signal(ds_opts_t *o)
         o->reason = -1;
 }
 
+// We do nothing on NORMAL_EXIT or ABNORMAL_EXIT, but the assert makes sure we
+// didn't forget to handle some future status or something like that
 static inline void do_switch(ds_opts_t *o)
 {
     switch (o->status) {
