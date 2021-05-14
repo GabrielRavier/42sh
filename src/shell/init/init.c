@@ -15,7 +15,7 @@
 #include <fcntl.h>
 #include <signal.h>
 
-// If someone has fun calling us with fd 0/1/2 closed, we might have problems,
+// If someone has fun starting us with fd 0/1/2 closed, we might have problems,
 // so guarantee them being open
 static void guarantee_012_open(struct shell *self)
 {
