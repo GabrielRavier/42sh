@@ -8,7 +8,7 @@
 #include "../init.h"
 #include "../dir.h"
 #include "../exit.h"
-#include "my/stdio.h"
+#include "../printf.h"
 #include "my/stdlib.h"
 #include <stdlib.h>
 #include <unistd.h>
@@ -17,8 +17,8 @@
 
 static void print_start(struct shell *self, const char *str)
 {
-    my_dprintf(self->output_fd, "%s: Trying to start from \"%s\"\n",
-        self->program_name, str);
+    shell_printf(self, "%s: Trying to start from \"%s\"\n", self->program_name,
+        str);
 }
 
 static shell_char_t *do_handling_if_getcwd_null(struct shell *self,
@@ -29,8 +29,7 @@ static shell_char_t *do_handling_if_getcwd_null(struct shell *self,
 
     if (current_dir != NULL)
         return current_dir;
-    my_dprintf(self->output_fd, "%s: %s\n", self->program_name,
-        strerror(errno));
+    shell_printf(self, "%s: %s\n", self->program_name, strerror(errno));
     if (home_val != NULL && *home_val != '\0') {
         home_val_c = shell_char_static_xstrdup_to_c(home_val);
         print_start(self, home_val_c);

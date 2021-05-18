@@ -7,7 +7,7 @@
 
 #include "../dir.h"
 #include "../var.h"
-#include "my/stdlib.h"
+#include <stdlib.h>
 
 static const shell_char_t OWD[] = {'o', 'w', 'd', '\0'};
 static const shell_char_t CWD[] = {'c', 'w', 'd', '\0'};
@@ -20,7 +20,7 @@ static bool set_vars(struct shell *self, const shell_char_t *cwd_name)
     if (!shell_var_set_val_dup(self, CWD, cwd_name, VAR_FLAG_READ_WRITE |
         VAR_FLAG_NO_GLOB))
         return false;
-    my_setenv("PWD", shell_char_static_xstrdup_to_c(cwd_name), 1);
+    setenv("PWD", shell_char_static_xstrdup_to_c(cwd_name), 1);
     return true;
 }
 

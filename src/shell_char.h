@@ -92,7 +92,47 @@ void shell_char_strv_unquote(shell_char_t **strv);
 shell_char_t *shell_char_str_unquote(shell_char_t *str);
 shell_char_t *shell_char_alloc_concat(const shell_char_t *left,
     const shell_char_t *right) MY_ATTR_WARN_UNUSED_RESULT;
-shell_char_t **shell_char_strv_dup(const shell_char_t **strv)
+shell_char_t **shell_char_strv_xdup(const shell_char_t **strv)
     MY_ATTR_WARN_UNUSED_RESULT;
 size_t shell_char_strv_len(const shell_char_t **strv)
     MY_ATTR_WARN_UNUSED_RESULT MY_ATTR_PURE;
+
+// Note: The pointers from left and right are directly copied, the strings
+// inside aren't duplicated or anything like that
+shell_char_t **shell_char_strv_alloc_concat(shell_char_t **left,
+    shell_char_t **right) MY_ATTR_WARN_UNUSED_RESULT;
+
+shell_char_t **shell_char_strv_cpy(shell_char_t **dest, shell_char_t **src);
+shell_char_t **shell_char_strv_cat(shell_char_t **dest, shell_char_t **src);
+const shell_char_t **shell_char_strv_end(const shell_char_t **strv)
+    MY_ATTR_WARN_UNUSED_RESULT;
+
+MY_ATTR_WARN_UNUSED_RESULT static inline shell_char_t **
+    shell_char_strv_xdup_ncnst(shell_char_t **strv)
+{
+    return shell_char_strv_xdup((const shell_char_t **)strv);
+}
+
+MY_ATTR_WARN_UNUSED_RESULT MY_ATTR_PURE static inline size_t
+    shell_char_strv_len_ncnst(shell_char_t **strv)
+{
+    return shell_char_strv_len((const shell_char_t **)strv);
+}
+
+MY_ATTR_WARN_UNUSED_RESULT static inline shell_char_t **
+    shell_char_strv_end_ncnst(shell_char_t **strv)
+{
+    return (shell_char_t **)shell_char_strv_end((const shell_char_t **)strv);
+}
+
+// Little utility function for C strings that is just defined in terms of
+// shell_char_strv_free since we can get away with it pretty easily
+static inline void char_strv_free(char **strv)
+{
+    shell_char_strv_free((shell_char_t **)strv);
+}
+
+static inline void shell_char_strv_free_cnst(const shell_char_t **strv)
+{
+    shell_char_strv_free((shell_char_t **)strv);
+}

@@ -8,7 +8,7 @@
 #include "../shell_char.h"
 #include "my/stdlib.h"
 
-shell_char_t **shell_char_strv_dup(const shell_char_t **strv)
+shell_char_t **shell_char_strv_xdup(const shell_char_t **strv)
 {
     shell_char_t **result;
 

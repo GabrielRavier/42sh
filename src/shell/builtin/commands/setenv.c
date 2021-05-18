@@ -10,6 +10,7 @@
 #include "my/stdlib.h"
 #include "my/ctype.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 #include <stddef.h>
@@ -41,7 +42,7 @@ void shell_builtin_setenv(struct shell *self, shell_char_t **argv)
         return;
     var_name = shell_char_xstrdup_to_c(argv[1]);
     value = argv[2] ? shell_char_xstrdup_to_c(argv[2]) : "";
-    if (my_setenv(var_name, value, 1) < 0)
+    if (setenv(var_name, value, 1) < 0)
         shell_set_error(self, SHELL_ERROR_SYSTEM, "setenv", strerror(errno));
     value = argv[2] ? value : NULL;
     return;

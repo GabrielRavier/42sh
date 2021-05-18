@@ -28,6 +28,11 @@ struct shell_fixup_state {
     shell_char_t peek_char_read_character;
 };
 
+struct shell_exec_state {
+    char *error;
+    shell_char_t *command_path;
+};
+
 enum shell_error_type {
     SHELL_ERROR_NO_ERROR,
     SHELL_ERROR_MISSING_NAME_FOR_REDIRECTION,
@@ -51,6 +56,9 @@ enum shell_error_type {
     SHELL_ERROR_AMBIGUOUS,
     SHELL_ERROR_NO_MATCH,
     SHELL_ERROR_UNMATCHED_QUOTE,
+    SHELL_ERROR_FORMAT_S,
+    SHELL_ERROR_COMMAND_NOT_FOUND,
+    SHELL_ERROR_WRONG_ARCHITECTURE,
     SHELL_ERROR_LAST_ERROR,
     SHELL_ERROR_FLAG_NAME = 0x40000000,
     SHELL_ERROR_FLAG_MASK = 0x40000000,
@@ -71,7 +79,8 @@ enum {
 // The input/output/error_output members are to seperate the fds for the shell
 // from the ones used by standard operations, which often makes some stuff
 // easier for us (avoids certain problems with /dev/std{in,out,err}, for
-// example)
+// example). child_io_fds_setup determines whether we're currently using those
+// variables, or if we should use the standards fds
 struct shell {
     const char *program_name;
     int input_fd;
@@ -94,6 +103,7 @@ struct shell {
     struct lexical_word_list current_lexical_word;
     struct shell_lex_state lex;
     struct shell_fixup_state fixup;
+    struct shell_exec_state exec;
     struct var vars_head;
     struct dir head_dir, *current_dir;
     struct shell_proc head_proc, *current_job, *current_job_in_table,

@@ -41,8 +41,10 @@ bool shell_init(struct shell *self, const char *argv0)
     guarantee_012_open(self);
     shell_init_program_name(self, argv0);
     shell_init_fds(self);
+    self->last_command_exit_status = 0;
     self->input_is_tty = isatty(self->input_fd);
-    if (!shell_init_home(self, &home_val) || !shell_init_dir(self, home_val))
+    if (!shell_init_home(self, &home_val) || !shell_init_dir(self, home_val) ||
+        !shell_init_path(self))
         return false;
     sigaction(SIGINT, NULL, &self->parent_sigint_action);
     if ((self->input_is_tty && isatty(self->output_fd)) ||

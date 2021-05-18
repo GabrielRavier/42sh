@@ -11,7 +11,7 @@
 
 char *shell_char_static_xstrdup_to_c(const shell_char_t *string)
 {
-    static struct my_char_vector *result;
+    static struct my_char_vector *result = NULL;
 
     if (result == NULL)
         result = my_char_vector_new();
