@@ -28,7 +28,7 @@ all: $(BINARY_NAME)
 
 # Sources for this project
 SOURCE_FILES := main
-SOURCE_FILES += shell/read_character shell/process shell/fork shell/pipe shell/heredoc shell/flush_child_fds shell/get_number shell/get_home_dir shell/set_error shell/printf shell/putchar shell/print_error shell/flush_output_buffer shell/exit_from_status shell/exit shell/fix_error shell/input_set_eof shell/vset_error shell/set_and_print_error shell/import_env_path
+SOURCE_FILES += shell/read_character shell/process shell/fork shell/pipe shell/heredoc shell/flush_child_fds shell/get_number shell/get_home_dir shell/set_error shell/printf shell/putchar shell/print_error shell/flush_output_buffer shell/exit_from_status shell/exit shell/fix_error shell/input_set_eof shell/vset_error shell/set_and_print_error shell/import_env_path shell/setenv
 SOURCE_FILES += shell/init/init shell/init/fds shell/init/program_name shell/init/dir shell/init/home shell/init/path
 SOURCE_FILES += shell/builtin/find shell/builtin/run
 SOURCE_FILES += shell/builtin/commands/cd shell/builtin/commands/env shell/builtin/commands/exit shell/builtin/commands/printenv shell/builtin/commands/setenv shell/builtin/commands/unsetenv

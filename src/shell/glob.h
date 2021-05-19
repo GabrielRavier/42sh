@@ -13,6 +13,7 @@
 // This determines what we do if a glob_str ends up with multiple words
 enum {
     SHELL_GLOB_STR_FLAG_ERROR,
+    SHELL_GLOB_STR_FLAG_APPEND,
 };
 
 bool shell_glob_str(struct shell *self, const shell_char_t *str, int flags,

@@ -8,6 +8,7 @@
 #pragma once
 
 #include "my/features.h"
+#include <ctype.h>
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -47,6 +48,21 @@ MY_ATTR_WARN_UNUSED_RESULT static inline bool shell_char_is_type(shell_char_t c,
     if ((c & SHELL_CHAR_QUOTED) || c >= 0x80)
         return false;
     return SHELL_CHAR_TYPE_MAP[c] & type;
+}
+
+MY_ATTR_WARN_UNUSED_RESULT static inline bool shell_char_is_letter(
+    shell_char_t c)
+{
+    if (c & SHELL_CHAR_QUOTED)
+        return false;
+    return isalpha(c) || c == '_';
+}
+
+MY_ATTR_WARN_UNUSED_RESULT static inline bool shell_char_isalnum(shell_char_t c)
+{
+    if (c & SHELL_CHAR_QUOTED)
+        return false;
+    return isalnum(c) || c == '_';
 }
 
 shell_char_t *shell_char_xstrdup(const shell_char_t *str) MY_ATTR_NOTHROW

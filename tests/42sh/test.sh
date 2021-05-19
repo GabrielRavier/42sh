@@ -17,10 +17,16 @@ do_one_test()
     diff -u $_42SH_STDERR "$4"
 }
 
+test_setenv_print()
+{
+    diff -u <(echo setenv | some_var=some_val $_42SH | grep some_var) <(echo 'some_var=some_val')
+}
+
 for i in stdins/*[^~]
 do
     do_one_test $i exit_statuses/$(basename $i) stdouts/$(basename $i) stderrs/$(basename $i)&
 done
+test_setenv_print&
 
 # Wait for all tests to be over before exiting
 wait

@@ -1,0 +1,2 @@
+[ -z ${env_var+x} ] && echo "env_var is unset"
+echo $env_var

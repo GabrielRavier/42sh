@@ -1,0 +1,2 @@
+setenv env_var
+./files_for_tests/output_env_var
