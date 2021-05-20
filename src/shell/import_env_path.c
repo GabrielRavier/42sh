@@ -13,7 +13,8 @@
 static const shell_char_t DOT[] = {'.', '\0'};
 static const shell_char_t PATH[] = { 'p', 'a', 't', 'h', '\0' };
 
-static void do_loop(shell_char_t *env_path, shell_char_t **path_array, size_t *i)
+static void do_loop(shell_char_t *env_path, shell_char_t **path_array,
+    size_t *i)
 {
     shell_char_t c;
     shell_char_t *env_it = env_path;

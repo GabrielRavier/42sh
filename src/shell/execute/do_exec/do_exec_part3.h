@@ -38,7 +38,8 @@ static void check_if_looks_like_binary(struct shell *self, int fd,
     }
 }
 
-// We make sure that it doesn't look like a binary before feeding it to the shell
+// We make sure that it doesn't look like a binary before feeding it to the
+// shell
 static void do_noexec(struct shell *self, const char *filename_as_c,
     shell_char_t **argv, const shell_char_t *filename)
 {
