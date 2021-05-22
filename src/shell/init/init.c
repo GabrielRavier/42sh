@@ -17,7 +17,7 @@
 
 // If someone has fun starting us with fd 0/1/2 closed, we might have problems,
 // so guarantee them being open
-static void guarantee_012_open(struct shell *self)
+static void guarantee_012_open(void)
 {
     int fd;
 
@@ -26,7 +26,7 @@ static void guarantee_012_open(struct shell *self)
         if (fd == -1) {
             fd = my_open("/", O_RDONLY);
             if (fd == -1)
-                shell_exit(self, 1);
+                exit(1);
         }
     } while (fd < 3);
     my_close(fd);
@@ -38,7 +38,7 @@ bool shell_init(struct shell *self, const char *argv0)
 
     my_memset(self, 0, sizeof(*self));
     self->line_buffer_current_ptr = self->line_buffer;
-    guarantee_012_open(self);
+    guarantee_012_open();
     shell_init_program_name(self, argv0);
     shell_init_fds(self);
     self->last_command_exit_status = 0;

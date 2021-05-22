@@ -6,11 +6,10 @@
 */
 
 #include "exit.h"
-#include "my/assert.h"
-#include "my/stdlib.h"
+#include <stdlib.h>
 
 void shell_exit(struct shell *self, int status)
 {
     (void)self;
-    my__exit(status);
+    exit(status);
 }
