@@ -53,6 +53,7 @@ static void shell_execute_do_redirection_input(struct shell *self,
         } else {
             my_close(STDIN_FILENO);
             (void)dup(self->old_stdin_fd);
+            fcntl(STDIN_FILENO, F_SETFD, 0);
         }
     }
 }
@@ -85,10 +86,13 @@ static void shell_execute_do_redirection_output(struct shell *self,
 {
     if (parse_tree->str_right != NULL)
         shell_execute_do_redirection_output_str(self, parse_tree);
-    else {
+    else if (parse_tree->flags & PARSE_TREE_NODE_FLAGS_PIPE_OUTPUT) {
         my_close(STDOUT_FILENO);
-        dup((parse_tree->flags & PARSE_TREE_NODE_FLAGS_PIPE_OUTPUT) ?
-            pipe_out[1] : self->output_fd);
+        dup(pipe_out[1]);
+    } else {
+        my_close(STDOUT_FILENO);
+        dup(self->output_fd);
+        fcntl(STDOUT_FILENO, F_SETFD, 0);
     }
 }
 
@@ -101,5 +105,6 @@ void shell_execute_do_redirection(struct shell *self,
     shell_execute_do_redirection_output(self, parse_tree, pipe_out);
     my_close(STDERR_FILENO);
     dup(self->error_output_fd);
+    fcntl(STDERR_FILENO, F_SETFD, 0);
     self->child_io_fds_setup = true;
 }
