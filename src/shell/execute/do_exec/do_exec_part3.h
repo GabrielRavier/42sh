@@ -88,6 +88,7 @@ static inline void try_exec(struct shell *self, const shell_char_t *filename,
         set_exec_error(self, filename);
         break;
     }
+    my_free(filename_as_c);
 }
 
 // We append the command name prefixed with a slash to everything in path

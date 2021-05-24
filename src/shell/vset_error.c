@@ -8,6 +8,7 @@
 #include "vset_error.h"
 #include "my/assert.h"
 #include "my/stdio.h"
+#include "my/stdlib.h"
 
 // Must be synchronized with the error enum in error.h
 static const char *const SHELL_SET_ERROR_FORMATS[SHELL_ERROR_LAST_ERROR] = {
@@ -43,13 +44,17 @@ void shell_vset_error(struct shell *self, enum shell_error_type error,
     va_list arguments)
 {
     int flags = error & SHELL_ERROR_FLAG_MASK;
+    char *old_error;
 
     error &= ~SHELL_ERROR_FLAG_MASK;
     if (self->error == NULL) {
         MY_ASSERT(error > 0 && error < SHELL_ERROR_LAST_ERROR);
         my_xvasprintf(&self->error, SHELL_SET_ERROR_FORMATS[error], arguments);
-        if (flags & SHELL_ERROR_FLAG_NAME)
+        if (flags & SHELL_ERROR_FLAG_NAME) {
+            old_error = self->error;
             my_xasprintf(&self->error, "%s: %s", self->error_program_name,
                 self->error);
+            my_free(old_error);
+        }
     }
 }

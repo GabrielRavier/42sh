@@ -71,7 +71,7 @@ static inline bool make_result(mr_opts_t *o)
         *o->result = shell_char_xstrdup(&NUL);
         return true;
     }
-    if (o->result_strv[1])
+    if (o->result_strv[1] != NULL)
         return handle_more_than_one(&((hmto_opts_t){o->self, o->str,
             o->result_strv, o->flags, o->result}));
     *o->result = shell_char_str_unquote(*o->result_strv);

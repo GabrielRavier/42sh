@@ -54,11 +54,16 @@ bool shell_glob_do_tc_sh(struct shell *self, const shell_char_t **strv,
     shell_char_t **start = make_vec_loop(my_xmalloc(sizeof(*start) *
         SIZE_INCR), SIZE_INCR, strv);
     shell_char_t **it = start;
+    shell_char_t *tmp;
 
     for (const shell_char_t *i = *it; i != NULL; i = *++it)
-        if (*i == '~' && !tc_sh_glob_tilde(self, i, it)) {
-            shell_char_strv_free(start);
-            return false;
+        if (*i == '~') {
+            if (!tc_sh_glob_tilde(self, i, &tmp)) {
+                shell_char_strv_free(start);
+                return false;
+            }
+            my_free(*it);
+            *it = tmp;
         }
     *result = start;
     return true;
