@@ -66,8 +66,7 @@ static bool shell_execute_do_or_and(struct shell *self,
     return true;
 }
 
-static bool (*EXECUTE_TYPE_FUNCTIONS[])(struct shell *,
-    struct shell_parse_tree *, int *, int *) = {
+static shell_execute_like_func_t *const EXECUTE_TYPE_FUNCTIONS[] = {
     [PARSE_TREE_NODE_TYPE_LIST] = shell_execute_do_list,
     [PARSE_TREE_NODE_TYPE_COMMAND] = shell_execute_do_command,
     [PARSE_TREE_NODE_TYPE_PIPE] = shell_execute_do_pipe,
