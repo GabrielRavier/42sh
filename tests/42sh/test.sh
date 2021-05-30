@@ -20,6 +20,7 @@ do_one_test()
 test_setenv_print()
 {
     diff -u <(echo setenv | some_var=some_val $_42SH | grep some_var) <(echo 'some_var=some_val')
+    diff -u <(echo 'setenv | grep some_var' | some_var=some_val $_42SH) <(echo 'some_var=some_val')
 }
 
 for i in stdins/*[^~]
