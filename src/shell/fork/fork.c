@@ -11,9 +11,9 @@
 #include "../set_error.h"
 #include "../printf.h"
 
-static bool finish(struct shell *self, pid_t want_tty, bool result)
+static bool finish(struct shell *self, bool need_restore_chld, bool result)
 {
-    if (want_tty < 0)
+    if (need_restore_chld)
         if (!shell_signal_decr_disable(self, &self->disable_sigchld))
             return false;
     return result;
@@ -34,7 +34,7 @@ static void do_child(struct shell *self, struct shell_parse_tree *parse_tree,
     if (self->should_set_interrupts)
         do_interrupts(self, want_tty, ignore_int);
     else if (self->terminal_pgrp == -1 && (parse_tree->flags &
-        PARSE_TREE_NODE_FLAGS_INTERRUPT_IMMUNE)) {
+        PARSE_TREE_FLAG_INTERRUPT_IMMUNE)) {
         signal(SIGINT, SIG_IGN);
         signal(SIGQUIT, SIG_IGN);
     }
@@ -61,7 +61,7 @@ static void do_parent(struct shell *self, struct shell_parse_tree *parse_tree,
 }
 
 MY_ATTR_WARN_UNUSED_RESULT static bool do_fork_loop(struct shell *self,
-    pid_t want_tty, pid_t *result)
+    bool need_restore_chld, pid_t *result)
 {
     while (true) {
         *result = fork();
@@ -71,7 +71,7 @@ MY_ATTR_WARN_UNUSED_RESULT static bool do_fork_loop(struct shell *self,
             sleep(1);
         else {
             shell_set_error(self, SHELL_ERROR_NO_MORE_PROCESSES);
-            return finish(self, want_tty, false);
+            return finish(self, need_restore_chld, false);
         }
     }
     return true;
@@ -80,23 +80,28 @@ MY_ATTR_WARN_UNUSED_RESULT static bool do_fork_loop(struct shell *self,
 // If there's more than 16 nested shells, we explode: This is to avoid forking
 // loops. We also make sure we don't get SIGCHLD until we've put the process in
 // our list
+// We also need to NOT restore disable_sigchld when we're a child, since we
+// manually set it to 0
 bool shell_fork(struct shell *self, struct shell_parse_tree *parse_tree,
     pid_t want_tty, pid_t *result)
 {
     bool ignore_int = self->should_set_interrupts && (self->terminal_pgrp ==
-        -1 && (parse_tree->flags & PARSE_TREE_NODE_FLAGS_INTERRUPT_IMMUNE));
+        -1 && (parse_tree->flags & PARSE_TREE_FLAG_INTERRUPT_IMMUNE));
+    bool need_restore_chld = false;
 
     if (self->child_depth >= 16) {
         shell_set_error(self, SHELL_ERROR_FORK_NESTING, 16);
         return false;
     }
-    if (want_tty < 0)
+    if (want_tty < 0) {
         ++self->disable_sigchld;
-    if (!do_fork_loop(self, want_tty, result))
+        need_restore_chld = true;
+    }
+    if (!do_fork_loop(self, need_restore_chld, result))
         return false;
     if (*result == 0)
         do_child(self, parse_tree, want_tty, ignore_int);
     else
         do_parent(self, parse_tree, want_tty, result);
-    return finish(self, want_tty, true);
+    return finish(self, need_restore_chld && *result != 0, true);
 }

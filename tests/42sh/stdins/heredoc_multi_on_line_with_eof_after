@@ -1,0 +1,6 @@
+cat <<eof1 | tr a-z A-Z; cat <<eof2
+abcdef
+eof1
+abcdef
+eof2
+EOF

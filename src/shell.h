@@ -67,6 +67,13 @@ enum shell_error_type {
     SHELL_ERROR_UNDEFINED_VARIABLE,
     SHELL_ERROR_FORK_NESTING,
     SHELL_ERROR_THERE_ARE_SUSPENDED_JOBS,
+    SHELL_ERROR_TOO_MANY_LEFT_PARENS,
+    SHELL_ERROR_TOO_MANY_RIGHT_PARENS,
+    SHELL_ERROR_BADLY_PLACED_LEFT_PAREN,
+    SHELL_ERROR_BADLY_PLACED_PARENS,
+    SHELL_ERROR_CANNOT_HEREDOC_WITHIN_PARENS,
+    SHELL_ERROR_INTERRUPTED,
+    SHELL_ERROR_JOBS_USAGE,
     SHELL_ERROR_LAST_ERROR,
     SHELL_ERROR_FLAG_SILENT = 0x20000000,
     SHELL_ERROR_FLAG_NAME = 0x40000000,
@@ -123,7 +130,9 @@ struct shell {
     int handling_interrupt;
     int exit_set;
     int check_stop;
+    bool print_jobs_on_int;
     bool done_input;
+    bool enable_prompt;
     struct sigaction parent_sigint_action;
     struct sigaction parent_sigterm_action;
     shell_char_t peek_read;

@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     static struct shell self;
 
     (void)argc;
-    if (!shell_init(&self, argv[0]) || !shell_process(&self,
+    if (!shell_init(&self, argc, argv) || !shell_process(&self,
         self.should_set_interrupts) || !shell_signal_handle_pending(&self))
         do_fatal(&self);
     if (self.input_is_tty)

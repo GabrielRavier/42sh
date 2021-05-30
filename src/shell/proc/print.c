@@ -8,7 +8,7 @@
 #include "../proc.h"
 #include "print_part2.h"
 
-void shell_proc_print(struct shell *self, struct shell_proc *proc, int flags)
+int shell_proc_print(struct shell *self, struct shell_proc *proc, int flags)
 {
     bool old_handling_error = self->handling_error;
     int job_flags = 0;
@@ -16,7 +16,7 @@ void shell_proc_print(struct shell *self, struct shell_proc *proc, int flags)
     int status = -1;
     int reason = -1;
 
-    self->handling_error = true;
+    self->handling_error = !(flags & SHELL_PROC_PRINT_JOB_LIST);
     while (proc->pid != proc->job_leader_pid)
         proc = proc->next_in_job_list;
     do
@@ -24,4 +24,5 @@ void shell_proc_print(struct shell *self, struct shell_proc *proc, int flags)
             &status, &job_flags}));
     while (do_continue(self, &proc, first_proc, flags));
     self->handling_error = old_handling_error;
+    return job_flags;
 }

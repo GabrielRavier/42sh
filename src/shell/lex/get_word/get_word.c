@@ -33,7 +33,7 @@ MY_ATTR_WARN_UNUSED_RESULT static bool do_meta_characters(struct shell *self,
         *result = false;
         return true;
     }
-    if (*c == ';' || *c == '\n') {
+    if (*c == ';' || *c == '\n' || *c == '(' || *c == ')') {
         my_shell_char_vector_append_single(word_buffer, *c);
         *result = false;
         return true;

@@ -58,11 +58,9 @@ MY_ATTR_WARN_UNUSED_RESULT static bool do_inner_pre_line(struct shell *self)
         self->done_input = false;
         return false;
     }
-    if (self->check_stop != 0) {
+    if (self->check_stop != 0)
         --self->check_stop;
-        shell_printf(self, "Decremented check_stop to %d\n", self->check_stop);
-    }
-    if (self->input_is_tty) {
+    if (self->input_is_tty && self->enable_prompt) {
         shell_printf(self, "> ");
         shell_flush_output_buffer(self);
     }

@@ -20,20 +20,20 @@ struct shell_proc {
     pid_t parent_id;
     pid_t job_leader_pid;
     enum {
-        SHELL_PROC_FLAG_RUNNING = 0x1,
-        SHELL_PROC_FLAG_PIPE_OUTPUT = 0x2,
-        SHELL_PROC_FLAG_SIGNALED = 0x4,
-        SHELL_PROC_FLAG_ABNORMAL_EXIT = 0x8,
-        SHELL_PROC_FLAG_NORMAL_EXIT = 0x10,
-        SHELL_PROC_FLAG_FOREGROUND = 0x20,
-        SHELL_PROC_FLAG_STOPPED = 0x40,
-        SHELL_PROC_FLAG_INTERRUPTED = 0x80,
-        SHELL_PROC_FLAG_DUMPED_CORE = 0x100,
-        SHELL_PROC_FLAG_REPORTED = 0x200,
-        SHELL_PROC_FLAG_ALL_STATUSES = SHELL_PROC_FLAG_RUNNING |
-            SHELL_PROC_FLAG_STOPPED | SHELL_PROC_FLAG_NORMAL_EXIT |
-            SHELL_PROC_FLAG_ABNORMAL_EXIT | SHELL_PROC_FLAG_SIGNALED |
-            SHELL_PROC_FLAG_INTERRUPTED,
+        SH_PROC_FLAG_RUNNING = 0x1,
+        SH_PROC_FLAG_PIPE_OUTPUT = 0x2,
+        SH_PROC_FLAG_SIGNALED = 0x4,
+        SH_PROC_FLAG_ABNORMAL_EXIT = 0x8,
+        SH_PROC_FLAG_NORMAL_EXIT = 0x10,
+        SH_PROC_FLAG_FOREGROUND = 0x20,
+        SH_PROC_FLAG_STOPPED = 0x40,
+        SH_PROC_FLAG_INTERRUPTED = 0x80,
+        SH_PROC_FLAG_DUMPED_CORE = 0x100,
+        SH_PROC_FLAG_REPORTED = 0x200,
+        SH_PROC_FLAG_ALL_STATUSES = SH_PROC_FLAG_RUNNING |
+            SH_PROC_FLAG_STOPPED | SH_PROC_FLAG_NORMAL_EXIT |
+            SH_PROC_FLAG_ABNORMAL_EXIT | SH_PROC_FLAG_SIGNALED |
+            SH_PROC_FLAG_INTERRUPTED,
     } flags;
     unsigned char reason;
     struct dir *current_dir;
@@ -62,9 +62,15 @@ struct shell_proc *shell_proc_get_new_current_job(struct shell *self,
 enum {
     SHELL_PROC_PRINT_REASON_FILTERED = 0x1,
     SHELL_PROC_PRINT_SHELL_DIR_IF_DIFF = 0x2,
+    SHELL_PROC_PRINT_JOB_DIR_IF_DIFF = 0x4,
+    SHELL_PROC_PRINT_NUMBER = 0x8,
+    SHELL_PROC_PRINT_NAME = 0x10,
+    SHELL_PROC_PRINT_REASON = 0x20,
+    SHELL_PROC_PRINT_JOB_LIST = 0x40,
+    SHELL_PROC_PRINT_FANCY = 0x80,
 };
 
-void shell_proc_print(struct shell *self, struct shell_proc *proc, int flags);
+int shell_proc_print(struct shell *self, struct shell_proc *proc, int flags);
 void shell_proc_flush(struct shell *self, struct shell_proc *proc);
 void shell_proc_flush_all(struct shell *self);
 bool shell_proc_any_stopped(struct shell *self, bool need_newline)

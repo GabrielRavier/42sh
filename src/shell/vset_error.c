@@ -40,6 +40,13 @@ static const char *const SHELL_SET_ERROR_FORMATS[SHELL_ERROR_LAST_ERROR] = {
     "Undefined variable",
     "Fork nesting > %d; maybe `...` loop",
     "%sThere are suspended jobs",
+    "Too many ('s",
+    "Too many )'s",
+    "Badly placed (",
+    "Badly placed ()'s",
+    "Can't << within ()'s",
+    "Interrupted",
+    "Usage: jobs [ -l ]",
 };
 
 // If the assert fails, we're gonna crash anyway

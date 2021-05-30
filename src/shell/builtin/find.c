@@ -16,9 +16,11 @@ static const struct shell_builtin builtins[] = {
     {"chdir", shell_builtin_cd, 0, SIZE_MAX},
     {"env", shell_builtin_env, 0, SIZE_MAX},
     {"exit", shell_builtin_exit, 0, SIZE_MAX},
+    {"jobs", shell_builtin_jobs, 0, 1},
     {"printenv", shell_builtin_printenv, 0, SIZE_MAX},
     {"setenv", shell_builtin_setenv, 0, 2},
     {"unsetenv", shell_builtin_unsetenv, 1, SIZE_MAX},
+    {"wait", shell_builtin_wait, 0, 0},
 };
 
 static int cmp_command_name_builtin(const void *command_name_param,

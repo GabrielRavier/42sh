@@ -7,6 +7,7 @@
 
 #include "../execute.h"
 #include "do_command_part2.h"
+#include "do_command_part3.h"
 #include "do_exec.h"
 #include "do_redirection.h"
 #include "../fixup.h"
@@ -18,22 +19,21 @@
 
 // *result is whether or not the caller should return (i.e. there's nothing to
 // do)
+// We do heredoc here so that the parent will know where to read from after the
+// command is executed
 static bool shell_execute_do_command_pre_fork(se_opts_t *o, bool *result)
 {
-    if ((o->parse_tree->argv[0][0] & (SHELL_CHAR_QUOTED |
-        SHELL_CHAR_NOT_QUOTED)) == SHELL_CHAR_QUOTED)
-        my_memmove(o->parse_tree->argv[0], o->parse_tree->argv[0] + 1,
-            (shell_char_strlen(o->parse_tree->argv[0] + 1) + 1) * sizeof(
-            *o->parse_tree->argv[0]));
-    if (!shell_fixup_parse_tree(o->self, o->parse_tree))
-        return false;
-    if (o->parse_tree->argv[0] == NULL) {
-        *result = true;
-        return true;
+    if (!(o->parse_tree->type == PARSE_TREE_TYPE_PARENS)) {
+        if (!do_non_paren_pre_fork(o))
+            return false;
+        if (o->parse_tree->argv[0] == NULL) {
+            *result = true;
+            return true;
+        }
     }
-    if (o->parse_tree->flags & PARSE_TREE_NODE_FLAGS_PIPE_OUTPUT)
+    if (o->parse_tree->flags & PARSE_TREE_FLAG_PIPE_OUTPUT)
         shell_pipe(o->self, o->pipe_out);
-    if (o->parse_tree->flags & PARSE_TREE_NODE_FLAGS_INPUT_HEREDOC)
+    if (o->parse_tree->flags & PARSE_TREE_FLAG_INPUT_HEREDOC)
         if (!do_heredoc(o->self, o->parse_tree->str_left))
             return false;
     o->self->last_command_exit_status = 0;
@@ -41,6 +41,7 @@ static bool shell_execute_do_command_pre_fork(se_opts_t *o, bool *result)
     return true;
 }
 
+// This also does parens now
 static void shell_execute_do_builtin_or_exec(struct shell *self,
     struct shell_parse_tree *parse_tree, struct shell_builtin *builtin,
     bool has_forked)
@@ -56,7 +57,9 @@ static void shell_execute_do_builtin_or_exec(struct shell *self,
             shell_exit_from_status(self);
         return;
     }
-    shell_execute_do_exec(self, parse_tree);
+    if (parse_tree->type != PARSE_TREE_TYPE_PARENS)
+        shell_execute_do_exec(self, parse_tree);
+    finish_parens(self, parse_tree);
 }
 
 MY_ATTR_WARN_UNUSED_RESULT static bool shell_execute_do_command_post_fork(
@@ -66,7 +69,7 @@ MY_ATTR_WARN_UNUSED_RESULT static bool shell_execute_do_command_post_fork(
         return shell_execute_do_parent(o->self, o->parse_tree, o->pipe_in);
     shell_execute_do_redirection(o->self, o->parse_tree, o->pipe_in,
         o->pipe_out);
-    if (o->parse_tree->flags & PARSE_TREE_NODE_FLAGS_PIPE_OUTPUT) {
+    if (o->parse_tree->flags & PARSE_TREE_FLAG_PIPE_OUTPUT) {
         shell_close(o->pipe_out[0]);
         shell_close(o->pipe_out[1]);
     }
@@ -78,7 +81,9 @@ MY_ATTR_WARN_UNUSED_RESULT static bool shell_execute_do_command_post_fork(
 static pid_t shell_execute_do_fork_if_needed(se_opts_t *o,
     struct shell_builtin *builtin, bool *has_forked, pid_t *result)
 {
-    if (!builtin || o->parse_tree->flags & PARSE_TREE_NODE_FLAGS_PIPE_OUTPUT)
+    if ((o->parse_tree->flags & PARSE_TREE_FLAG_NO_FORK) == 0 && (!builtin ||
+        o->parse_tree->flags & (PARSE_TREE_FLAG_PIPE_OUTPUT |
+        PARSE_TREE_FLAG_AMPERSAND)))
         return shell_execute_do_needed_fork(o, has_forked, result);
     *result = 0;
     return true;
@@ -95,7 +100,10 @@ bool shell_execute_do_command(se_opts_t *o)
         return false;
     if (should_return)
         return true;
-    builtin = shell_builtin_find(o->parse_tree);
+    builtin = (o->parse_tree->type == PARSE_TREE_TYPE_COMMAND) ?
+        shell_builtin_find(o->parse_tree) : NULL;
+    if (builtin && (o->parse_tree->flags & PARSE_TREE_FLAG_PIPE_INPUT))
+        o->parse_tree->flags &= ~PARSE_TREE_FLAG_NO_FORK;
     return !shell_execute_do_fork_if_needed(o, builtin, &has_forked, &pid) ?
         false : shell_execute_do_command_post_fork(o, builtin, has_forked, pid);
 }

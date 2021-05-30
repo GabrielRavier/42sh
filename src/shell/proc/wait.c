@@ -53,7 +53,7 @@ MY_ATTR_WARN_UNUSED_RESULT static bool wait_for_proc(struct shell *self,
             return false;
         }
         *result = get_all_job_list_flags(i);
-        if ((*result & SHELL_PROC_FLAG_RUNNING) == 0) {
+        if ((*result & SH_PROC_FLAG_RUNNING) == 0) {
             sigprocmask(SIG_SETMASK, &old_set, NULL);
             return true;
         }
@@ -68,10 +68,10 @@ static bool finish(struct shell *self, struct shell_proc *proc, int job_flags)
 {
     if (self->terminal_pgrp)
         tcsetpgrp(SHELL_TTY_FD, self->terminal_pgrp);
-    if ((job_flags & (SHELL_PROC_FLAG_SIGNALED | SHELL_PROC_FLAG_STOPPED)) ||
+    if ((job_flags & (SH_PROC_FLAG_SIGNALED | SH_PROC_FLAG_STOPPED)) ||
         proc->current_dir == NULL || shell_char_strcmp(self->current_dir->name,
         proc->current_dir->name) != 0) {
-        if (job_flags & SHELL_PROC_FLAG_STOPPED)
+        if (job_flags & SH_PROC_FLAG_STOPPED)
             shell_putchar(self, '\n');
         shell_proc_print(self, proc, SHELL_PROC_PRINT_REASON_FILTERED |
             SHELL_PROC_PRINT_SHELL_DIR_IF_DIFF);
@@ -92,8 +92,8 @@ bool shell_proc_wait(struct shell *self, struct shell_proc *proc)
         proc = proc->next_in_job_list;
     i = proc;
     do {
-        MY_ASSERT((i->flags & (SHELL_PROC_FLAG_FOREGROUND |
-            SHELL_PROC_FLAG_RUNNING)) != SHELL_PROC_FLAG_RUNNING);
+        MY_ASSERT((i->flags & (SH_PROC_FLAG_FOREGROUND |
+            SH_PROC_FLAG_RUNNING)) != SH_PROC_FLAG_RUNNING);
         i = i->next_in_job_list;
     } while (i != proc);
     return !wait_for_proc(self, proc, &job_flags) ? false : finish(self, proc,

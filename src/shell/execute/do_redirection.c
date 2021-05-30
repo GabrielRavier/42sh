@@ -43,17 +43,16 @@ static void shell_execute_do_redirection_input_str(struct shell *self,
 static void shell_execute_do_redirection_input(struct shell *self,
     struct shell_parse_tree *parse_tree, int *pipe_in)
 {
-    if ((parse_tree->flags & PARSE_TREE_NODE_FLAGS_INPUT_HEREDOC) == 0) {
+    if ((parse_tree->flags & PARSE_TREE_FLAG_INPUT_HEREDOC) == 0) {
         if (parse_tree->str_left != NULL)
             shell_execute_do_redirection_input_str(self, parse_tree);
-        else if (parse_tree->flags & PARSE_TREE_NODE_FLAGS_PIPE_INPUT) {
+        else if (parse_tree->flags & PARSE_TREE_FLAG_PIPE_INPUT) {
             shell_close(STDIN_FILENO);
             (void)dup(pipe_in[0]);
             shell_close(pipe_in[0]);
             shell_close(pipe_in[1]);
-        } else if ((parse_tree->flags &
-            PARSE_TREE_NODE_FLAGS_INTERRUPT_IMMUNE) && self->terminal_pgrp ==
-            -1) {
+        } else if ((parse_tree->flags & PARSE_TREE_FLAG_INTERRUPT_IMMUNE) &&
+            self->terminal_pgrp == -1) {
             shell_close(STDIN_FILENO);
             shell_open("/dev/null", O_RDONLY);
         } else {
@@ -74,9 +73,9 @@ static void shell_execute_do_redirection_output_str(struct shell *self,
 
     fd_copy(self->output_fd, STDOUT_FILENO);
     fd_copy(self->error_output_fd, STDERR_FILENO);
-    fd = (parse_tree->flags & PARSE_TREE_NODE_FLAGS_APPEND) ? shell_open(
+    fd = (parse_tree->flags & PARSE_TREE_FLAG_APPEND) ? shell_open(
         tmp_filename, O_WRONLY | O_APPEND) : 0;
-    if ((parse_tree->flags & PARSE_TREE_NODE_FLAGS_APPEND) == 0 || fd < 0) {
+    if ((parse_tree->flags & PARSE_TREE_FLAG_APPEND) == 0 || fd < 0) {
         fd = shell_creat(tmp_filename, 0666);
         if (fd < 0) {
             shell_set_error(self, SHELL_ERROR_SYSTEM, tmp_filename,
@@ -92,7 +91,7 @@ static void shell_execute_do_redirection_output(struct shell *self,
 {
     if (parse_tree->str_right != NULL)
         shell_execute_do_redirection_output_str(self, parse_tree);
-    else if (parse_tree->flags & PARSE_TREE_NODE_FLAGS_PIPE_OUTPUT) {
+    else if (parse_tree->flags & PARSE_TREE_FLAG_PIPE_OUTPUT) {
         shell_close(STDOUT_FILENO);
         dup(pipe_out[1]);
     } else {

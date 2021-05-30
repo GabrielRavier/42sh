@@ -10,7 +10,7 @@
 #include "../shell.h"
 #include "my/features.h"
 
-bool shell_init(struct shell *self, const char *argv0)
+bool shell_init(struct shell *self, int argc, char *argv[])
     MY_ATTR_WARN_UNUSED_RESULT;
 void shell_init_fds(struct shell *self);
 bool shell_init_home(struct shell *self, const shell_char_t **result)

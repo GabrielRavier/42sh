@@ -6,12 +6,16 @@
 */
 
 #include "../signal.h"
+#include "../printf.h"
 #include "my/assert.h"
 
 bool shell_signal_handle_pending(struct shell *self)
 {
     bool result;
 
+    SHELL_DEBUG_PRINTF(self, "Entered shell_signal_handle_pending with "
+        "disable_sigint %d, disable_sigchld %d\n", self->disable_sigint,
+        self->disable_sigchld);
     if (self->disable_sigint == 0 && g_shell_signal.sigint_pending) {
         g_shell_signal.sigint_pending = false;
         ++self->handling_interrupt;

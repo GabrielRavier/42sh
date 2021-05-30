@@ -16,7 +16,7 @@ void shell_proc_end_job(struct shell *self)
     struct shell_proc *i;
 
     if (self->current_job && (self->current_job->flags & (
-        SHELL_PROC_FLAG_FOREGROUND | SHELL_PROC_FLAG_STOPPED)) == 0) {
+        SH_PROC_FLAG_FOREGROUND | SH_PROC_FLAG_STOPPED)) == 0) {
         proc = self->current_job;
         self->current_job = NULL;
         while (proc->pid != proc->job_leader_pid)

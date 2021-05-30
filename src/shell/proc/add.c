@@ -74,9 +74,10 @@ void shell_proc_add(struct shell *self, pid_t pid,
 
     proc->pid = pid;
     proc->parent_id = self->pgrp;
-    proc->flags = SHELL_PROC_FLAG_RUNNING | SHELL_PROC_FLAG_FOREGROUND;
-    if (parse_tree->flags & PARSE_TREE_NODE_FLAGS_PIPE_OUTPUT)
-        proc->flags |= SHELL_PROC_FLAG_PIPE_OUTPUT;
+    proc->flags = SH_PROC_FLAG_RUNNING | ((parse_tree->flags &
+        PARSE_TREE_FLAG_AMPERSAND) ? 0 : SH_PROC_FLAG_FOREGROUND);
+    if (parse_tree->flags & PARSE_TREE_FLAG_PIPE_OUTPUT)
+        proc->flags |= SH_PROC_FLAG_PIPE_OUTPUT;
     do_current_job(self, proc);
     proc->next = self->head_proc.next;
     self->head_proc.next = proc;
