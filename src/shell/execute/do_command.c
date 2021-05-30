@@ -53,7 +53,7 @@ static void shell_execute_do_builtin_or_exec(struct shell *self,
             shell_print_error(self);
         self->handling_error = old_handling_error;
         if (has_forked)
-            exit(self->last_command_exit_status);
+            shell_exit_from_status(self);
         return;
     }
     shell_execute_do_exec(self, parse_tree);
