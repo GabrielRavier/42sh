@@ -38,10 +38,10 @@ _Noreturn static inline void exec_print_error(struct shell *self)
 static inline shell_char_t **glob_argv_no0(struct shell *self,
     shell_char_t **result)
 {
-    int glob_flags = shell_glob_strv_get_flags_ncsnt(result);
+    int glob_flags = shell_glob_strv_get_flags_ncnst(result);
 
     if (glob_flags != 0) {
-        if (!shell_glob_strv_all_ncsnt(self, result, glob_flags, &result))
+        if (!shell_glob_strv_all_ncnst(self, result, glob_flags, &result))
             shell_print_error(self);
         if (result == NULL) {
             self->error_program_name = shell_char_static_xstrdup_to_c(
@@ -59,10 +59,10 @@ static inline shell_char_t **glob_command_name(struct shell *self,
     shell_char_t *cmd_name_strv[2])
 {
     shell_char_t **result;
-    int glob_flags = shell_glob_strv_get_flags_ncsnt(cmd_name_strv);
+    int glob_flags = shell_glob_strv_get_flags_ncnst(cmd_name_strv);
 
     if (glob_flags != 0) {
-        if (!shell_glob_strv_all_ncsnt(self, cmd_name_strv, glob_flags,
+        if (!shell_glob_strv_all_ncnst(self, cmd_name_strv, glob_flags,
             &result))
             shell_print_error(self);
         if (result == NULL) {

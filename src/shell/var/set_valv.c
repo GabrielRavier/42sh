@@ -33,9 +33,9 @@ bool shell_var_set_valv(struct shell *self, const shell_char_t *var,
     int glob_flags;
 
     if (!(flags & VAR_FLAG_NO_GLOB)) {
-        glob_flags = shell_glob_strv_get_flags_ncsnt(orig_valv);
+        glob_flags = shell_glob_strv_get_flags_ncnst(orig_valv);
         if (glob_flags) {
-            if (!shell_glob_strv_all_ncsnt(self, orig_valv, glob_flags, &valv))
+            if (!shell_glob_strv_all_ncnst(self, orig_valv, glob_flags, &valv))
                 return false;
             shell_char_strv_free(orig_valv);
             if (valv == NULL) {

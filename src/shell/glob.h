@@ -32,7 +32,7 @@ enum {
 int shell_glob_strv_get_flags(const shell_char_t **strv)
     MY_ATTR_WARN_UNUSED_RESULT;
 
-MY_ATTR_WARN_UNUSED_RESULT static inline int shell_glob_strv_get_flags_ncsnt(
+MY_ATTR_WARN_UNUSED_RESULT static inline int shell_glob_strv_get_flags_ncnst(
     shell_char_t **strv)
 {
     return shell_glob_strv_get_flags((const shell_char_t **)strv);
@@ -42,7 +42,7 @@ bool shell_glob_strv_all(struct shell *self,
     const shell_char_t **strv, int flags, shell_char_t ***result)
     MY_ATTR_WARN_UNUSED_RESULT;
 
-MY_ATTR_WARN_UNUSED_RESULT static inline bool shell_glob_strv_all_ncsnt(
+MY_ATTR_WARN_UNUSED_RESULT static inline bool shell_glob_strv_all_ncnst(
     struct shell *self, shell_char_t **strv, int flags,
     shell_char_t ***result)
 {
