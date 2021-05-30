@@ -37,6 +37,7 @@ struct shell_proc {
     } flags;
     unsigned char reason;
     struct dir *current_dir;
+    int index;
 };
 
 struct shell;
@@ -68,4 +69,8 @@ void shell_proc_flush(struct shell *self, struct shell_proc *proc);
 void shell_proc_flush_all(struct shell *self);
 bool shell_proc_any_stopped(struct shell *self, bool need_newline)
     MY_ATTR_WARN_UNUSED_RESULT;
+
+// Executed when we're just done running a job, or when we're just about to
+// begin doing so
+void shell_proc_end_job(struct shell *self);
 void shell_proc_free(struct shell_proc *self);

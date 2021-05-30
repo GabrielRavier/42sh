@@ -138,5 +138,6 @@ struct shell {
     struct dir head_dir, *current_dir;
     struct shell_proc head_proc, *current_job, *current_job_in_table,
         *previous_job_in_table;
+    int proc_max_index;
     bool force_print_directory_stack;
 };

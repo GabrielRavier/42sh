@@ -72,12 +72,13 @@ MY_ATTR_WARN_UNUSED_RESULT static bool do_inner_pre_line(struct shell *self)
 // We catch all the errors at the top of the while (or die). We cleanup any
 // potentially accidentally left-open files here
 // We make sure to continue dying if we haven't been told to continue on error
-bool shell_process(struct shell *self, bool no_out_on_error)
+MY_ATTR_WARN_UNUSED_RESULT static bool do_loop(struct shell *self,
+    bool no_out_on_error)
 {
-    ++self->exit_set;
     while (true) {
         if (self->error.text != NULL)
             shell_print_error(self);
+        shell_proc_end_job(self);
         if (self->handling_error) {
             if (!no_out_on_error) {
                 self->done_input = false;
@@ -92,6 +93,14 @@ bool shell_process(struct shell *self, bool no_out_on_error)
         if (!do_line(self))
             continue;
     }
+    return true;
+}
+
+bool shell_process(struct shell *self, bool no_out_on_error)
+{
+    ++self->exit_set;
+    if (!do_loop(self, no_out_on_error))
+        return false;
     --self->exit_set;
     return shell_signal_handle_pending(self);
 }
