@@ -48,8 +48,8 @@ static int make_job_flags(struct shell_proc *i)
     return result;
 }
 
-static void do_next_wait_found_not_running_or_reported(
-    struct shell *self, struct shell_proc *proc, int job_flags)
+static void do_next_wait_found_not_running_or_reported(struct shell *self,
+    struct shell_proc *proc, int job_flags)
 {
     struct shell_proc *i = proc;
 
@@ -73,8 +73,8 @@ static void do_next_wait_found_not_running_or_reported(
         shell_putchar(self, '\n');
 }
 
-static void do_next_wait_found(struct shell *self,
-    struct shell_proc *proc, int status)
+static void do_next_wait_found(struct shell *self, struct shell_proc *proc,
+    int status)
 {
     int job_flags;
 

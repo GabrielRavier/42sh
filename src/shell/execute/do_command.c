@@ -7,16 +7,14 @@
 
 #include "../execute.h"
 #include "do_command_part2.h"
-#include "do_redirection.h"
 #include "do_exec.h"
+#include "do_redirection.h"
 #include "../fixup.h"
-#include "../builtin.h"
 #include "../pipe.h"
-#include "../fork.h"
+#include "../builtin.h"
 #include "../print_error.h"
-#include "../close.h"
+#include "../exit_from_status.h"
 #include "my/string.h"
-#include <stdlib.h>
 
 // *result is whether or not the caller should return (i.e. there's nothing to
 // do)
@@ -80,25 +78,9 @@ MY_ATTR_WARN_UNUSED_RESULT static bool shell_execute_do_command_post_fork(
 static pid_t shell_execute_do_fork_if_needed(se_opts_t *o,
     struct shell_builtin *builtin, bool *has_forked, pid_t *result)
 {
-    sigset_t chld_set;
-
+    if (!builtin || o->parse_tree->flags & PARSE_TREE_NODE_FLAGS_PIPE_OUTPUT)
+        return shell_execute_do_needed_fork(o, has_forked, result);
     *result = 0;
-    if (!builtin || o->parse_tree->flags & PARSE_TREE_NODE_FLAGS_PIPE_OUTPUT) {
-        *has_forked = true;
-        if (o->want_tty >= 0 && !o->self->execute.no_sigchld) {
-            sigemptyset(&chld_set);
-            sigaddset(&chld_set, SIGCHLD);
-            sigprocmask(SIG_BLOCK, &chld_set,
-                &o->self->execute.no_sigchld_old_set);
-            o->self->execute.no_sigchld = true;
-        }
-        if (!shell_fork(o->self, o->parse_tree, o->want_tty, result))
-            return false;
-        if (result == 0 && o->self->execute.no_sigchld) {
-            sigprocmask(SIG_SETMASK, &o->self->execute.no_sigchld_old_set, NULL);
-            o->self->execute.no_sigchld = false;
-        }
-    }
     return true;
 }
 

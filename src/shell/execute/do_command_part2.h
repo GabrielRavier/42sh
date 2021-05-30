@@ -12,6 +12,7 @@
 #include "../parse_tree.h"
 #include "../signal.h"
 #include "../close.h"
+#include "../fork.h"
 
 typedef struct {
     struct shell *self;
@@ -53,4 +54,25 @@ MY_ATTR_WARN_UNUSED_RESULT static inline bool do_heredoc(struct shell *self,
     if (self->should_set_interrupts)
         self->disable_sigint = old_disable_sigint;
     return result;
+}
+
+MY_ATTR_WARN_UNUSED_RESULT static inline bool shell_execute_do_needed_fork(
+    se_opts_t *o, bool *has_forked, pid_t *result)
+{
+    sigset_t chld_set;
+
+    *has_forked = true;
+    if (o->want_tty >= 0 && !o->self->execute.no_sigchld) {
+        sigemptyset(&chld_set);
+        sigaddset(&chld_set, SIGCHLD);
+        sigprocmask(SIG_BLOCK, &chld_set, &o->self->execute.no_sigchld_old_set);
+        o->self->execute.no_sigchld = true;
+    }
+    if (!shell_fork(o->self, o->parse_tree, o->want_tty, result))
+        return false;
+    if (result == 0 && o->self->execute.no_sigchld) {
+        sigprocmask(SIG_SETMASK, &o->self->execute.no_sigchld_old_set, NULL);
+        o->self->execute.no_sigchld = false;
+    }
+    return true;
 }

@@ -69,8 +69,7 @@ MY_ATTR_WARN_UNUSED_RESULT static inline int part2_letter_loop_do_it(
             return 1;
         if (!should_continue)
             return 2;
-    }
-    else if (shell_char_is_type(*c, SHELL_CHAR_TYPE_META |
+    } else if (shell_char_is_type(*c, SHELL_CHAR_TYPE_META |
         SHELL_CHAR_TYPE_ESCAPE | SHELL_CHAR_TYPE_QUOTE)) {
         if (!process_special_char(self, c, quote_char, &should_continue))
             return 1;

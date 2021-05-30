@@ -17,7 +17,8 @@ static shell_char_t *finish_buffer(struct my_shell_char_vector *word_buffer)
 }
 
 MY_ATTR_WARN_UNUSED_RESULT static bool do_meta_characters(struct shell *self,
-    struct my_shell_char_vector *word_buffer, const shell_char_t *c, bool *result)
+    struct my_shell_char_vector *word_buffer, const shell_char_t * c,
+    bool *result)
 {
     shell_char_t c_after;
 
