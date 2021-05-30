@@ -57,3 +57,12 @@ _Noreturn static inline void do_shell_exec(struct shell *self,
     do_the_shell_execv(self, filename_as_c, argv_as_c);
     MY_ASSERT(false && "Should never be reached");
 }
+
+static inline void do_the_execv(const char *filename_as_c, shell_char_t **argv)
+{
+    char **argv_as_c = shell_char_xdup_strv_to_c(argv);
+
+    errno = 0;
+    execv(filename_as_c, argv_as_c);
+    char_strv_free(argv_as_c);
+}

@@ -71,7 +71,7 @@ static inline bool do_continue(struct shell *self, struct shell_proc **proc,
 {
     if ((flags & SHELL_PROC_PRINT_REASON_FILTERED) && (*proc)->flags &
         SHELL_PROC_FLAG_DUMPED_CORE)
-        shell_printf(self, "(core dumped)");
+        shell_printf(self, " (core dumped)");
     if (first_proc == (*proc)->next_in_job_list && self->line_buffer !=
         self->line_buffer_current_ptr)
         shell_putchar(self, '\n');

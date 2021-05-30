@@ -6,21 +6,21 @@
 */
 
 #include "../fd.h"
-#include "my/unistd.h"
-#include <unistd.h>
+#include "../shell/close.h"
+#include "../shell/dup2.h"
 
 int fd_move(int src, int dest)
 {
     if (src < 0 || src == dest)
         return src;
     if (dest >= 0) {
-        dup2(src, dest);
+        shell_dup2(src, dest);
         if (src != dest)
-            my_close(src);
+            shell_close(src);
         return dest;
     }
     dest = fd_copy(src, dest);
     if (dest != src)
-        my_close(src);
+        shell_close(src);
     return dest;
 }

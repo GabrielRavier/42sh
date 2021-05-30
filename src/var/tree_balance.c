@@ -56,7 +56,24 @@ static void already_left_heavy(struct var **start, struct var *parent,
     }
 }
 
-void var_tree_balance(struct var *start, bool is_from_right_child)
+static void do_switch(struct var *start, bool do_right_or_left,
+    struct var *parent, bool next_is_right)
+{
+    switch (do_right_or_left ? start->balance : -start->balance) {
+    case -1:
+    case 0:
+        start->balance += do_right_or_left ? 1 : -1;
+        break;
+    case 1:
+        (do_right_or_left ? &already_right_heavy : &already_left_heavy)(&start,
+            parent, next_is_right);
+    }
+}
+
+// Note: When we're inserting, we terminate when start is balanced, but if we're
+// from delete, it's the exact opposite (we terminate when start is unbalanced)
+void var_tree_balance(struct var *start, bool is_from_right_child,
+    bool is_from_delete)
 {
     struct var *parent;
     bool next_is_right;
@@ -64,16 +81,9 @@ void var_tree_balance(struct var *start, bool is_from_right_child)
     while (start->parent) {
         parent = start->parent;
         next_is_right = (parent->right == start);
-        switch (is_from_right_child ? start->balance : -start->balance) {
-        case -1:
-        case 0:
-            start->balance += is_from_right_child ? 1 : -1;
-            break;
-        case 1:
-            (is_from_right_child ? &already_right_heavy : &already_left_heavy)
-                (&start, parent, next_is_right);
-        }
-        if (start->balance == 0)
+        do_switch(start, is_from_right_child != is_from_delete, parent,
+            next_is_right);
+        if ((start->balance == 0) != is_from_delete)
             break;
         start = parent;
         is_from_right_child = next_is_right;

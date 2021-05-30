@@ -13,7 +13,7 @@
 
 bool shell_init_path(struct shell *self)
 {
-    char *env_path = getenv("PATH");
+    const char *env_path = getenv("PATH");
     shell_char_t *as_shell_char = shell_char_xstrdup_from_c(env_path ?
         env_path : "/usr/bin:/bin");
     bool result;

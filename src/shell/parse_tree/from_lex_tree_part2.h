@@ -95,7 +95,7 @@ static inline void parse_part6_do_loop(struct parse_part6_state *st)
             parse_part6_do_input(st);
             continue;
         default:
-            if (st->self->error == NULL)
+            if (st->self->error.text == NULL)
                 st->parse_tree->argv[st->argument_count++] =
                     shell_char_xstrdup(st->i->word);
             continue;

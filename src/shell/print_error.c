@@ -16,12 +16,19 @@
 
 void shell_print_error(struct shell *self)
 {
-    shell_flush_output_buffer(self);
-    self->handling_error = true;
-    shell_printf(self, "%s.\n", self->error != NULL ? self->error :
-        "No error to print", self->error_output_fd);
-    my_free(self->error);
-    self->error = NULL;
+    if (!self->error.is_silent) {
+        shell_flush_output_buffer(self);
+        self->handling_error = true;
+        if (self->error.display_name)
+            shell_printf(self, "%s: ", self->error_program_name);
+        shell_printf(self, "%s.\n", self->error.text != NULL ?
+            self->error.text : "No error to print", self->error_output_fd);
+    }
+    if (self->error.text != NULL) {
+        my_free(self->error.text);
+        self->error.text = NULL;
+    }
+    self->error.display_name = false;
+    self->error.is_silent = false;
     shell_fix_error(self);
-    self->handling_error = false;
 }

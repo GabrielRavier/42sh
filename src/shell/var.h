@@ -15,6 +15,11 @@
 bool shell_var_set_valv(struct shell *self, const shell_char_t *var,
     shell_char_t **valv, int flags) MY_ATTR_WARN_UNUSED_RESULT;
 
+bool shell_var_set_empty(struct shell *self, const shell_char_t *var)
+    MY_ATTR_WARN_UNUSED_RESULT;
+bool shell_var_unset_name(struct shell *self, const shell_char_t *var)
+    MY_ATTR_WARN_UNUSED_RESULT;
+
 /// This takes ownership of val
 MY_ATTR_WARN_UNUSED_RESULT static inline bool shell_var_set_val(
     struct shell *self, const shell_char_t *var, shell_char_t *val, int flags)
@@ -35,7 +40,7 @@ MY_ATTR_WARN_UNUSED_RESULT static inline bool shell_var_set_val_dup(
     return shell_var_set_val(self, var, copy, flags);
 }
 
-MY_ATTR_WARN_UNUSED_RESULT static inline const struct var *shell_var_get(
+MY_ATTR_WARN_UNUSED_RESULT static inline struct var *shell_var_get(
     struct shell *self, const shell_char_t *var)
 {
     return var_get(&self->vars_head, var);

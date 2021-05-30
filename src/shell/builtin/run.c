@@ -19,6 +19,6 @@ void shell_builtin_run(struct shell *self, const struct shell_builtin *builtin,
         shell_set_error(self, SHELL_ERROR_TOO_FEW_ARGUMENTS);
     if (arg_count > builtin->max_arguments)
         shell_set_error(self, SHELL_ERROR_TOO_MANY_ARGUMENTS);
-    if (!self->error)
+    if (self->error.text == NULL)
         builtin->func(self, parse_tree->argv);
 }

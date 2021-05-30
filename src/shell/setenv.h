@@ -9,5 +9,5 @@
 
 #include "../shell.h"
 
-// Calls setenv with the given arguments (converted to C strings, ofc)
+// Calls setenv with the given arguments (converted to C strings)
 void shell_setenv(const shell_char_t *name, const shell_char_t *value);

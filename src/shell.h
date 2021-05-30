@@ -33,6 +33,11 @@ struct shell_exec_state {
     shell_char_t *command_path;
 };
 
+struct shell_execute_state {
+    bool no_sigchld;
+    sigset_t no_sigchld_old_set;
+};
+
 enum shell_error_type {
     SHELL_ERROR_NO_ERROR,
     SHELL_ERROR_MISSING_NAME_FOR_REDIRECTION,
@@ -59,9 +64,13 @@ enum shell_error_type {
     SHELL_ERROR_FORMAT_S,
     SHELL_ERROR_COMMAND_NOT_FOUND,
     SHELL_ERROR_WRONG_ARCHITECTURE,
+    SHELL_ERROR_UNDEFINED_VARIABLE,
+    SHELL_ERROR_FORK_NESTING,
+    SHELL_ERROR_THERE_ARE_SUSPENDED_JOBS,
     SHELL_ERROR_LAST_ERROR,
+    SHELL_ERROR_FLAG_SILENT = 0x20000000,
     SHELL_ERROR_FLAG_NAME = 0x40000000,
-    SHELL_ERROR_FLAG_MASK = 0x40000000,
+    SHELL_ERROR_FLAG_MASK = SHELL_ERROR_FLAG_SILENT | SHELL_ERROR_FLAG_NAME,
 };
 
 // SAFE_FD is so that we don't touch the first 5 fds (we use 5 to be really
@@ -70,10 +79,17 @@ enum shell_error_type {
 // standard fds
 enum {
     SHELL_SAFE_FD = 5,
+    SHELL_TTY_FD = 15,
     SHELL_PREFERRED_INPUT_FD = 16,
     SHELL_PREFERRED_OUTPUT_FD = 17,
     SHELL_PREFERRED_ERROR_OUTPUT_FD = 18,
     SHELL_PREFERRED_OLD_STDIN_FD = 19,
+};
+
+struct shell_error_state {
+    char *text;
+    bool display_name;
+    bool is_silent;
 };
 
 // The input/output/error_output members are to seperate the fds for the shell
@@ -81,6 +97,9 @@ enum {
 // easier for us (avoids certain problems with /dev/std{in,out,err}, for
 // example). child_io_fds_setup determines whether we're currently using those
 // variables, or if we should use the standards fds
+// disable_sigint is 0 if sigint is handled, non-0 otherwise (which is used in
+// order to be able to increment and decrement it as a recursively-lockable
+// "lock" on sigint, basically)
 struct shell {
     const char *program_name;
     int input_fd;
@@ -89,21 +108,32 @@ struct shell {
     int old_stdin_fd;
     int last_command_exit_status;
     bool input_is_tty;
+    bool output_is_tty;
     bool should_set_interrupts;
+    int disable_sigint;
+    int disable_sigchld;
     pid_t pgrp;
+    pid_t original_pgrp;
+    pid_t terminal_pgrp;
     int child_depth;
     bool child_io_fds_setup;
     char line_buffer[8192];
     char *line_buffer_current_ptr;
     bool handling_error;
+    int handling_interrupt;
+    int exit_set;
+    int check_stop;
+    bool done_input;
     struct sigaction parent_sigint_action;
+    struct sigaction parent_sigterm_action;
     shell_char_t peek_read;
-    char *error;
+    struct shell_error_state error;
     const char *error_program_name;
     struct lexical_word_list current_lexical_word;
     struct shell_lex_state lex;
     struct shell_fixup_state fixup;
     struct shell_exec_state exec;
+    struct shell_execute_state execute;
     struct var vars_head;
     struct dir head_dir, *current_dir;
     struct shell_proc head_proc, *current_job, *current_job_in_table,

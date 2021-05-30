@@ -11,5 +11,5 @@
 #include "my/features.h"
 
 // Reads a character from stdin. Exits if it fails.
-shell_char_t shell_read_character(struct shell *self, bool want_eof)
-    MY_ATTR_WARN_UNUSED_RESULT;
+bool shell_read_character(struct shell *self, bool want_eof,
+    shell_char_t *result) MY_ATTR_WARN_UNUSED_RESULT;

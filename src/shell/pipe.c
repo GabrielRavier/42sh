@@ -7,6 +7,7 @@
 
 #include "pipe.h"
 #include "set_and_print_error.h"
+#include "close.h"
 #include "../fd.h"
 #include <unistd.h>
 #include <fcntl.h>
@@ -30,6 +31,6 @@ void shell_pipe(struct shell *self, int pipefd[2])
         return;
     for (size_t i = 0; i <= 1; ++i)
         if (pipefd[i] >= 0)
-            close(pipefd[i]);
+            shell_close(pipefd[i]);
     cant_make_pipe(self);
 }

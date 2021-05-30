@@ -9,4 +9,5 @@
 
 #include "../shell.h"
 
-void shell_heredoc(struct shell *self, const shell_char_t *stop_line);
+bool shell_heredoc(struct shell *self, const shell_char_t *stop_line)
+    MY_ATTR_WARN_UNUSED_RESULT;

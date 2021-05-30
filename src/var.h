@@ -34,4 +34,6 @@ struct var *var_get(struct var *head, const shell_char_t *name)
     MY_ATTR_WARN_UNUSED_RESULT;
 const shell_char_t *var_get_value(struct var *head, const shell_char_t *name)
     MY_ATTR_WARN_UNUSED_RESULT;
-void var_tree_balance(struct var *start, bool is_from_right_child);
+void var_unset(struct var *var);
+void var_tree_balance(struct var *start, bool is_from_right_child,
+    bool is_from_delete);

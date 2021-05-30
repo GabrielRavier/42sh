@@ -9,4 +9,5 @@
 
 #include "../../shell.h"
 
-shell_char_t *shell_lex_get_word(struct shell *self);
+bool shell_lex_get_word(struct shell *self, shell_char_t **result)
+    MY_ATTR_WARN_UNUSED_RESULT;

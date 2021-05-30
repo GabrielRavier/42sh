@@ -44,8 +44,9 @@ struct shell_parse_tree;
 
 void shell_proc_add(struct shell *self, pid_t pid,
     struct shell_parse_tree *parse_tree);
-void shell_proc_wait_current(struct shell *self);
-void shell_proc_wait(struct shell *self, struct shell_proc *proc);
+bool shell_proc_wait_current(struct shell *self) MY_ATTR_WARN_UNUSED_RESULT;
+bool shell_proc_wait(struct shell *self, struct shell_proc *proc)
+    MY_ATTR_WARN_UNUSED_RESULT;
 
 /// This function makes it so that proc is not the current nor the previous job
 /// (note: proc must be its job's leader)
@@ -64,4 +65,7 @@ enum {
 
 void shell_proc_print(struct shell *self, struct shell_proc *proc, int flags);
 void shell_proc_flush(struct shell *self, struct shell_proc *proc);
+void shell_proc_flush_all(struct shell *self);
+bool shell_proc_any_stopped(struct shell *self, bool need_newline)
+    MY_ATTR_WARN_UNUSED_RESULT;
 void shell_proc_free(struct shell_proc *self);

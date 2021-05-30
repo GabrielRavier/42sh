@@ -23,7 +23,7 @@ static void do_raw_set(struct shell *self, const shell_char_t *var,
     *var_i->links[strcmp_result] = (struct var){.name = shell_char_xstrdup(var),
         .flags = flags, .parent = var_i, .valv = valv};
     shell_char_strv_unquote(var_i->links[strcmp_result]->valv);
-    var_tree_balance(var_i, strcmp_result);
+    var_tree_balance(var_i, strcmp_result, false);
 }
 
 bool shell_var_set_valv(struct shell *self, const shell_char_t *var,

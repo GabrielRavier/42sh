@@ -34,13 +34,16 @@ static void set_internal_file_descriptors(struct shell *self)
 }
 
 // Reset SIGINT and SIGCHLD to make everything work properly
-static void unblock_sigint_sigchld(void)
+static void unblock_sigint_sigchld(struct shell *self)
 {
     sigset_t sigint_sigchld_set;
+
     sigemptyset(&sigint_sigchld_set);
     sigaddset(&sigint_sigchld_set, SIGINT);
     sigaddset(&sigint_sigchld_set, SIGCHLD);
     sigprocmask(SIG_UNBLOCK, &sigint_sigchld_set, NULL);
+    self->disable_sigint = 0;
+    self->disable_sigchld = 0;
 }
 
 _Noreturn void shell_execute_do_exec(struct shell *self,
@@ -57,8 +60,9 @@ _Noreturn void shell_execute_do_exec(struct shell *self,
     if (*parse_tree->argv == NULL || **parse_tree->argv == '\0')
         exec_print_error(self);
     set_internal_file_descriptors(self);
-    unblock_sigint_sigchld();
-    do_path_loop(self, parse_tree, get_search_path(var_path, has_slash));
+    unblock_sigint_sigchld(self);
+    if (!do_path_loop(self, parse_tree, get_search_path(var_path, has_slash)))
+        shell_print_error(self);
     exec_print_error(self);
     MY_ASSERT(false && "Should never be reached");
 }

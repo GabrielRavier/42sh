@@ -13,7 +13,7 @@
 #include <sys/types.h>
 
 // This is where we get rid of dead processes
-void shell_proc_wait_current(struct shell *self)
+bool shell_proc_wait_current(struct shell *self)
 {
     struct shell_proc *i = &self->head_proc;
     struct shell_proc *j = i->next;
@@ -27,5 +27,5 @@ void shell_proc_wait_current(struct shell *self)
         i = j;
         j = i->next;
     }
-    shell_proc_wait(self, self->current_job);
+    return shell_proc_wait(self, self->current_job);
 }

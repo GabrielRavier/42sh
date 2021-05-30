@@ -9,4 +9,5 @@
 
 #include "../shell.h"
 
-void shell_lex(struct shell *self, struct lexical_word_list *result);
+bool shell_lex(struct shell *self, struct lexical_word_list *result)
+    MY_ATTR_WARN_UNUSED_RESULT;

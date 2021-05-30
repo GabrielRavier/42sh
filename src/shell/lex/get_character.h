@@ -11,15 +11,20 @@
 #include "../read_character.h"
 #include <stdio.h>
 
-static inline shell_char_t shell_lex_get_character(struct shell *self)
+MY_ATTR_WARN_UNUSED_RESULT static inline bool shell_lex_get_character(
+    struct shell *self, shell_char_t *result)
 {
-    shell_char_t c = self->lex.peek_character;
-    if (c != 0) {
+    *result = self->lex.peek_character;
+
+    if (*result != '\0') {
         self->lex.peek_character = 0;
-        return c;
+        return true;
     }
-    c = shell_read_character(self, true);
-    return c == SHELL_CHAR_ERROR ? '\n' : c;
+    if (!shell_read_character(self, true, result))
+        return false;
+    if (*result == SHELL_CHAR_ERROR)
+        *result = '\n';
+    return true;
 }
 
 static inline void shell_lex_unget_character(struct shell *self, shell_char_t c)

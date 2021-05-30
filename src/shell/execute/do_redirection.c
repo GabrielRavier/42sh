@@ -9,10 +9,11 @@
 #include "../set_error.h"
 #include "../print_error.h"
 #include "../parse_tree.h"
+#include "../close.h"
+#include "../creat.h"
+#include "../open.h"
 #include "../../fd.h"
 #include "my/stdlib.h"
-#include "my/unistd.h"
-#include "my/fcntl.h"
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -29,7 +30,7 @@ static void shell_execute_do_redirection_input_str(struct shell *self,
     fd_copy(self->output_fd, STDOUT_FILENO);
     fd_copy(self->error_output_fd, STDERR_FILENO);
     tmp_filename = shell_char_xstrdup_to_c(parse_tree->str_left);
-    fd = my_open(tmp_filename, O_RDONLY);
+    fd = shell_open(tmp_filename, O_RDONLY);
     if (fd < 0) {
         shell_set_error(self, SHELL_ERROR_SYSTEM, tmp_filename,
             strerror(errno));
@@ -46,12 +47,17 @@ static void shell_execute_do_redirection_input(struct shell *self,
         if (parse_tree->str_left != NULL)
             shell_execute_do_redirection_input_str(self, parse_tree);
         else if (parse_tree->flags & PARSE_TREE_NODE_FLAGS_PIPE_INPUT) {
-            my_close(STDIN_FILENO);
+            shell_close(STDIN_FILENO);
             (void)dup(pipe_in[0]);
-            my_close(pipe_in[0]);
-            my_close(pipe_in[1]);
+            shell_close(pipe_in[0]);
+            shell_close(pipe_in[1]);
+        } else if ((parse_tree->flags &
+            PARSE_TREE_NODE_FLAGS_INTERRUPT_IMMUNE) && self->terminal_pgrp ==
+            -1) {
+            shell_close(STDIN_FILENO);
+            shell_open("/dev/null", O_RDONLY);
         } else {
-            my_close(STDIN_FILENO);
+            shell_close(STDIN_FILENO);
             (void)dup(self->old_stdin_fd);
             fcntl(STDIN_FILENO, F_SETFD, 0);
         }
@@ -68,10 +74,10 @@ static void shell_execute_do_redirection_output_str(struct shell *self,
 
     fd_copy(self->output_fd, STDOUT_FILENO);
     fd_copy(self->error_output_fd, STDERR_FILENO);
-    fd = (parse_tree->flags & PARSE_TREE_NODE_FLAGS_APPEND) ? open(
+    fd = (parse_tree->flags & PARSE_TREE_NODE_FLAGS_APPEND) ? shell_open(
         tmp_filename, O_WRONLY | O_APPEND) : 0;
     if ((parse_tree->flags & PARSE_TREE_NODE_FLAGS_APPEND) == 0 || fd < 0) {
-        fd = my_creat(tmp_filename, 0666);
+        fd = shell_creat(tmp_filename, 0666);
         if (fd < 0) {
             shell_set_error(self, SHELL_ERROR_SYSTEM, tmp_filename,
                 strerror(errno));
@@ -87,10 +93,10 @@ static void shell_execute_do_redirection_output(struct shell *self,
     if (parse_tree->str_right != NULL)
         shell_execute_do_redirection_output_str(self, parse_tree);
     else if (parse_tree->flags & PARSE_TREE_NODE_FLAGS_PIPE_OUTPUT) {
-        my_close(STDOUT_FILENO);
+        shell_close(STDOUT_FILENO);
         dup(pipe_out[1]);
     } else {
-        my_close(STDOUT_FILENO);
+        shell_close(STDOUT_FILENO);
         dup(self->output_fd);
         fcntl(STDOUT_FILENO, F_SETFD, 0);
     }
@@ -103,7 +109,7 @@ void shell_execute_do_redirection(struct shell *self,
         return;
     shell_execute_do_redirection_input(self, parse_tree, pipe_in);
     shell_execute_do_redirection_output(self, parse_tree, pipe_out);
-    my_close(STDERR_FILENO);
+    shell_close(STDERR_FILENO);
     dup(self->error_output_fd);
     fcntl(STDERR_FILENO, F_SETFD, 0);
     self->child_io_fds_setup = true;
