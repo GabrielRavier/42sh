@@ -61,7 +61,6 @@ MY_ATTR_WARN_UNUSED_RESULT static inline bool do_noexec(struct shell *self,
         shell_close(fd);
     }
     do_shell_exec(self, filename, argv, fd != 1 && first_two_bytes[0] != '#');
-    return true;
 }
 
 static inline void set_exec_error(struct shell *self,
@@ -87,6 +86,7 @@ MY_ATTR_WARN_UNUSED_RESULT static inline bool try_exec(struct shell *self,
     case ENOEXEC:
         if (!do_noexec(self, filename_as_c, argv, filename))
             return false;
+        MY_ASSERT(false && "Should never be reached");
     case ENOMEM:
         shell_set_and_print_error(self, SHELL_ERROR_SYSTEM, filename_as_c,
             strerror(errno));

@@ -18,8 +18,6 @@
 #include <string.h>
 #include <errno.h>
 
-static const shell_char_t EDIT[] = {'e', 'd', 'i', 't', '\0'};
-
 // If someone has fun starting us with fd 0/1/2 closed, we might have problems,
 // so guarantee them being open
 static void guarantee_012_open(void)

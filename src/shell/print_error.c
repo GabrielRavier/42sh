@@ -22,7 +22,7 @@ void shell_print_error(struct shell *self)
         if (self->error.display_name)
             shell_printf(self, "%s: ", self->error_program_name);
         shell_printf(self, "%s.\n", self->error.text != NULL ?
-            self->error.text : "No error to print", self->error_output_fd);
+            self->error.text : "No error to print");
     }
     if (self->error.text != NULL) {
         my_free(self->error.text);
